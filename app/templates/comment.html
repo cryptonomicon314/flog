@@ -1,0 +1,34 @@
+<div class="comment">
+  <a name="{{ comment_anchor_id(comment.id) }}"></a>
+  {% if edit_id == comment.id %}
+    {% include "edit-comment-form.html" %}
+  {% else %}   
+  <div class="comment-name">{{ comment.name }}</div>
+  <div class="comment-number-and-date">
+      <span class="comment-number">Comment #{{ comment_index }} </span>
+      <a class="comment-date"
+            href="#{{ comment_anchor_id(comment.id) }}">
+        {{ moment(comment.published).format(moment_fmt.datetime) }}
+      </a>
+   </div>
+  
+    <div class="comment-content">
+    {% autoescape off %}
+      {{ comment.content }}
+    {% endautoescape %}
+    </div>
+      {% if comment.id in editable_comments.keys() %}
+      <div id="comment-edit-{{ comment.id }}">
+        <a href="{{ cls.url_for('entry', slug=entry.slug, edit_id=comment.id, _anchor=comment_anchor_id(comment.id)) }}">Edit</a>
+        <span style="font-size: small">
+          (expires {{ moment(editable_comments[comment.id]['date']).fromNow(refresh=True) }})
+        </span>
+      </div>
+      <script>
+      setTimeout(function(){$('#comment-edit-{{ comment.id }}').hide();},
+            {{ editable_comments[comment.id]['delta'] }});
+      </script>
+    {% endif %}
+  {% endif %}
+  <hr/>
+</div>

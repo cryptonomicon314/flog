@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Entries{% endblock %}
+
+{% block main %}
+  {% block intro %}{% endblock %}
+
+  {% for entry in entries %}
+    {% include "entry.html" %}
+  <hr>
+  {% if entry.commentable %}
+  <div class="read-comments">
+    Read <a href="{{ cls.url_for('entry', slug=entry.slug, _anchor='comment-list')}}">
+        {{ entry.comments|length }} responses</a> to this entry.
+  </div>
+  <hr>
+  {% endif %}
+  {% endfor %}
+
+  {% block navigation %}{% endblock %}
+
+{% endblock %}

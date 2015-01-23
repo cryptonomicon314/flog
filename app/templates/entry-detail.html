@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ g.common.title }}{% endblock %}
+
+{% block main %}
+  {% block entrycontent %}
+    {% include "entry.html" %}
+  {% endblock %}
+  <hr>
+  {% if entry.commentable %}
+    {% include "comment-list.html" %}
+  {% endif %}
+  
+  {% if entry.unlocked and entry.commentable and (not edit_id) %}
+    {% include "new-comment-form.html" %}
+  {% endif %} 
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+   
+  {% include "ckeditor-script.html" %}
+{% endblock %} 

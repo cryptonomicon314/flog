@@ -1,0 +1,22 @@
+{% from '_formhelpers.html' import render_field %}
+
+<a id="edit-comment-form"></a>
+<form action="{{ cls.url_for('entry', slug=entry.slug, edit_id=edit_id, _anchor=comment_anchor_id(comment.id)) }}" method="post">
+    {{ form_edit.hidden_tag() }}
+    {{ form_edit.type() }}
+    <p>Edit the comment (delete all content to delete the comment)</p>
+    <p>
+      {{ render_field(form_edit.name, placeholder="Name (required)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_edit.email, placeholder="Email (required)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_edit.website, placeholder="Website (optional)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_edit.content, id="edit-comment-editor") }}
+    </p>
+    <p><input value="Post Comment" type="submit"></p>
+    
+</form>

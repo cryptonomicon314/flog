@@ -1,0 +1,27 @@
+{% extends 'appbuilder/init.html' %}
+
+{% block tail_js %}
+{{ super() }}
+{% assets "katex_css" %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></link>
+    {% endassets %}
+    {% assets "katex_js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+
+<script>
+function katexifyElem(elem) {
+    katex.render(elem.innerHTML, elem);
+    elem.className = "katex-rendered";
+}
+
+function katexifyPage() {
+    var collection = document.getElementsByClassName("katex");
+    for(var i = 0; collection[i]; i++) {
+      katexifyElem(collection[i]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', katexifyPage);
+</script>
+{% endblock %}

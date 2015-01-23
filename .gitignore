@@ -1,0 +1,9 @@
+syntax: glob
+
+app/static/public/*
+app/static/.webassets-cache/*
+secrets/remote.yaml
+secrets/local.yaml
+
+*.pyc
+*~

@@ -1,0 +1,76 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}{{ g.blog_config.window_title }}{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  {% assets "style_css" %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></link>
+  {% endassets %}
+{% endblock %}
+
+{% block navbar %}
+<div class="blog-masthead">
+  <div class="container">
+    <nav class="blog-nav">
+        
+        {% for category in cls.categories() %}
+          <a class="blog-nav-item {% if active_category == category.slug %}active{% endif %}"
+             href="{{ cls.url_for('category', catslug=category.slug) }}">{{ category.name }}</a>
+        {% endfor %}
+        <a class="blog-nav-item {% if is_all %}active{% endif %}"
+           href="{{ cls.url_for('all_entries') }}">All</a>
+        <a class="blog-nav-item {% if is_archives %}active{% endif %}"
+           href="{{ cls.url_for('archives') }}">Archives</a>
+    </nav>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="blog-header">
+    <h1 class="blog-title">
+        {{ g.blog_config.blog_title }}
+    </h1>
+    <p></p>
+    <p style="padding-left: 20px" class="lead blog-description">
+        {{ g.blog_config.blog_subtitle }}
+    </p>
+  </div>
+  
+  <div class="row">
+    <div class="col-sm-8 col-md-8 blog-main"
+         style="max-width: 560px !important"
+         id="main">
+      {% block main %}
+      {% endblock %}
+    </div>
+    
+    <div class="blog-sidebar col-sm-3 col-md-4 col-sm-offset-1"
+         role="navigation">
+    
+      <!--
+         Because [docker.js](http://jbt.github.io/docker/README.md.html)
+         does not support [Jinja](http://jinja.pocoo.org/), we have to use
+         HTML comments in the templates (ugly!)
+         
+         Someone has to add some king of **Jinja** support to **docker.js**,
+         because **docker.js** is f*** ing awesome.
+      -->
+      {% block sidebar %}
+        {% include "sidebar-modules.html" %}
+      {% endblock %}
+    </div>
+  </div>
+</div>    
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {{ moment.include_jquery() }}
+  {{ moment.include_moment() }}
+  {% include "highlightjs-script.html" %}
+  {% include "mathjax-script.html" %}
+{% endblock %}
+

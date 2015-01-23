@@ -1,0 +1,10 @@
+<script type="text/javascript"
+          src="{{ url_for('static', filename=ckeditor_main_filename) }}"></script>
+
+<script>
+{% if edit_id %}
+  CKEDITOR.replace('edit-comment-editor');
+{% else %}
+  CKEDITOR.replace('new-comment-editor');
+{% endif %}
+</script>

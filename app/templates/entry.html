@@ -1,0 +1,18 @@
+<div class="entry">
+  <h2>{{ entry.title }}</h2>
+  <div class="blog-post-meta">
+    {% if entry.show_date %}
+      {{ moment(entry.created).format(moment_fmt.datetime_mins) }}
+    {% endif %}
+    {% if entry.show_author %}
+      by {{ entry.author }}
+    {% endif %}
+  </div>
+  <p></p>
+  <div class="entry-content">
+  {% autoescape off %}
+    {{ entry.lead }}
+    {{ entry.content }}
+  {% endautoescape %}
+  </div>
+</div>

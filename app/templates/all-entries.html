@@ -1,0 +1,34 @@
+{% extends "entry-list.html" %}
+{% block title %}All{% endblock %}
+
+{% block navigation %}
+  {% if (older != None) or (newer != None) %}
+  <p>
+  <table style="width: 100%">
+      <tr>
+          <td style="width:33%; text-align: left">
+            {% if older != None %}
+              <a href="{{ cls.url_for('all_entries', page=older) }}">
+                <i class="glyphicon glyphicon-chevron-left small"></i>
+                older entries
+              </a>
+            {% endif %}
+          </td>
+
+          <td style="width:33%; text-align: center">
+            <span>Page {{current_page}}</span>
+          </td>
+
+          <td style="width:33%; text-align: right">
+            {% if newer !=  None %}
+              <a href="{{ cls.url_for('all_entries', page=newer) }}">
+                newer entries
+                <i class="glyphicon glyphicon-chevron-right small"></i>
+              </a>
+            {% endif %}
+          </td>
+      </tr>
+  </table>
+  </p>
+  {% endif %}
+{% endblock %}

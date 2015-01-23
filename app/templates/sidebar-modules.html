@@ -1,0 +1,30 @@
+<div class="sidebar-module">
+  <h4>Recent Entries</h4>
+  <ul>
+  {% for entry in cls.recent_entries() %}
+    <li>
+      <a href="{{ cls.url_for('entry', slug=entry.slug) }}">{{ entry.title }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% for sidebar_module in cls.sidebar_modules() %}
+  <div class="sidebar-module">
+      <h4>{{ sidebar_module.title }}</h4>
+      {% autoescape off %}
+        {{ sidebar_module.text }}
+      {% endautoescape %}
+  </div>
+{% endfor %}
+
+{% if cls.tag_counts() %}
+<div class="sidebar-module">
+  <h4>Entries Tagged:</h4>
+  <ul>
+    {% for (tag, count) in cls.tag_counts() %}
+    <li><a href="{{ cls.url_for('tag', tag_slug=tag.slug) }}">{{ tag.name }} ({{ count }})</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

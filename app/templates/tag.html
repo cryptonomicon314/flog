@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block main %}
+<hr>
+  <p style="text-align: center">
+    Entries tagged <em>{{ tag.name }}</em>:
+  </p>
+<hr>
+
+{% for entry in entries %}
+  <div class="entry">
+    <h2>{{ entry.title }}</h2>
+    <div class="blog-post-meta">
+    {{ moment(entry.created).format(moment_fmt.datetime_mins) }}
+    {% if entry.show_author %}
+      by {{ entry.author }}
+    {% endif %}
+    </div>
+    <div class="entry-content">
+      {% autoescape off %}
+        {{ entry.lead }}
+      {% endautoescape %}
+      <div style="text-align: center">
+        <a href="{{ cls.url_for('entry', slug=entry.slug) }}">Read more</a>
+      </div>
+    </div>
+  </div>
+  <hr>
+{% endfor %}
+
+{% endblock %}

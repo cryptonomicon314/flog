@@ -1,0 +1,32 @@
+{% from '_formhelpers.html' import render_field %}
+
+<a id="new-comment-form"></a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li class='error'>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form action="{{ cls.url_for('entry', slug=entry.slug, _anchor='new-comment-form') }}" method="post">
+    {{ form_new.hidden_tag() }}
+    {{ form_new.type() }}
+    <p>
+      {{ render_field(form_new.name, placeholder="Name (required)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_new.email, placeholder="Email (required)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_new.website, placeholder="Website (optional)", size=35) }}
+    </p>
+    <p>
+      {{ render_field(form_new.content, id="new-comment-editor") }}
+    </p>
+    <p><input value="Post Comment" type="submit"></p>
+    
+</form>

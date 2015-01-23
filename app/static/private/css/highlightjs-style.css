@@ -1,0 +1,94 @@
+/* Tomorrow Night Eighties Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+/* http://jmblog.github.com/color-themes-for-google--highlightjs */
+
+/* Tomorrow Comment */
+pre .hljs-comment {
+  color: #999999;
+}
+
+/* Tomorrow Red */
+pre .hljs-variable,
+pre .hljs-attribute,
+pre .hljs-tag,
+pre .hljs-regexp,
+pre .ruby .hljs-constant,
+pre .xml .hljs-tag .hljs-title,
+pre .xml .hljs-pi,
+pre .xml .hljs-doctype,
+pre .html .hljs-doctype,
+pre .css .hljs-id,
+pre .css .hljs-class,
+pre .css .hljs-pseudo {
+  color: #f2777a;
+}
+
+/* Tomorrow Orange */
+pre .hljs-number,
+pre .hljs-preprocessor,
+pre .hljs-pragma,
+pre .hljs-built_in,
+pre .hljs-literal,
+pre .hljs-params,
+pre .hljs-constant {
+  color: #f99157;
+}
+
+/* Tomorrow Yellow */
+pre .ruby .hljs-class .hljs-title,
+pre .css .hljs-rules .hljs-attribute {
+  color: #ffcc66;
+}
+
+/* Tomorrow Green */
+pre .hljs-string,
+pre .hljs-value,
+pre .hljs-inheritance,
+pre .hljs-header,
+pre .ruby .hljs-symbol,
+pre .xml .hljs-cdata {
+  color: #99cc99;
+}
+
+/* Tomorrow Aqua */
+pre .hljs-title,
+pre .css .hljs-hexcolor {
+  color: #66cccc;
+}
+
+/* Tomorrow Blue */
+pre .hljs-function,
+pre .python .hljs-decorator,
+pre .python .hljs-title,
+pre .ruby .hljs-function .hljs-title,
+pre .ruby .hljs-title .hljs-keyword,
+pre .perl .hljs-sub,
+pre .javascript .hljs-title,
+pre .coffeescript .hljs-title {
+  color: #6699cc;
+}
+
+/* Tomorrow Purple */
+pre .hljs-keyword,
+pre .javascript .hljs-function {
+  color: #cc99cc;
+}
+
+pre .hljs {
+  display: block;
+  overflow-x: auto;
+  background: #2d2d2d;
+  color: #cccccc;
+  padding: 0.5em;
+  -webkit-text-size-adjust: none;
+}
+
+pre .coffeescript .javascript,
+pre .javascript .xml,
+pre .tex .hljs-formula,
+pre .xml .javascript,
+pre .xml .vbscript,
+pre .xml .css,
+pre .xml .hljs-cdata {
+  opacity: 0.5;
+}

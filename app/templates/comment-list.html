@@ -1,0 +1,11 @@
+<a id="comment-list"></a>
+<div class="comment-list">
+  <header>
+     {{ comments|length }} Responses to <em>{{ entry.title }}</em> 
+  </header>
+  <hr/>
+  {% for comment in comments %}
+    {% set comment_index = loop.index %}
+    {% include "comment.html" %}
+  {% endfor %}
+</div>

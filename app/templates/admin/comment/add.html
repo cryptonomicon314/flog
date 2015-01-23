@@ -1,0 +1,14 @@
+{% extends "appbuilder/general/model/add.html" %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script type="text/javascript"
+          src="{{ url_for('static', filename=ckeditor_main_filename) }}"></script>
+
+  <script>
+  {% for textarea_id in rich_textareas %}
+    CKEDITOR.replace("{{ textarea_id }}");
+  {% endfor %}
+  </script>
+
+{% endblock %}

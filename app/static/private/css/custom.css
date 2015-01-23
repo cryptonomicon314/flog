@@ -1,0 +1,46 @@
+body {font-size: 14px !important}
+.blog-main {font-size: 16.5px !important}
+/* Styling of user comments */
+.comment-list header {text-align: center}
+.comment-content pre {padding: 0}
+.comment-content, .entry-content {text-align: justify}
+.comment-content {margin-top: 10px !important}
+.comment-number-and-date {font-size: small}
+.comment-name {font-size: large; font-weight: bold}
+/* if we have math in a paragraph with anything else, we center it */
+p span.math-tex:only-child {text-align: center}
+/* blockquote ckeditor plugin */
+blockquote {font-size: 14px !important}
+/* footnotes ckeditor plugin */
+.footnotes header {font-weight: bold; font-size: small}
+.footnotes ol {margin-top: -8px}
+/* spoiler ckeditor plugin */
+p + .spoiler {margin-top: -12px}
+/* highlight.js */
+:not(pre) > code.hljs {display: inline !important; padding: 2px; font-size: small}
+pre {padding: 0px !important}
+
+.sidebar-module ul {margin-left: -26px}
+.sidebar-module {margin-bottom: -30px}
+
+.read-comments {text-align: center}
+/* Comments Submission Form */
+form input {}
+
+div.errors > input[type=text], div.errors > textarea, div.errors > div.cke_editor_comment-editor {
+  box-shadow: 0 0 4px rgba(256, 20, 20, 1) !important;
+}
+
+ul.errors {
+  margin-top: 7px;
+}
+
+li.error {
+  color: rgba(256, 100, 100, 1);
+}
+
+input {
+    padding: 4px;
+    padding-left: 8px;
+}
+

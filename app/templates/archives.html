@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <h2>{{ title }}</h2>
+  {% for (year, subset) in grouping %}
+    <p>{{ year }}</p>
+    <ul>
+        {% for entry in subset %}
+        <li>
+           {{ moment(entry.created).format("MMM DD") }}
+           <a href="{{ cls.url_for('entry', slug=entry.slug) }}">{{ entry.title }}</a></td>
+        </li>
+        {% endfor %}
+    </ul>
+  {% endfor %}
+{% endblock %}
