@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CHANGES.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../../../../../doc-style.css" />
+  <script src="../../../../../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../../../../../", thisFile = "app/static/public/ckeditor/546fd9f365273897/CHANGES.md", defaultSidebar = true;
+  </script>
+  <script src="../../../../../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#ckeditor%204%20changelog">CKEditor 4 Changelog</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.6">CKEditor 4.4.6</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.5">CKEditor 4.4.5</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.4">CKEditor 4.4.4</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.3">CKEditor 4.4.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.2">CKEditor 4.4.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4.1">CKEditor 4.4.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.4">CKEditor 4.4</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3.5">CKEditor 4.3.5</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3.4">CKEditor 4.3.4</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3.3">CKEditor 4.3.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3.2">CKEditor 4.3.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3.1">CKEditor 4.3.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3">CKEditor 4.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.3%20beta">CKEditor 4.3 Beta</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.2.3">CKEditor 4.2.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.2.2">CKEditor 4.2.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.2.1">CKEditor 4.2.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.2">CKEditor 4.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.1.3">CKEditor 4.1.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.1.2">CKEditor 4.1.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.1.1">CKEditor 4.1.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.1">CKEditor 4.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.1%20rc">CKEditor 4.1 RC</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.0.3">CKEditor 4.0.3</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.0.2">CKEditor 4.0.2</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.0.1.1">CKEditor 4.0.1.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.0.1">CKEditor 4.0.1</a>
+      </div>
+      <div class="heading h2">
+        <a href="#ckeditor%204.0">CKEditor 4.0</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap" id="ckeditor%204%20changelog">
+  <h1>
+    <a href="#ckeditor%204%20changelog" name="ckeditor%204%20changelog" class="pilcrow">&#182;</a>
+    CKEditor 4 Changelog
+  </h1>
+</div>
+
+
+
+<div class="pilwrap" id="ckeditor%204.4.6">
+  <h2>
+    <a href="#ckeditor%204.4.6" name="ckeditor%204.4.6" class="pilcrow">&#182;</a>
+    CKEditor 4.4.6
+  </h2>
+</div>
+
+
+<p><strong>Security Updates:</strong></p>
+
+<ul>
+<li>Fixed XSS vulnerability in the HTML parser reported by <a href="https://www.facebook.com/Maaacoooo">Maco Cortes</a>.</li>
+</ul>
+
+
+<div class="highlight"><pre><code><span class="nx">Issue</span> <span class="nx">summary</span><span class="o">:</span> <span class="nx">It</span> <span class="nx">was</span> <span class="nx">possible</span> <span class="nx">to</span> <span class="nx">execute</span> <span class="nx">XSS</span> <span class="nx">inside</span> <span class="nx">CKEditor</span> <span class="nx">after</span> <span class="nx">persuading</span> <span class="nx">the</span> <span class="nx">victim</span> <span class="nx">to</span><span class="o">:</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="k">switch</span> <span class="nx">CKEditor</span> <span class="nx">to</span> <span class="nx">source</span> <span class="nx">mode</span><span class="p">,</span> <span class="nx">then</span> <span class="p">(</span><span class="nx">ii</span><span class="p">)</span> <span class="nx">paste</span> <span class="nx">a</span> <span class="nx">specially</span> <span class="nx">crafted</span> <span class="nx">HTML</span> <span class="nx">code</span><span class="p">,</span> <span class="nx">prepared</span> <span class="nx">by</span> <span class="nx">the</span> <span class="nx">attacker</span><span class="p">,</span> <span class="nx">into</span> <span class="nx">the</span> <span class="nx">opened</span> <span class="nx">CKEditor</span> <span class="nx">source</span> <span class="nx">area</span><span class="p">,</span> <span class="nx">and</span> <span class="p">(</span><span class="nx">iii</span><span class="p">)</span> <span class="k">switch</span> <span class="nx">back</span> <span class="nx">to</span> <span class="nx">WYSIWYG</span> <span class="nx">mode</span><span class="p">.</span>
+</code></pre></div>
+
+
+
+<p><strong>An upgrade is highly recommended!</strong></p>
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12501">#12501</a>: Allowed dashes in element names in the <a href="http://docs.ckeditor.com/#!/guide/dev_allowed_content_rules-section-string-format">string format of allowed content rules</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12550">#12550</a>: Added the <code>&lt;main&gt;</code> element to the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dtd"><code>CKEDITOR.dtd</code></a>.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12506">#12506</a>: [Safari] Fixed: Cannot paste into inline editor if the page has <code>user-select: none</code> style. Thanks to <a href="https://github.com/shaohua">shaohua</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12683">#12683</a>: Fixed: <a href="http://docs.ckeditor.com/#!/guide/dev_acf">Filter</a> fails to remove custom tags. Thanks to <a href="https://github.com/timselier">timselier</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12489">#12489</a> and <a href="http://dev.ckeditor.com/ticket/12491">#12491</a>: Fixed: Various issues related to restoring the selection after performing operations on filler character. See the <a href="http://dev.ckeditor.com/ticket/12491#comment:4">fixed cases</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12621">#12621</a>: Fixed: Cannot remove inline styles (bold, italic, etc.) in empty lines.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12630">#12630</a>: [Chrome] Fixed: Selection is placed outside the paragraph when the <a href="http://ckeditor.com/addon/newpage">New Page</a> button is clicked. This patch significantly simplified the way how the initial selection (a selection after the content of the editable is overwritten) is being fixed. That might have fixed many related scenarios in all browsers.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11647">#11647</a>: Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-blur"><code>editor.blur</code></a> event is not fired on first blur after initializing the inline editor on an already focused element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12601">#12601</a>: Fixed: <a href="http://ckeditor.com/addon/basicstyles">Strikethrough</a> button tooltip spelling.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12546">#12546</a>: Fixed: The Preview tab in the <a href="http://ckeditor.com/addon/docprops">Document Properties</a> dialog window is always disabled.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12300">#12300</a>: Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-change"><code>editor.change</code></a> event fired on first navigation key press after typing.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12141">#12141</a>: Fixed: List items are lost when indenting a list item with content wrapped with a block element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12515">#12515</a>: Fixed: Cursor is in the wrong position when undoing after adding an image and typing some text.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12484">#12484</a>: [Blink/Webkit] Fixed: DOM is changed outside the editor area in a certain case.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12688">#12688</a>: Improved the tests of the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style">styles system</a> and fixed two minor issues.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12403">#12403</a>: Fixed: Changing the <a href="http://ckeditor.com/addon/font">font</a> style should not lead to nesting it in the previous style element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12609">#12609</a>: Fixed: Incorrect <code>config.magicline_putEverywhere</code> name used for a <a href="http://ckeditor.com/addon/magicline">Magic Line</a> all-encompassing <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-magicline_everywhere"><code>config.magicline_everywhere</code></a> configuration option.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4.5">
+  <h2>
+    <a href="#ckeditor%204.4.5" name="ckeditor%204.4.5" class="pilcrow">&#182;</a>
+    CKEditor 4.4.5
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12279">#12279</a>: Added a possibility to pass a custom evaluator to <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.node-method-getAscendant"><code>node.getAscendant()</code></a>.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12423">#12423</a>: [Safari7.1+] Fixed: <em>Enter</em> key moved cursor to a strange position.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12381">#12381</a>: [iOS] Fixed: Selection issue. Thanks to <a href="https://github.com/Remiremi">Remiremi</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/10804">#10804</a>: Fixed: <code>CKEDITOR_GETURL</code> is not used with some plugins where it should be used. Thanks to <a href="https://github.com/tandraschko">Thomas Andraschko</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/9137">#9137</a>: Fixed: The <code>&lt;base&gt;</code> tag is not created when <code>&lt;head&gt;</code> has an attribute. Thanks to <a href="https://github.com/naoki-fujikawa">naoki.fujikawa</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12377">#12377</a>: Fixed: Errors thrown in the <a href="http://ckeditor.com/addon/image">Image</a> plugin when removing preview from the dialog window definition. Thanks to <a href="https://github.com/Axinet">Axinet</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12162">#12162</a>: Fixed: Auto paragraphing and <em>Enter</em> key in nested editables.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12315">#12315</a>: Fixed: Marked <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-autoParagraph"><code>config.autoParagraph</code></a> as deprecated.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12113">#12113</a>: Fixed: A <a href="http://ckeditor.com/addon/codesnippet">code snippet</a> should be presented in the <a href="http://ckeditor.com/addon/elementspath">elements path</a> as "code snippet" (translatable).</li>
+<li><a href="http://dev.ckeditor.com/ticket/12311">#12311</a>: Fixed: <a href="http://ckeditor.com/addon/removeformat">Remove Format</a> should also remove <code>&lt;cite&gt;</code> elements.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12261">#12261</a>: Fixed: Filter has to be destroyed and removed from <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter-static-property-instances"><code>CKEDITOR.filter.instances</code></a> on editor destroy.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12398">#12398</a>: Fixed: <a href="http://ckeditor.com/addon/maximize">Maximize</a> does not work on an instance without a <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-title">title</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12097">#12097</a>: Fixed: JAWS not reading the number of options correctly in the <a href="http://ckeditor.com/addon/colorbutton">Text Color and Background Color</a> button menu.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12411">#12411</a>: Fixed: <a href="http://ckeditor.com/addon/pagebreak">Page Break</a> used directly in the editable breaks the editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12354">#12354</a>: Fixed: Various issues in undo manager when holding keys.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12324">#12324</a>: [IE8] Fixed: Undo steps are not recorded when changing the caret position by clicking below the body.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12332">#12332</a>: Fixed: Lowered DOM events listeners' priorities in undo manager in order to avoid ambiguity.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12402">#12402</a>: [Blink] Fixed: Workaround for Blink bug with <code>document.title</code> which breaks updating title in the full HTML mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12338">#12338</a>: Fixed: The CKEditor package contains unoptimized images.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4.4">
+  <h2>
+    <a href="#ckeditor%204.4.4" name="ckeditor%204.4.4" class="pilcrow">&#182;</a>
+    CKEditor 4.4.4
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12268">#12268</a>: Cleanup of <a href="http://ckeditor.com/addon/uicolor">UI Color</a> YUI styles. Thanks to <a href="https://github.com/CasherWest">CasherWest</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12263">#12263</a>: Fixed: <a href="(http://ckeditor.com/addon/pastefromword">Paste from Word</a>) filter does not properly normalize semicolons style text. Thanks to <a href="https://github.com/mesmerizero">Alin Purcaru</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12243">#12243</a>: Fixed: Text formatting lost when pasting from Word. Thanks to <a href="https://github.com/mesmerizero">Alin Purcaru</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/11739">#111739</a>: Fixed: <code>keypress</code> listeners should not be used in the undo manager. A complete rewrite of keyboard handling in the undo manager was made. Numerous smaller issues were fixed, among others:
+<ul><li><a href="http://dev.ckeditor.com/ticket/10926">#10926</a>: [Chrome@Android] Fixed: Typing does not record snapshots and does not fire the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-change"><code>editor.change</code></a> event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11611">#11611</a>: [Firefox] Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-change"><code>editor.change</code></a> event is fired when pressing Arrow keys.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12219">#12219</a>: [Safari] Fixed: Some modifications of the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.undo.UndoManager-property-locked"><code>UndoManager.locked</code></a> property violate strict mode in the <a href="http://ckeditor.com/addon/undo">Undo</a> plugin.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/10916">#10916</a>: Fixed: <a href="http://ckeditor.com/addon/magicline">Magic Line</a> icon in Right-To-Left environments.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11970">#11970</a>: [IE] Fixed: CKEditor <code>paste</code> event is not fired when pasting with <em>Shift+Ins</em>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12111">#12111</a>: Fixed: Linked image attributes are not read when opening the image dialog window by doubleclicking.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10030">#10030</a>: [IE] Fixed: Prevented "Unspecified Error" thrown in various cases when IE8-9 does not allow access to <code>document.activeElement</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12273">#12273</a>: Fixed: Applying block style in a description list breaks it.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12218">#12218</a>: Fixed: Minor syntax issue in CSS files.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12178">#12178</a>: [Blink/WebKit] Fixed: Iterator does not return the block if the selection is located at the end of it.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12185">#12185</a>: [IE9QM] Fixed: Error thrown when moving the mouse over focused editor's scrollbar.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12215">#12215</a>: Fixed: Basepath resolution does not recognize semicolon as a query separator.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12135">#12135</a>: Fixed: <a href="http://ckeditor.com/addon/removeformat">Remove Format</a> does not work on widgets.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12298">#12298</a>: [IE11] Fixed: Clicking below <code>&lt;body&gt;</code> in Compatibility Mode will no longer reset selection to the first line.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12204">#12204</a>: Fixed: Editor's voice label is not affected by <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-title"><code>config.title</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11915">#11915</a>: Fixed: With <a href="http://ckeditor.com/addon/scayt">SCAYT</a> enabled, cursor moves to the beginning of the first highlighted, misspelled word after typing or pasting into the editor.</li>
+<li><a href="https://github.com/WebSpellChecker/ckeditor-plugin-scayt/issues/69">SCAYT</a>: Fixed: Error thrown in the console after enabling <a href="http://ckeditor.com/addon/scayt">SCAYT</a> and trying to add a new image.</li>
+</ul>
+
+<p>Other Changes:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12296">#12296</a>: Merged <code>benderjs-ckeditor</code> into the main CKEditor repository.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4.3">
+  <h2>
+    <a href="#ckeditor%204.4.3" name="ckeditor%204.4.3" class="pilcrow">&#182;</a>
+    CKEditor 4.4.3
+  </h2>
+</div>
+
+
+<p><strong>Security Updates:</strong></p>
+
+<ul>
+<li>Fixed XSS vulnerability in the Preview plugin reported by Mario Heiderich of <a href="https://cure53.de/">Cure53</a>.</li>
+</ul>
+
+<p><strong>An upgrade is highly recommended!</strong></p>
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12164">#12164</a>: Added the "Justify" option to the "Horizontal Alignment" drop-down in the Table Cell Properties dialog window.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/12110">#12110</a>: Fixed: Editor crash after deleting a table. Thanks to <a href="https://github.com/mesmerizero">Alin Purcaru</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/11897">#11897</a>: Fixed: <em>Enter</em> key used in an empty list item creates a new line instead of breaking the list. Thanks to <a href="https://github.com/noam-si">noam-si</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/12140">#12140</a>: Fixed: Double-clicking linked widgets opens two dialog windows.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12132">#12132</a>: Fixed: Image is inserted with <code>width</code> and <code>height</code> styles even when they are not allowed.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9317">#9317</a>: [IE] Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableObjectResizing"><code>config.disableObjectResizing</code></a> does not work on IE. <strong>Note</strong>: We were not able to fix this issue on IE11+ because necessary events stopped working. See a <a href="http://dev.ckeditor.com/ticket/9317#comment:16">last resort workaround</a> and make sure to <a href="https://connect.microsoft.com/IE/feedback/details/742593/please-respect-execcommand-enableobjectresizing-in-contenteditable-elements">support our complaint to Microsoft</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9638">#9638</a>: Fixed: There should be no information about accessibility help available under the <em>Alt+0</em> keyboard shortcut if the <a href="http://ckeditor.com/addon/a11yhelp">Accessibility Help</a> plugin is not available.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8117">#8117</a> and <a href="http://dev.ckeditor.com/ticket/9186">#9186</a>: Fixed: In HTML5 <code>&lt;meta&gt;</code> tags should be allowed everywhere, including inside the <code>&lt;body&gt;</code> element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10422">#10422</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-fillEmptyBlocks"><code>config.fillEmptyBlocks</code></a> not working properly if a function is specified.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4.2">
+  <h2>
+    <a href="#ckeditor%204.4.2" name="ckeditor%204.4.2" class="pilcrow">&#182;</a>
+    CKEditor 4.4.2
+  </h2>
+</div>
+
+
+<p>Important Notes:</p>
+
+<ul>
+<li>The CKEditor testing environment is now publicly available. Read more about how to set up the environment and execute tests in the <a href="http://docs.ckeditor.com/#!/guide/dev_tests">CKEditor Testing Environment</a> guide.
+Please note that the <a href="https://github.com/ckeditor/ckeditor-dev/tree/master/tests"><code>tests/</code></a> directory which contains editor tests is not available in release packages. It can only be found in the development version of CKEditor on <a href="https://github.com/ckeditor/ckeditor-dev/">GitHub</a>.</li>
+</ul>
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11909">#11909</a>: Introduced a parameter to prevent the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setData"><code>editor.setData()</code></a> method from recording undo snapshots.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11757">#11757</a>: Fixed: Imperfections in the <a href="http://ckeditor.com/addon/moono">Moono</a> skin. Thanks to <a href="https://github.com/danyaPostfactum">danyaPostfactum</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/10091">#10091</a>: Blockquote should be treated like an object by the styles system. Thanks to <a href="https://github.com/dan-james-deeson">dan-james-deeson</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/11478">#11478</a>: Fixed: Issue with passing jQuery objects to <a href="http://docs.ckeditor.com/#!/guide/dev_jquery">adapter</a> configuration.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10867">#10867</a>: Fixed: Issue with setting encoded URI as image link.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11983">#11983</a>: Fixed: Clicking a nested widget does not focus it. Additionally, performance of the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.repository-method-getByElement"><code>widget.repository.getByElement()</code></a> method was improved.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12000">#12000</a>: Fixed: Nested widgets should be initialized on <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setData"><code>editor.setData()</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.nestedEditable-method-setData"><code>nestedEditable.setData()</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/12022">#12022</a>: Fixed: Outer widget's drag handler is not created at all if it has any nested widgets inside.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11960">#11960</a>: [Blink/WebKit] Fixed: The caret should be scrolled into view on <em>Backspace</em> and <em>Delete</em> (covers only the merging blocks case).</li>
+<li><a href="http://dev.ckeditor.com/ticket/11306">#11306</a>: [OSX][Blink/WebKit] Fixed: No widget entries in the context menu on widget right-click.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11957">#11957</a>: Fixed: Alignment labels in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> dialog window are not translated.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11980">#11980</a>: [Blink/WebKit] Fixed: <code>&lt;span&gt;</code> elements created when joining adjacent elements (non-collapsed selection).</li>
+<li><a href="http://dev.ckeditor.com/ticket/12009">#12009</a>: [Nested widgets] Integration with the <a href="http://ckeditor.com/addon/magicline">Magic Line</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11387">#11387</a>: Fixed: <code>role="radiogroup"</code> should be applied only to radio inputs' container.</li>
+<li><a href="http://dev.ckeditor.com/ticket/7975">#7975</a>: [IE8] Fixed: Errors when trying to select an empty table cell.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11947">#11947</a>: [Firefox+IE11] Fixed: <em>Shift+Enter</em> in lists produces two line breaks.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11972">#11972</a>: Fixed: Feature detection in the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-setText"><code>element.setText()</code></a> method should not trigger the layout engine.</li>
+<li><a href="http://dev.ckeditor.com/ticket/7634">#7634</a>: Fixed: The <a href="http://ckeditor.com/addon/flash">Flash Dialog</a> plugin omits the <code>allowFullScreen</code> parameter in the editor data if set to <code>true</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11910">#11910</a>: Fixed: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> does not take <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-baseHref"><code>config.baseHref</code></a> into account when updating image dimensions.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11753">#11753</a>: Fixed: Wrong <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-checkDirty"><code>checkDirty()</code></a> method value after focusing or blurring a widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11830">#11830</a>: Fixed: Impossible to pass some arguments to <a href="https://github.com/ckeditor/ckbuilder">CKBuilder</a> when using the <code>/dev/builder/build.sh</code> script.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11945">#11945</a>: Fixed: <a href="http://ckeditor.com/addon/forms">Form Elements</a> plugin should not change a core method.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11384">#11384</a>: [IE9+] Fixed: <code>IndexSizeError</code> thrown when pasting into a non-empty selection anchored in one text node.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4.1">
+  <h2>
+    <a href="#ckeditor%204.4.1" name="ckeditor%204.4.1" class="pilcrow">&#182;</a>
+    CKEditor 4.4.1
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/9661">#9661</a>: Added the option to <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-linkJavaScriptLinksAllowed">configure</a> anchor tags with JavaScript code in the <code>href</code> attribute.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11861">#11861</a>: [Webkit/Blink] Fixed: Span elements created while joining adjacent elements. <strong>Note:</strong> This patch only covers cases when <em>Backspace</em> or <em>Delete</em> is pressed on a collapsed (empty) selection. The remaining case, with a non-empty selection, will be fixed in the next release.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10714">#10714</a>: [iOS] Fixed: Selection and drop-downs are broken if a touch event listener is used due to a <a href="https://bugs.webkit.org/show_bug.cgi?id=128924">Webkit bug</a>. Thanks to <a href="https://github.com/artygus">Arty Gus</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/11911">#11911</a>: Fixed setting the <code>dir</code> attribute for a preloaded language in <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.lang">CKEDITOR.lang</a>. Thanks to <a href="https://github.com/akashmohapatra">Akash Mohapatra</a>!</li>
+<li><a href="http://dev.ckeditor.com/ticket/11926">#11926</a>: Fixed: <a href="http://ckeditor.com/addon/codesnippet">Code Snippet</a> does not decode HTML entities when loading code from the <code>&lt;code&gt;</code> element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11223">#11223</a>: Fixed: Issue when <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-protectedSource">Protected Source</a> was not working in the <code>&lt;title&gt;</code> element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11859">#11859</a>: Fixed: Removed the <a href="http://ckeditor.com/addon/sourcedialog">Source Dialog</a> plugin dependency from the <a href="http://ckeditor.com/addon/codesnippet">Code Snippet</a> sample.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11754">#11754</a>: [Chrome] Fixed: Infinite loop when content includes not closed attributes.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11848">#11848</a>: [IE] Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertElement"><code>editor.insertElement()</code></a> throwing an exception when there was no selection in the editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11801">#11801</a>: Fixed: Editor anchors unavailable when linking the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11626">#11626</a>: Fixed: <a href="http://ckeditor.com/addon/tableresize">Table Resize</a> sets invalid column width.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11872">#11872</a>: Made <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-addClass"><code>element.addClass()</code></a> chainable symmetrically to <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-removeClass"><code>element.removeClass()</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11813">#11813</a>: Fixed: Link lost while pasting a captioned image and restoring an undo snapshot (<a href="http://ckeditor.com/addon/image2">Enhanced Image</a>).</li>
+<li><a href="http://dev.ckeditor.com/ticket/11814">#11814</a>: Fixed: <em>Link</em> and <em>Unlink</em> entries persistently displayed in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> context menu.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11839">#11839</a>: [IE9] Fixed: The caret jumps out of the editable area when resizing the editor in the source mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11822">#11822</a>: [Webkit] Fixed: Editing anchors by double-click is broken in some cases.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11823">#11823</a>: [IE8] Fixed: <a href="http://ckeditor.com/addon/tableresize">Table Resize</a> throws an error over scrollbar.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11788">#11788</a>: Fixed: It is not possible to change the language back to <em>Not set</em> in the <a href="http://ckeditor.com/addon/codesnippet">Code Snippet</a> dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11788">#11788</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.filter">Filter</a> rules are not applied inside elements with the <code>contenteditable</code> attribute set to <code>true</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11798">#11798</a>: Fixed: Inserting a non-editable element inside a table cell breaks the table.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11793">#11793</a>: Fixed: Drop-down is not "on" when clicking it while the editor is blurred.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11850">#11850</a>: Fixed: Fake objects with the <code>contenteditable</code> attribute set to <code>false</code> are not downcasted properly.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11811">#11811</a>: Fixed: Widget's data is not encoded correctly when passed to an attribute.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11777">#11777</a>: Fixed encoding ampersand in the <a href="http://ckeditor.com/addon/mathjax">Mathematical Formulas</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11880">#11880</a>: [IE8-9] Fixed: Linked image has a default thick border.</li>
+</ul>
+
+<p>Other Changes:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11807">#11807</a>: Updated jQuery version used in the sample to 1.11.0 and tested CKEditor jQuery Adapter with version 1.11.0 and 2.1.0.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9504">#9504</a>: Stopped using deprecated <code>attribute.specified</code> in all browsers except Internet Explorer.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11809">#11809</a>: Changed tab size in <code>&lt;pre&gt;</code> to 4 spaces.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.4">
+  <h2>
+    <a href="#ckeditor%204.4" name="ckeditor%204.4" class="pilcrow">&#182;</a>
+    CKEditor 4.4
+  </h2>
+</div>
+
+
+<p><strong>Important Notes:</strong></p>
+
+<ul>
+<li>Marked the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-beforePaste"><code>editor.beforePaste</code></a> event as deprecated.</li>
+<li>The default class of captioned images has changed to <code>image</code> (was: <code>caption</code>). Please note that once edited in CKEditor 4.4+, all existing images of the <code>caption</code> class (<code>&lt;figure class="caption"&gt;</code>) will be <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">filtered out</a> unless the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-image2_captionedClass"><code>config.image2_captionedClass</code></a> option is set to <code>caption</code>. For backward compatibility (i.e. when upgrading), it is highly recommended to use this setting, which also helps prevent CSS conflicts, etc. This does not apply to new CKEditor integrations.</li>
+<li>Widgets without defined buttons are no longer registered automatically to the <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Advanced Content Filter</a>. Before CKEditor 4.4 widgets were registered to the ACF which was an incorrect behavior (<a href="http://dev.ckeditor.com/ticket/11567">#11567</a>). This change should not have any impact on standard scenarios, but if your button does not execute the widget command, you need to set <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.feature-property-allowedContent"><code>allowedContent</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.feature-property-requiredContent"><code>requiredContent</code></a> properties for it manually, because the editor will not be able to find them.</li>
+<li>The <a href="http://ckeditor.com/addon/showborders">Show Borders</a> plugin was added to the Standard installation package in order to ensure that unstyled tables are still visible for the user (<a href="http://dev.ckeditor.com/ticket/11665">#11665</a>).</li>
+<li>Since CKEditor 4.4 the editor instance should be passed to <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style"><code>CKEDITOR.style</code></a> methods to ensure full compatibility with other features (e.g. applying styles to widgets requires that). We ensured backward compatibility though, so the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style"><code>CKEDITOR.style</code></a> will work even when the editor instance is not provided.</li>
+</ul>
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11297">#11297</a>: Styles can now be applied to widgets. The definition of a style which can be applied to a specific widget must contain two additional properties &mdash; <code>type</code> and <code>widget</code>. Read more in the <a href="http://docs.ckeditor.com/#!/guide/dev_styles-section-widget-styles">Widget Styles</a> section of the "Syles Drop-down" guide. Note that by default, widgets support only classes and no other attributes or styles. Related changes and features:
+<ul><li>Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style-static-method-addCustomHandler"><code>CKEDITOR.style.addCustomHandler()</code></a> method for registering custom style handlers.</li>
+<li>The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style-method-apply"><code>CKEDITOR.style.apply()</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style-method-remove"><code>CKEDITOR.style.remove()</code></a> methods are now called with an editor instance instead of the document so they can be reused by the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-applyStyle"><code>CKEDITOR.editor.applyStyle()</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-removeStyle"><code>CKEDITOR.editor.removeStyle()</code></a> methods. Backward compatibility was preserved, but from CKEditor 4.4 it is highly recommended to pass an editor instead of a document to these methods.</li>
+<li>Many new methods and properties were introduced in the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget">Widget API</a> to make the handling of styles by widgets fully customizable. See: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.definition-property-styleableElements"><code>widget.definition.styleableElements</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.definition-property-styleToAllowedContentRules"><code>widget.definition.styleToAllowedContentRule</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-addClass"><code>widget.addClass()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-removeClass"><code>widget.removeClass()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-getClasses"><code>widget.getClasses()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-hasClass"><code>widget.hasClass()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-applyStyle"><code>widget.applyStyle()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-removeStyle"><code>widget.removeStyle()</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-method-checkStyleActive"><code>widget.checkStyleActive()</code></a>.</li>
+<li>Integration with the <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Allowed Content Filter</a> required an introduction of the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.style-method-toAllowedContentRules"><code>CKEDITOR.style.toAllowedContent()</code></a> method which can be implemented by the custom style handler and if exists, it is used by the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter"><code>CKEDITOR.filter</code></a> to translate a style to <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter.allowedContentRules">allowed content rules</a>.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/11300">#11300</a>: Various changes in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> plugin:
+<ul><li>Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-image2_captionedClass"><code>config.image2_captionedClass</code></a> option to configure the class of captioned images.</li>
+<li>Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-image2_alignClasses"><code>config.image2_alignClasses</code></a> option to configure the way images are aligned with CSS classes.
+If this setting is defined, the editor produces classes instead of inline styles for aligned images.</li>
+<li>Default image caption can be translated (customized) with the <code>editor.lang.image2.captionPlaceholder</code> string.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/11341">#11341</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> plugin: It is now possible to add a link to any image type.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10202">#10202</a>: Introduced wildcard support in the <a href="http://docs.ckeditor.com/#!/guide/dev_allowed_content_rules">Allowed Content Rules</a> format.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10276">#10276</a>: Introduced blacklisting in the <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Allowed Content Filter</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10480">#10480</a>: Introduced code snippets with code highlighting. There are two versions available so far &mdash; the default <a href="http://ckeditor.com/addon/codesnippet">Code Snippet</a> which uses the <a href="http://highlightjs.org">highlight.js</a> library and the <a href="http://ckeditor.com/addon/codesnippetgeshi">Code Snippet GeSHi</a> which uses the <a href="http://qbnz.com/highlighter/">GeSHi</a> library.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11737">#11737</a>: Introduced an option to prevent <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">filtering</a> of an element that matches custom criteria (see <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter-method-addElementCallback"><code>filter.addElementCallback()</code></a>).</li>
+<li><a href="http://dev.ckeditor.com/ticket/11532">#11532</a>: Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-addContentsCss"><code>editor.addContentsCss()</code></a> method that can be used for <a href="http://docs.ckeditor.com/#!/guide/plugin_sdk_styles">adding custom CSS files</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11536">#11536</a>: Added the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.tools-method-htmlDecode"><code>CKEDITOR.tools.htmlDecode()</code></a> method for decoding HTML entities.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11225">#11225</a>: Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.tools-property-transparentImageData"><code>CKEDITOR.tools.transparentImageData</code></a> property which contains transparent image data to be used in CSS or as image source.</li>
+</ul>
+
+<p>Other Changes:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11377">#11377</a>: Unified internal representation of empty anchors using the <a href="http://ckeditor.com/addon/fakeobjects">fake objects</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11422">#11422</a>: Removed Firefox 3.x, Internet Explorer 6 and Opera 12.x leftovers in code.</li>
+<li><a href="http://dev.ckeditor.com/ticket/5217">#5217</a>: Setting data (including switching between modes) creates a new undo snapshot. Besides that:
+<ul><li>Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editable-property-status"><code>editable.status</code></a> property.</li>
+<li>Introduced a new <code>forceUpdate</code> option for the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-lockSnapshot"><code>editor.lockSnapshot</code></a> event.</li>
+<li>Fixed: Selection not being unlocked in inline editor after setting data (<a href="http://dev.ckeditor.com/ticket/11500">#11500</a>).</li></ul></li>
+<li>The <a href="http://ckeditor.com/addon/wsc">WebSpellChecker</a> plugin was updated to the latest version.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10190">#10190</a>: Fixed: Removing block style with <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-removeStyle"><code>editor.removeStyle()</code></a> should result in a paragraph and not a div.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11727">#11727</a>: Fixed: The editor tries to select a non-editable image which was clicked.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3.5">
+  <h2>
+    <a href="#ckeditor%204.3.5" name="ckeditor%204.3.5" class="pilcrow">&#182;</a>
+    CKEditor 4.3.5
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li>Added new translation: Tatar.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11677">#11677</a>: Fixed: Undo/Redo keystrokes are blocked in the source mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11717">#11717</a>: <a href="http://ckeditor.com/addon/docprops">Document Properties</a> plugin requires the <a href="http://ckeditor.com/addon/colordialog">Color Dialog</a> plugin to work.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3.4">
+  <h2>
+    <a href="#ckeditor%204.3.4" name="ckeditor%204.3.4" class="pilcrow">&#182;</a>
+    CKEditor 4.3.4
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11597">#11597</a>: [IE11] Fixed: Error thrown when trying to open the <a href="http://ckeditor.com/addon/preview">preview</a> using the keyboard.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11544">#11544</a>: <a href="http://ckeditor.com/addon/placeholder">Placeholders</a> will no longer be upcasted in parents not accepting <code>&lt;span&gt;</code> elements.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8663">#8663</a>: Fixed <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-renameNode"><code>element.renameNode()</code></a> not clearing the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.element-method-getName"><code>element.getName()</code></a> cache.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11574">#11574</a>: Fixed: <em>Backspace</em> destroying the DOM structure if an inline editable is placed in a list item.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11603">#11603</a>: Fixed: <a href="http://ckeditor.com/addon/tableresize">Table Resize</a> attaches to tables outside the editable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9205">#9205</a>, <a href="http://dev.ckeditor.com/ticket/7805">#7805</a>, <a href="http://dev.ckeditor.com/ticket/8216">#8216</a>: Fixed: <code>{cke_protected_1}</code> appearing in data in various cases where HTML comments are placed next to <code>"</code> or <code>'</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11635">#11635</a>: Fixed: Some attributes are not protected before the content is passed through the fix bin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11660">#11660</a>: [IE] Fixed: Table content is lost when some extra markup is inside the table.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11641">#11641</a>: Fixed: Switching between modes in the classic editor removes content styles for the inline editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11568">#11568</a>: Fixed: <a href="http://ckeditor.com/addon/stylescombo">Styles</a> drop-down list is not enabled on selection change.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3.3">
+  <h2>
+    <a href="#ckeditor%204.3.3" name="ckeditor%204.3.3" class="pilcrow">&#182;</a>
+    CKEditor 4.3.3
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11500">#11500</a>: [Webkit/Blink] Fixed: Selection lost when setting data in another inline editor. Additionally, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.selection-method-removeAllRanges"><code>selection.removeAllRanges()</code></a> is now scoped to selection's <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.selection-property-root">root</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11104">#11104</a>: [IE] Fixed: Various issues with scrolling and selection when focusing widgets.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11487">#11487</a>: Moving mouse over the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> widget will no longer change the value returned by the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-checkDirty"><code>editor.checkDirty()</code></a> method.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8673">#8673</a>: [WebKit] Fixed: Cannot select and remove the <a href="http://ckeditor.com/addon/pagebreak">Page Break</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11413">#11413</a>: Fixed: Incorrect <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-execCommand"><code>editor.execCommand()</code></a> behavior.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11438">#11438</a>: Splitting table cells vertically is no longer changing table structure.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8899">#8899</a>: Fixed: Links in the <a href="http://ckeditor.com/addon/about">About CKEditor</a> dialog window now open in a new browser window or tab.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11490">#11490</a>: Fixed: <a href="http://ckeditor.com/addon/menubutton">Menu button</a> panel not showing in the source mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11417">#11417</a>: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget-event-doubleclick"><code>widget.doubleclick</code></a> event is not canceled anymore after editing was triggered.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11253">#11253</a>: [IE] Fixed: Clipped upload button in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11359">#11359</a>: Standardized the way anchors are discovered by the <a href="http://ckeditor.com/addon/link">Link</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11058">#11058</a>: [IE8] Fixed: Error when deleting a table row.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11508">#11508</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlDataProcessor"><code>htmlDataProcessor</code></a> discovering protected attributes within other attributes' values.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11533">#11533</a>: Widgets: Avoid recurring upcasts if the DOM structure was modified during an upcast.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11400">#11400</a>: Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.domObject-method-removeAllListeners"><code>domObject.removeAllListeners()</code></a> method does not remove custom listeners completely.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11493">#11493</a>: Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.selection-method-getRanges"><code>selection.getRanges()</code></a> method does not override cached ranges when used with the <code>onlyEditables</code> argument.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11390">#11390</a>: [IE] All <a href="http://ckeditor.com/addon/xml">XML</a> plugin <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.xml">methods</a> now work in IE10+.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11542">#11542</a>: [IE11] Fixed: Blurry toolbar icons when Right-to-Left UI language is set.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11504">#11504</a>: Fixed: When <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-fullPage"><code>config.fullPage</code></a> is set to <code>true</code>, entities are not encoded in editor output.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11004">#11004</a>: Integrated <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> dialog window with <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Advanced Content Filter</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11439">#11439</a>: Fixed: Properties get cloned in the Cell Properties dialog window if multiple cells are selected.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3.2">
+  <h2>
+    <a href="#ckeditor%204.3.2" name="ckeditor%204.3.2" class="pilcrow">&#182;</a>
+    CKEditor 4.3.2
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11331">#11331</a>: A menu button will have a changed label when selected instead of using the <code>aria-pressed</code> attribute.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11177">#11177</a>: Widget drag handler improvements:
+<ul><li><a href="http://dev.ckeditor.com/ticket/11176">#11176</a>: Fixed: Initial position is not updated when the widget data object is empty.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11001">#11001</a>: Fixed: Multiple synchronous layout recalculations are caused by initial drag handler positioning causing performance issues.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11161">#11161</a>: Fixed: Drag handler is not repositioned in various situations.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11281">#11281</a>: Fixed: Drag handler and mask are duplicated after widget reinitialization.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/11207">#11207</a>: [Firefox] Fixed: Misplaced <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> resizer in the inline editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11102">#11102</a>: <code>CKEDITOR.template</code> improvements:
+<ul><li><a href="http://dev.ckeditor.com/ticket/11102">#11102</a>: Added newline character support.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11216">#11216</a>: Added "\'" substring support.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/11121">#11121</a>: [Firefox] Fixed: High Contrast mode is enabled when the editor is loaded in a hidden iframe.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11350">#11350</a>: The default value of <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-contentsCss"><code>config.contentsCss</code></a> is affected by <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-method-getUrl"><code>CKEDITOR.getUrl()</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11097">#11097</a>: Improved the <a href="http://ckeditor.com/addon/autogrow">Autogrow</a> plugin performance when dealing with very big tables.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11290">#11290</a>: Removed redundant code in the <a href="http://ckeditor.com/addon/sourcedialog">Source Dialog</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11133">#11133</a>: <a href="http://ckeditor.com/addon/pagebreak">Page Break</a> becomes editable if pasted.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11126">#11126</a>: Fixed: Native Undo executed once the bottom of the snapshot stack is reached.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11131">#11131</a>: <a href="http://ckeditor.com/addon/divarea">Div Editing Area</a>: Fixed: Error thrown when switching to source mode if the selection was in widget's nested editable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11139">#11139</a>: <a href="http://ckeditor.com/addon/divarea">Div Editing Area</a>: Fixed: Elements Path is not cleared after switching to source mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10778">#10778</a>: Fixed a bug with range enlargement. The range no longer expands to visible whitespace.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11146">#11146</a>: [IE] Fixed: Preview window switches Internet Explorer to Quirks Mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10762">#10762</a>: [IE] Fixed: JavaScript code displayed in preview window's URL bar.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11186">#11186</a>: Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.repository-method-addUpcastCallback"><code>widgets.repository.addUpcastCallback()</code></a> method that allows to block upcasting given element to a widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11307">#11307</a>: Fixed: Paste as Plain Text conflict with the <a href="http://mootools.net">MooTools</a> library.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11140">#11140</a>: [IE11] Fixed: Anchors are not draggable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11379">#11379</a>: Changed default contents <code>line-height</code> to unitless values to avoid huge text overlapping (like in <a href="http://dev.ckeditor.com/ticket/9696">#9696</a>).</li>
+<li><a href="http://dev.ckeditor.com/ticket/10787">#10787</a>: [Firefox] Fixed: Broken replacement of text while pasting into <code>div</code>-based editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10884">#10884</a>: Widgets integration with the <a href="http://ckeditor.com/addon/showblocks">Show Blocks</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11021">#11021</a>: Fixed: An error thrown when selecting entire editable contents while fake selection is on.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11086">#11086</a>: [IE8] Re-enable inline widgets drag&amp;drop in Internet Explorer 8.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11372">#11372</a>: Widgets: Special characters encoded twice in nested editables.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10068">#10068</a>: Fixed: Support for protocol-relative URLs.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11283">#11283</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: A <code>&lt;div&gt;</code> element with <code>text-align: center</code> and an image inside is not recognised correctly.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11196">#11196</a>: <a href="http://ckeditor.com/addon/a11yhelp">Accessibility Instructions</a>: Allowed additional keyboard button labels to be translated in the dialog window.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3.1">
+  <h2>
+    <a href="#ckeditor%204.3.1" name="ckeditor%204.3.1" class="pilcrow">&#182;</a>
+    CKEditor 4.3.1
+  </h2>
+</div>
+
+
+<p><strong>Important Notes:</strong></p>
+
+<ul>
+<li>To match the naming convention, the <code>language</code> button is now <code>Language</code> (<a href="http://dev.ckeditor.com/ticket/11201">#11201</a>).</li>
+<li><a href="http://ckeditor.com/addon/image2">Enhanced Image</a> button, context menu, command, and icon names match those of the <a href="http://ckeditor.com/addon/image">Image</a> plugin (<a href="http://dev.ckeditor.com/ticket/11222">#11222</a>).</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/11244">#11244</a>: Changed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.repository-method-checkWidgets"><code>widget.repository.checkWidgets()</code></a> method now fires the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.repository-event-checkWidgets"><code>widget.repository.checkWidgets</code></a> event, so from CKEditor 4.3.1 it is preferred to use the method rather than fire the event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11171">#11171</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertElement"><code>editor.insertElement()</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertText"><code>editor.insertText()</code></a> methods do not call the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.repository-method-checkWidgets"><code>widget.repository.checkWidgets()</code></a> method.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11085">#11085</a>: [IE8] Replaced preview generated by the <a href="http://ckeditor.com/addon/mathjax">Mathematical Formulas</a> widget with a placeholder.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11044">#11044</a>: Enhanced WAI-ARIA support for the <a href="http://ckeditor.com/addon/language">Language</a> plugin drop-down menu.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11075">#11075</a>: With drop-down menu button focused, pressing the <em>Down Arrow</em> key will now open the menu and focus its first option.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11165">#11165</a>: Fixed: The <a href="http://ckeditor.com/addon/filebrowser">File Browser</a> plugin cannot be removed from the editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11159">#11159</a>: [IE9-10] <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Fixed buggy discovery of image dimensions.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11101">#11101</a>: Drop-down lists no longer break when given double quotes.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11077">#11077</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Empty undo step recorded when resizing the image.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10853">#10853</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Widget has paragraph wrapper when de-captioning unaligned image.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11198">#11198</a>: Widgets: Drag handler is not fully visible when an inline widget is in a heading.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11132">#11132</a>: [Firefox] Fixed: Caret is lost after drag and drop of an inline widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11182">#11182</a>: [IE10-11] Fixed: Editor crashes (IE11) or works with minor issues (IE10) if a page is loaded in Quirks Mode. See <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.env-property-quirks"><code>env.quirks</code></a> for more details.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11204">#11204</a>: Added <code>figure</code> and <code>figcaption</code> styles to the <code>contents.css</code> file so <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> looks nicer.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11202">#11202</a>: Fixed: No newline in <a href="http://ckeditor.com/addon/bbcode">BBCode</a> mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10890">#10890</a>: Fixed: Error thrown when pressing the <em>Delete</em> key in a list item.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10055">#10055</a>: [IE8-10] Fixed: <em>Delete</em> pressed on a selected image causes the browser to go back.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11183">#11183</a>: Fixed: Inserting a horizontal rule or a table in multiple row selection causes a browser crash. Additionally, the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertElement"><code>editor.insertElement()</code></a> method does not insert the element into every range of a selection any more.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11042">#11042</a>: Fixed: Selection made on an element containing a non-editable element was not auto faked.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11125">#11125</a>: Fixed: Keyboard navigation through menu and drop-down items will now cycle.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11011">#11011</a>: Fixed: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-applyStyle"><code>editor.applyStyle()</code></a> method removes attributes from nested elements.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11179">#11179</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-destroy"><code>editor.destroy()</code></a> does not cleanup content generated by the <a href="http://ckeditor.com/addon/tableresize">Table Resize</a> plugin for inline editors.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11237">#11237</a>: Fixed: Table border attribute value is deleted when pasting content from Microsoft Word.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11250">#11250</a>: Fixed: HTML entities inside the <code>&lt;textarea&gt;</code> element are not encoded.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11260">#11260</a>: Fixed: Initially disabled buttons are not read by JAWS as disabled.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11200">#11200</a>:  Added <a href="http://ckeditor.com/addon/clipboard">Clipboard</a> plugin as a dependency for <a href="http://ckeditor.com/addon/widget">Widget</a> to fix drag and drop.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3">
+  <h2>
+    <a href="#ckeditor%204.3" name="ckeditor%204.3" class="pilcrow">&#182;</a>
+    CKEditor 4.3
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10612">#10612</a>: Internet Explorer 11 support.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10869">#10869</a>: Widgets: Added better integration with the <a href="http://ckeditor.com/addon/elementspath">Elements Path</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10886">#10886</a>: Widgets: Added tooltip to the drag handle.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10933">#10933</a>: Widgets: Introduced drag and drop of block widgets with the <a href="http://ckeditor.com/addon/lineutils">Line Utilities</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10936">#10936</a>: Widget System changes for easier integration with other dialog systems.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10895">#10895</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Added file browser integration.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11002">#11002</a>: Added the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget.definition-property-draggable"><code>draggable</code></a> option to disable drag and drop support for widgets.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10937">#10937</a>: <a href="http://ckeditor.com/addon/mathjax">Mathematical Formulas</a> widget improvements:
+<ul><li>loading indicator (<a href="http://dev.ckeditor.com/ticket/10948">#10948</a>),</li>
+<li>applying paragraph changes (like font color change) to iframe (<a href="http://dev.ckeditor.com/ticket/10841">#10841</a>),</li>
+<li>Firefox and IE9 clipboard fixes (<a href="http://dev.ckeditor.com/ticket/10857">#10857</a>),</li>
+<li>fixing same origin policy issue (<a href="http://dev.ckeditor.com/ticket/10840">#10840</a>),</li>
+<li>fixing undo bugs (<a href="http://dev.ckeditor.com/ticket/10842">#10842</a>, <a href="http://dev.ckeditor.com/ticket/10930">#10930</a>),</li>
+<li>fixing other minor bugs.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/10862">#10862</a>: <a href="http://ckeditor.com/addon/placeholder">Placeholder</a> plugin was rewritten as a widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10822">#10822</a>: Added styles system integration with non-editable elements (for example widgets) and their nested editables. Styles cannot change non-editable content and are applied in nested editable only if allowed by its type and content filter.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10856">#10856</a>: Menu buttons will now toggle the visibility of their panels when clicked multiple times. <a href="http://ckeditor.com/addon/language">Language</a> plugin fixes: Added active language highlighting, added an option to remove the language.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10028">#10028</a>: New <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-dialog_noConfirmCancel"><code>config.dialog_noConfirmCancel</code></a> configuration option that eliminates the need to confirm closing of a dialog window when the user changed any of its fields.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10848">#10848</a>: Integrate remaining plugins (<a href="http://ckeditor.com/addon/stylescombo">Styles</a>, <a href="http://ckeditor.com/addon/format">Format</a>, <a href="http://ckeditor.com/addon/font">Font</a>, <a href="http://ckeditor.com/addon/colorbutton">Color Button</a>, <a href="http://ckeditor.com/addon/language">Language</a> and <a href="http://ckeditor.com/addon/indent">Indent</a>) with <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-activeFilter">active filter</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10855">#10855</a>: Change the extension of emoticons in the <a href="http://ckeditor.com/addon/bbcode">BBCode</a> sample from GIF to PNG.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10831">#10831</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Merged <code>image2inline</code> and <code>image2block</code> into one <code>image2</code> widget.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10835">#10835</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Improved visibility of the resize handle.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10836">#10836</a>: <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: Preserve custom mouse cursor while resizing the image.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10939">#10939</a>: [Firefox] <a href="http://ckeditor.com/addon/image2">Enhanced Image</a>: hovering the image causes it to change.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10866">#10866</a>: Fixed: Broken <em>Tab</em> key navigation in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10833">#10833</a>: Fixed: <em>Lock ratio</em> option should be on by default in the <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10881">#10881</a>: Various improvements to <em>Enter</em> key behavior in nested editables.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10879">#10879</a>: <a href="http://ckeditor.com/addon/removeformat">Remove Format</a> should not leak from a nested editable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10877">#10877</a>: Fixed: <a href="http://ckeditor.com/addon/wsc">WebSpellChecker</a> fails to apply changes if a nested editable was focused.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10877">#10877</a>: Fixed: <a href="http://ckeditor.com/addon/wsc">SCAYT</a> blocks typing in nested editables.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11079">#11079</a>: Add button icons to the <a href="http://ckeditor.com/addon/placeholder">Placeholder</a> sample.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10870">#10870</a>: The <code>paste</code> command is no longer being disabled when the clipboard is empty.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10854">#10854</a>: Fixed: Firefox prepends <code>&lt;br&gt;</code> to <code>&lt;body&gt;</code>, so it is stripped by the HTML data processor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10823">#10823</a>: Fixed: <a href="http://ckeditor.com/addon/link">Link</a> plugin does not work with non-editable content.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10828">#10828</a>: <a href="http://ckeditor.com/addon/magicline">Magic Line</a> integration with the Widget System.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10865">#10865</a>: Improved hiding copybin, so copying widgets works smoothly.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11066">#11066</a>: Widget's private parts use CSS reset.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11027">#11027</a>: Fixed: Block commands break on widgets; added the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-contentDomInvalidated"><code>contentDomInvalidated</code></a> event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10430">#10430</a>: Resolve dependence of the <a href="http://ckeditor.com/addon/image">Image</a> plugin on the <a href="http://ckeditor.com/addon/forms">Form Elements</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10911">#10911</a>: Fixed: Browser <em>Alt</em> hotkeys will no longer be blocked while a widget is focused.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11082">#11082</a>: Fixed: Selected widget is not copied or cut when using toolbar buttons or context menu.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11083">#11083</a>: Fixed list and div element application to block widgets.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10887">#10887</a>: Internet Explorer 8 compatibility issues related to the Widget System.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11074">#11074</a>: Temporarily disabled inline widget drag and drop, because of seriously buggy native <code>range#moveToPoint</code> method.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11098">#11098</a>: Fixed: Wrong selection position after undoing widget drag and drop.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11110">#11110</a>: Fixed: IFrame and Flash objects are being incorrectly pasted in certain conditions.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11129">#11129</a>: Page break is lost when loading data.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11123">#11123</a>: [Firefox] Widget is destroyed after being dragged outside of <code>&lt;body&gt;</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11124">#11124</a>: Fixed the <a href="http://ckeditor.com/addon/elementspath">Elements Path</a> in an editor using the <a href="http://ckeditor.com/addon/divarea">Div Editing Area</a>.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.3%20beta">
+  <h2>
+    <a href="#ckeditor%204.3%20beta" name="ckeditor%204.3%20beta" class="pilcrow">&#182;</a>
+    CKEditor 4.3 Beta
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/9764">#9764</a>: Widget System.
+<ul><li><a href="http://ckeditor.com/addon/widget">Widget plugin</a> introducing the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.widget">Widget API</a>.</li>
+<li>New <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-enterMode"><code>editor.enterMode</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-shiftEnterMode"><code>editor.shiftEnterMode</code></a> properties &ndash; normalized versions of <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-enterMode"><code>config.enterMode</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-shiftEnterMode"><code>config.shiftEnterMode</code></a>.</li>
+<li>Dynamic editor settings. Starting from CKEditor 4.3 Beta, <em>Enter</em> mode values and <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">content filter</a> instances may be changed dynamically (for example when the caret was placed in an element in which editor features should be adjusted). When you are implementing a new editor feature, you should base its behavior on <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-activeEnterMode">dynamic</a> or <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-enterMode">static</a> <em>Enter</em> mode values depending on whether this feature works in selection context or globally on editor content.
+<ul><li>Dynamic <em>Enter</em> mode values &ndash; <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setActiveEnterMode"><code>editor.setActiveEnterMode()</code></a> method, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-activeEnterModeChange"><code>editor.activeEnterModeChange</code></a> event, and two properties: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-activeEnterMode"><code>editor.activeEnterMode</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-activeShiftEnterMode"><code>editor.activeShiftEnterMode</code></a>.</li>
+<li>Dynamic content filter instances &ndash; <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setActiveFilter"><code>editor.setActiveFilter()</code></a> method, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-activeFilterChange"><code>editor.activeFilterChange</code></a> event, and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-activeFilter"><code>editor.activeFilter</code></a> property.</li></ul></li>
+<li>"Fake" selection was introduced. It makes it possible to virtually select any element when the real selection remains hidden. See the  <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.selection-method-fake"><code>selection.fake()</code></a> method.</li>
+<li>Default <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.filter"><code>htmlParser.filter</code></a> rules are not applied to non-editable elements (elements with <code>contenteditable</code> attribute set to <code>false</code> and their descendants) anymore. To add a rule which will be applied to all elements you need to pass an additional argument to the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.filter-method-addRules"><code>filter.addRules()</code></a> method.</li>
+<li>Dozens of new methods were introduced &ndash; most interesting ones:
+<ul><li><a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.document-method-find"><code>document.find()</code></a>,</li>
+<li><a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.document-method-findOne"><code>document.findOne()</code></a>,</li>
+<li><a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editable-method-insertElementIntoRange"><code>editable.insertElementIntoRange()</code></a>,</li>
+<li><a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.range-method-moveToClosestEditablePosition"><code>range.moveToClosestEditablePosition()</code></a>,</li>
+<li>New methods for <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.node"><code>htmlParser.node</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.element"><code>htmlParser.element</code></a>.</li></ul></li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/10659">#10659</a>: New <a href="http://ckeditor.com/addon/image2">Enhanced Image</a> plugin that introduces a widget with integrated image captions, an option to center images, and dynamic "click and drag" resizing.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10664">#10664</a>: New <a href="http://ckeditor.com/addon/mathjax">Mathematical Formulas</a> plugin that introduces the MathJax widget.</li>
+<li><a href="https://dev.ckeditor.com/ticket/7987">#7987</a>: New <a href="http://ckeditor.com/addon/language">Language</a> plugin that implements Language toolbar button to support <a href="http://www.w3.org/TR/UNDERSTANDING-WCAG20/meaning-other-lang-id.html">WCAG 3.1.2 Language of Parts</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10708">#10708</a>: New <a href="http://ckeditor.com/addon/smiley">smileys</a>.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.2.3">
+  <h2>
+    <a href="#ckeditor%204.2.3" name="ckeditor%204.2.3" class="pilcrow">&#182;</a>
+    CKEditor 4.2.3
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10994">#10994</a>: Fixed: Loading external jQuery library when opening the <a href="http://docs.ckeditor.com/#!/guide/dev_jquery">jQuery Adapter</a> sample directly from file.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10975">#10975</a>: [IE] Fixed: Error thrown while opening the color palette.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9929">#9929</a>: [Blink/WebKit] Fixed: A non-breaking space is created once a character is deleted and a regular space is typed.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10963">#10963</a>: Fixed: JAWS issue with the keyboard shortcut for <a href="http://ckeditor.com/addon/magicline">Magic Line</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/11096">#11096</a>: Fixed: TypeError: Object has no method 'is'.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.2.2">
+  <h2>
+    <a href="#ckeditor%204.2.2" name="ckeditor%204.2.2" class="pilcrow">&#182;</a>
+    CKEditor 4.2.2
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/9314">#9314</a>: Fixed: Incorrect error message on closing a dialog window without saving changs.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10308">#10308</a>: [IE10] Fixed: Unspecified error when deleting a row.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10945">#10945</a>: [Chrome] Fixed: Clicking with a mouse inside the editor does not show the caret.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10912">#10912</a>: Prevent default action when content of a non-editable link is clicked.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10913">#10913</a>: Fixed <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.resourceManager-method-addExternal"><code>CKEDITOR.plugins.addExternal()</code></a> not handling paths including file name specified.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10666">#10666</a>: Fixed <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.tools-method-isArray"><code>CKEDITOR.tools.isArray()</code></a> not working cross frame.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10910">#10910</a>: [IE9] Fixed JavaScript error thrown in Compatibility Mode when clicking and/or typing in the editing area.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10868">#10868</a>: [IE8] Prevent the browser from crashing when applying the Inline Quotation style.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10915">#10915</a>: Fixed: Invalid CSS filter in the Kama skin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10914">#10914</a>: Plugins <a href="http://ckeditor.com/addon/indentlist">Indent List</a> and <a href="http://ckeditor.com/addon/indentblock">Indent Block</a> are now included in the build configuration.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10812">#10812</a>: Fixed <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dom.range-method-createBookmark2"><code>range.createBookmark2()</code></a> incorrectly normalizing offsets. This bug was causing many issues: <a href="http://dev.ckeditor.com/ticket/10850">#10850</a>, <a href="http://dev.ckeditor.com/ticket/10842">#10842</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10951">#10951</a>: Reviewed and optimized focus handling on panels (combo, menu buttons, color buttons, and context menu) to enhance accessibility. Fixed <a href="http://dev.ckeditor.com/ticket/10705">#10705</a>, <a href="http://dev.ckeditor.com/ticket/10706">#10706</a> and <a href="http://dev.ckeditor.com/ticket/10707">#10707</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10704">#10704</a>: Fixed a JAWS issue with the Select Color dialog window title not being announced.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10753">#10753</a>: The floating toolbar in inline instances now has a dedicated accessibility label.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.2.1">
+  <h2>
+    <a href="#ckeditor%204.2.1" name="ckeditor%204.2.1" class="pilcrow">&#182;</a>
+    CKEditor 4.2.1
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10301">#10301</a>: [IE9-10] Undo fails after 3+ consecutive paste actions with a JavaScript error.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10689">#10689</a>: Save toolbar button saves only the first editor instance.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10368">#10368</a>: Move language reading direction definition (<code>dir</code>) from main language file to core.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9330">#9330</a>: Fixed pasting anchors from MS Word.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8103">#8103</a>: Fixed pasting nested lists from MS Word.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9958">#9958</a>: [IE9] Pressing the "OK" button will trigger the <code>onbeforeunload</code> event in the popup dialog.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10662">#10662</a>: Fixed styles from the Styles drop-down list not registering to the ACF in case when the <a href="http://ckeditor.com/addon/sharedspace">Shared Spaces plugin</a> is used.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9654">#9654</a>: Problems with Internet Explorer 10 Quirks Mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9816">#9816</a>: Floating toolbar does not reposition vertically in several cases.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10646">#10646</a>: Removing a selected sublist or nested table with <em>Backspace/Delete</em> removes the parent element.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10623">#10623</a>: [WebKit] Page is scrolled when opening a drop-down list.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10004">#10004</a>: [ChromeVox] Button names are not announced.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10731">#10731</a>: <a href="http://ckeditor.com/addon/wsc">WebSpellChecker</a> plugin breaks cloning of editor configuration.</li>
+<li>It is now possible to set per instance <a href="http://ckeditor.com/addon/wsc">WebSpellChecker</a> plugin configuration instead of setting the configuration globally.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.2">
+  <h2>
+    <a href="#ckeditor%204.2" name="ckeditor%204.2" class="pilcrow">&#182;</a>
+    CKEditor 4.2
+  </h2>
+</div>
+
+
+<p><strong>Important Notes:</strong></p>
+
+<ul>
+<li><p>Dropped compatibility support for Internet Explorer 7 and Firefox 3.6.</p></li>
+<li><p>Both the Basic and the Standard distribution packages will not contain the new <a href="http://ckeditor.com/addon/indentblock">Indent Block</a> plugin. Because of this the <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Advanced Content Filter</a> might remove block indentations from existing contents. If you want to prevent this, either <a href="http://docs.ckeditor.com/#!/guide/dev_allowed_content_rules">add an appropriate ACF rule to your filter</a> or create a custom build based on the Basic/Standard package and add the Indent Block plugin in <a href="http://ckeditor.com/builder">CKBuilder</a>.</p></li>
+</ul>
+
+<p>New Features:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10027">#10027</a>: Separated list and block indentation into two plugins: <a href="http://ckeditor.com/addon/indentlist">Indent List</a> and <a href="http://ckeditor.com/addon/indentblock">Indent Block</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8244">#8244</a>: Use <em>(Shift+)Tab</em> to indent and outdent lists.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10281">#10281</a>: The <a href="http://docs.ckeditor.com/#!/guide/dev_jquery">jQuery Adapter</a> is now available. Several jQuery-related issues fixed: <a href="http://dev.ckeditor.com/ticket/8261">#8261</a>, <a href="http://dev.ckeditor.com/ticket/9077">#9077</a>, <a href="http://dev.ckeditor.com/ticket/8710">#8710</a>, <a href="http://dev.ckeditor.com/ticket/8530">#8530</a>, <a href="http://dev.ckeditor.com/ticket/9019">#9019</a>, <a href="http://dev.ckeditor.com/ticket/6181">#6181</a>, <a href="http://dev.ckeditor.com/ticket/7876">#7876</a>, <a href="http://dev.ckeditor.com/ticket/6906">#6906</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10042">#10042</a>: Introduced <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-title"><code>config.title</code></a> setting to change the human-readable title of the editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9794">#9794</a>: Added <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-change"><code>editor.change</code></a> event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9923">#9923</a>: HiDPI support in the editor UI. HiDPI icons for <a href="http://ckeditor.com/addon/moono">Moono skin</a> added.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8031">#8031</a>: Handle <code>required</code> attributes on <code>&lt;textarea&gt;</code> elements &mdash; introduced <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-required"><code>editor.required</code></a> event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10280">#10280</a>: Ability to replace <code>&lt;textarea&gt;</code> elements with the inline editor.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10599">#10599</a>: <a href="http://ckeditor.com/addon/indent">Indent</a> plugin is no longer required by the <a href="http://ckeditor.com/addon/list">List</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10370">#10370</a>: Inconsistency in data events between framed and inline editors.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10438">#10438</a>: [FF, IE] No selection is done on an editable element on executing <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setData"><code>editor.setData()</code></a>.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.1.3">
+  <h2>
+    <a href="#ckeditor%204.1.3" name="ckeditor%204.1.3" class="pilcrow">&#182;</a>
+    CKEditor 4.1.3
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li>Added new translation: Indonesian.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10644">#10644</a>: Fixed a critical bug when pasting plain text in Blink-based browsers.</li>
+<li><a href="http://dev.ckeditor.com/ticket/5189">#5189</a>: <a href="http://ckeditor.com/addon/find">Find/Replace</a> dialog window: rename "Cancel" button to "Close".</li>
+<li><a href="http://dev.ckeditor.com/ticket/10562">#10562</a>: [Housekeeping] Unified CSS gradient filter formats in the <a href="http://ckeditor.com/addon/moono">Moono</a> skin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10537">#10537</a>: Advanced Content Filter should register a default rule for <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-shiftEnterMode"><code>config.shiftEnterMode</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10610">#10610</a>: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.dialog-static-method-addIframe"><code>CKEDITOR.dialog.addIframe()</code></a> incorrectly sets the iframe size in dialog windows.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.1.2">
+  <h2>
+    <a href="#ckeditor%204.1.2" name="ckeditor%204.1.2" class="pilcrow">&#182;</a>
+    CKEditor 4.1.2
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li>Added new translation: Sinhala.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10339">#10339</a>: Fixed: Error thrown when inserted data was totally stripped out after filtering and processing.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10298">#10298</a>: Fixed: Data processor breaks attributes containing protected parts.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10367">#10367</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editable-method-insertText"><code>editable.insertText()</code></a> loses characters when <code>RegExp</code> replace controls are being inserted.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10165">#10165</a>: [IE] Access denied error when <code>document.domain</code> has been altered.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9761">#9761</a>: Update the <em>Backspace</em> key state in <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.keystrokeHandler-property-blockedKeystrokes"><code>keystrokeHandler.blockedKeystrokes</code></a> when calling <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-setReadOnly"><code>editor.setReadOnly()</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/6504">#6504</a>: Fixed: Race condition while loading several <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-customConfig"><code>config.customConfig</code></a> files.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10146">#10146</a>: [Firefox] Empty lines are being removed while <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-enterMode"><code>config.enterMode</code></a> is <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-property-ENTER_BR"><code>CKEDITOR.ENTER_BR</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10360">#10360</a>: Fixed: ARIA <code>role="application"</code> should not be used for dialog windows.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10361">#10361</a>: Fixed: ARIA <code>role="application"</code> should not be used for floating panels.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10510">#10510</a>: Introduced unique voice labels to differentiate between different editor instances.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9945">#9945</a>: [iOS] Scrolling not possible on iPad.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10389">#10389</a>: Fixed: Invalid HTML in the "Text and Table" template.</li>
+<li><a href="http://ckeditor.com/addon/wsc">WebSpellChecker</a> plugin user interface was changed to match CKEditor 4 style.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.1.1">
+  <h2>
+    <a href="#ckeditor%204.1.1" name="ckeditor%204.1.1" class="pilcrow">&#182;</a>
+    CKEditor 4.1.1
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li>Added new translation: Albanian.</li>
+</ul>
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10172">#10172</a>: Pressing <em>Delete</em> or <em>Backspace</em> in an empty table cell moves the cursor to the next/previous cell.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10219">#10219</a>: Error thrown when destroying an editor instance in parallel with a <code>mouseup</code> event.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10265">#10265</a>: Wrong loop type in the <a href="http://ckeditor.com/addon/filebrowser">File Browser</a> plugin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10249">#10249</a>: Wrong undo/redo states at start.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10268">#10268</a>: <a href="http://ckeditor.com/addon/showblocks">Show Blocks</a> does not recover after switching to Source view.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9995">#9995</a>: HTML code in the <code>&lt;textarea&gt;</code> should not be modified by the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlDataProcessor"><code>htmlDataProcessor</code></a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10320">#10320</a>: <a href="http://ckeditor.com/addon/justify">Justify</a> plugin should add elements to Advanced Content Filter based on current <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-enterMode">Enter mode</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10260">#10260</a>: Fixed: Advanced Content Filter blocks <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-tabSpaces"><code>tabSpaces</code></a>. Unified <code>data-cke-*</code> attributes filtering.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10315">#10315</a>: [WebKit] <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.undo.UndoManager">Undo manager</a> should not record snapshots after a filling character was added/removed.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10291">#10291</a>: [WebKit] Space after a filling character should be secured.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10330">#10330</a>: [WebKit] The filling character is not removed on <code>keydown</code> in specific cases.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10285">#10285</a>: Fixed: Styled text pasted from MS Word causes an infinite loop.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10131">#10131</a>: Fixed: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.plugins.undo.UndoManager-method-update"><code>undoManager.update()</code></a> does not refresh the command state.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10337">#10337</a>: Fixed: Unable to remove <code>&lt;s&gt;</code> using <a href="http://ckeditor.com/addon/removeformat">Remove Format</a>.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.1">
+  <h2>
+    <a href="#ckeditor%204.1" name="ckeditor%204.1" class="pilcrow">&#182;</a>
+    CKEditor 4.1
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10192">#10192</a>: Closing lists with the <em>Enter</em> key does not work with <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">Advanced Content Filter</a> in several cases.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10191">#10191</a>: Fixed allowed content rules unification, so the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter-property-allowedContent"><code>filter.allowedContent</code></a> property always contains rules in the same format.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10224">#10224</a>: Advanced Content Filter does not remove non-empty <code>&lt;a&gt;</code> elements anymore.</li>
+<li>Minor issues in plugin integration with Advanced Content Filter:
+<ul><li><a href="http://dev.ckeditor.com/ticket/10166">#10166</a>: Added transformation from the <code>align</code> attribute to <code>float</code> style to preserve backward compatibility after the introduction of Advanced Content Filter.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10195">#10195</a>: <a href="http://ckeditor.com/addon/image">Image</a> plugin no longer registers rules for links to Advanced Content Filter.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10213">#10213</a>: <a href="http://ckeditor.com/addon/justify">Justify</a> plugin is now correctly registering rules to Advanced Content Filter when <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-justifyClasses"><code>config.justifyClasses</code></a> is defined.</li></ul></li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.1%20rc">
+  <h2>
+    <a href="#ckeditor%204.1%20rc" name="ckeditor%204.1%20rc" class="pilcrow">&#182;</a>
+    CKEditor 4.1 RC
+  </h2>
+</div>
+
+
+<p>New Features:</p>
+
+<ul>
+<li><p><a href="http://dev.ckeditor.com/ticket/9829">#9829</a>: Advanced Content Filter - data and features activation based on editor configuration.</p>
+
+<p>Brand new data filtering system that works in 2 modes:</p>
+
+<ul><li>Based on loaded features (toolbar items, plugins) - the data will be filtered according to what the editor in its
+current configuration can handle.</li>
+<li>Based on <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-allowedContent"><code>config.allowedContent</code></a> rules - the data
+will be filtered and the editor features (toolbar items, commands, keystrokes) will be enabled if they are allowed.</li></ul>
+
+<p>See the <code>datafiltering.html</code> sample, <a href="http://docs.ckeditor.com/#!/guide/dev_advanced_content_filter">guides</a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.filter"><code>CKEDITOR.filter</code> API documentation</a>.</p></li>
+<li><a href="http://dev.ckeditor.com/ticket/9387">#9387</a>: Reintroduced <a href="http://ckeditor.com/addon/sharedspace">Shared Spaces</a> - the ability to display toolbar and bottom editor space in selected locations and to share them by different editor instances.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9907">#9907</a>: Added the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-event-contentPreview"><code>contentPreview</code></a> event for preview data manipulation.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9713">#9713</a>: Introduced the <a href="http://ckeditor.com/addon/sourcedialog">Source Dialog</a> plugin that brings raw HTML editing for inline editor instances.</li>
+<li>Included in <a href="http://dev.ckeditor.com/ticket/9829">#9829</a>: Introduced new events, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-toHtml"><code>toHtml</code></a> and <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-toDataFormat"><code>toDataFormat</code></a>, allowing for better integration with data processing.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9981">#9981</a>: Added ability to filter <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.fragment"><code>htmlParser.fragment</code></a>, <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.element"><code>htmlParser.element</code></a> etc. by many <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.htmlParser.filter"><code>htmlParser.filter</code></a>s before writing structure to an HTML string.</li>
+<li>Included in <a href="http://dev.ckeditor.com/ticket/10103">#10103</a>:
+<ul><li>Introduced the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-status"><code>editor.status</code></a> property to make it easier to check the current status of the editor.</li>
+<li>Default <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.command"><code>command</code></a> state is now <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-property-TRISTATE_DISABLED"><code>CKEDITOR.TRISTATE_DISABLE</code></a>. It will be activated on <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-event-instanceReady"><code>editor.instanceReady</code></a> or immediately after being added if the editor is already initialized.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/9796">#9796</a>: Introduced <code>&lt;s&gt;</code> as a default tag for strikethrough, which replaces obsolete <code>&lt;strike&gt;</code> in HTML5.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.0.3">
+  <h2>
+    <a href="#ckeditor%204.0.3" name="ckeditor%204.0.3" class="pilcrow">&#182;</a>
+    CKEditor 4.0.3
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/10196">#10196</a>: Fixed context menus not opening with keyboard shortcuts when <a href="http://ckeditor.com/addon/autogrow">Autogrow</a> is enabled.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10212">#10212</a>: [IE7-10] Undo command throws errors after multiple switches between Source and WYSIWYG view.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10219">#10219</a>: [Inline editor] Error thrown after calling <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-destroy"><code>editor.destroy()</code></a>.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.0.2">
+  <h2>
+    <a href="#ckeditor%204.0.2" name="ckeditor%204.0.2" class="pilcrow">&#182;</a>
+    CKEditor 4.0.2
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/9779">#9779</a>: Fixed overriding <a href="http://docs.ckeditor.com/#!/api/CKEDITOR-method-getUrl"><code>CKEDITOR.getUrl()</code></a> with <code>CKEDITOR_GETURL</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9772">#9772</a>: Custom buttons in the dialog window footer have different look and size (<a href="http://ckeditor.com/addon/moono">Moono</a>, <a href="http://ckeditor.com/addon/kama">Kama</a> skins).</li>
+<li><a href="http://dev.ckeditor.com/ticket/9029">#9029</a>: Custom styles added with the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.stylesSet-method-add"><code>stylesSet.add()</code></a> are displayed in the wrong order.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9887">#9887</a>: Disable <a href="http://ckeditor.com/addon/magicline">Magic Line</a> when <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-property-readOnly"><code>editor.readOnly</code></a> is set.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9882">#9882</a>: Fixed empty document title on <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-getData"><code>editor.getData()</code></a> if set via the Document Properties dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9773">#9773</a>: Fixed rendering problems with selection fields in the Kama skin.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9851">#9851</a>: The <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-event-selectionChange"><code>selectionChange</code></a> event is not fired when mouse selection ended outside editable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9903">#9903</a>: [Inline editor] Bad positioning of floating space with page horizontal scroll.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9872">#9872</a>: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-checkDirty"><code>editor.checkDirty()</code></a> returns <code>true</code> when called onload. Removed the obsolete <code>editor.mayBeDirty</code> flag.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9893">#9893</a>: [IE] Fixed broken toolbar when editing mixed direction content in Quirks mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9845">#9845</a>: Fixed TAB navigation in the <a href="http://ckeditor.com/addon/link">Link</a> dialog window when the Anchor option is used and no anchors are available.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9883">#9883</a>: Maximizing was making the entire page editable with <a href="http://ckeditor.com/addon/divarea">divarea</a>-based editors.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9940">#9940</a>: [Firefox] Navigating back to a page with the editor was making the entire page editable.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9966">#9966</a>: Fixed: Unable to type square brackets with French keyboard layout. Changed <a href="http://ckeditor.com/addon/magicline">Magic Line</a> keystrokes.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9507">#9507</a>: [Firefox] Selection is moved before editable position when the editor is focused for the first time.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9947">#9947</a>: [WebKit] Editor overflows parent container in some edge cases.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10105">#10105</a>: Fixed: Broken <a href="http://ckeditor.com/addon/sourcearea">sourcearea</a> view when an RTL language is set.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10123">#10123</a>: [WebKit] Fixed: Several dialog windows have broken layout since the latest WebKit release.</li>
+<li><a href="http://dev.ckeditor.com/ticket/10152">#10152</a>: Fixed: Invalid ARIA property used on menu items.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.0.1.1">
+  <h2>
+    <a href="#ckeditor%204.0.1.1" name="ckeditor%204.0.1.1" class="pilcrow">&#182;</a>
+    CKEditor 4.0.1.1
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li>Security update: Added protection against XSS attack and possible path disclosure in the PHP sample.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.0.1">
+  <h2>
+    <a href="#ckeditor%204.0.1" name="ckeditor%204.0.1" class="pilcrow">&#182;</a>
+    CKEditor 4.0.1
+  </h2>
+</div>
+
+
+<p>Fixed Issues:</p>
+
+<ul>
+<li><a href="http://dev.ckeditor.com/ticket/9655">#9655</a>: Support for IE Quirks Mode in the new <a href="http://ckeditor.com/addon/moono">Moono skin</a>.</li>
+<li>Accessibility issues (mainly in inline editor): <a href="http://dev.ckeditor.com/ticket/9364">#9364</a>, <a href="http://dev.ckeditor.com/ticket/9368">#9368</a>, <a href="http://dev.ckeditor.com/ticket/9369">#9369</a>, <a href="http://dev.ckeditor.com/ticket/9370">#9370</a>, <a href="http://dev.ckeditor.com/ticket/9541">#9541</a>, <a href="http://dev.ckeditor.com/ticket/9543">#9543</a>, <a href="http://dev.ckeditor.com/ticket/9841">#9841</a>, <a href="http://dev.ckeditor.com/ticket/9844">#9844</a>.</li>
+<li><a href="http://ckeditor.com/addon/magicline">Magic Line</a> plugin:
+<ul><li><a href="http://dev.ckeditor.com/ticket/9481">#9481</a>: Added accessibility support for Magic Line.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9509">#9509</a>: Added Magic Line support for forms.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9573">#9573</a>: Magic Line does not disappear on <code>mouseout</code> in a specific case.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/9754">#9754</a>: [WebKit] Cutting &amp; pasting simple unformatted text generates an inline wrapper in WebKit browsers.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9456">#9456</a>: [Chrome] Properly paste bullet list style from MS Word.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9699">#9699</a>, <a href="http://dev.ckeditor.com/ticket/9758">#9758</a>: Improved selection locking when selecting by dragging.</li>
+<li>Context menu:
+<ul><li><a href="http://dev.ckeditor.com/ticket/9712">#9712</a>: Opening the context menu destroys editor focus.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9366">#9366</a>: Context menu should be displayed over the floating toolbar.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9706">#9706</a>: Context menu generates a JavaScript error in inline mode when the editor is attached to a header element.</li></ul></li>
+<li><a href="http://dev.ckeditor.com/ticket/9800">#9800</a>: Hide float panel when resizing the window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9721">#9721</a>: Padding in content of div-based editor puts the editing area under the bottom UI space.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9528">#9528</a>: Host page <code>box-sizing</code> style should not influence the editor UI elements.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9503">#9503</a>: <a href="http://ckeditor.com/addon/forms">Form Elements</a> plugin adds context menu listeners only on supported input types. Added support for <code>tel</code>, <code>email</code>, <code>search</code> and <code>url</code> input types.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9769">#9769</a>: Improved floating toolbar positioning in a narrow window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9875">#9875</a>: Table dialog window does not populate width correctly.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8675">#8675</a>: Deleting cells in a nested table removes the outer table cell.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9815">#9815</a>: Cannot edit dialog window fields in an editor initialized in the jQuery UI modal dialog.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8888">#8888</a>: CKEditor dialog windows do not show completely in a small window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9360">#9360</a>: [Inline editor] Blocks shown for a <code>&lt;div&gt;</code> element stay permanently even after the user exits editing the <code>&lt;div&gt;</code>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9531">#9531</a>: [Firefox &amp; Inline editor] Toolbar is lost when closing the Format drop-down list by clicking its button.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9553">#9553</a>: Table width incorrectly set when the <code>border-width</code> style is specified.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9594">#9594</a>: Cannot tab past CKEditor when it is in read-only mode.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9658">#9658</a>: [IE9] Justify not working on selected images.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9686">#9686</a>: Added missing contents styles for <code>&lt;pre&gt;</code> elements.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9709">#9709</a>: <a href="http://ckeditor.com/addon/pastefromword">Paste from Word</a> should not depend on configuration from other styles.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9726">#9726</a>: Removed <a href="http://ckeditor.com/addon/colordialog">Color Dialog</a> plugin dependency from <a href="http://ckeditor.com/addon/tabletools">Table Tools</a>.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9765">#9765</a>: Toolbar Collapse command documented incorrectly in the <a href="http://ckeditor.com/addon/a11yhelp">Accessibility Instructions</a> dialog window.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9771">#9771</a>: [WebKit &amp; Opera] Fixed scrolling issues when pasting.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9787">#9787</a>: [IE9] <code>onChange</code> is not fired for checkboxes in dialogs.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9842">#9842</a>: [Firefox 17] When opening a toolbar menu for the first time and pressing the <em>Down Arrow</em> key, focus goes to the next toolbar button instead of the menu options.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9847">#9847</a>: <a href="http://ckeditor.com/addon/elementspath">Elements Path</a> should not be initialized in the inline editor.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9853">#9853</a>: <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-addRemoveFormatFilter"><code>editor.addRemoveFormatFilter()</code></a> is exposed before it really works.</li>
+<li><a href="http://dev.ckeditor.com/ticket/8893">#8893</a>: Value of the <a href="http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-pasteFromWordCleanupFile"><code>pasteFromWordCleanupFile</code></a> configuration option is now taken from the instance configuration.</li>
+<li><a href="http://dev.ckeditor.com/ticket/9693">#9693</a>: Removed "Live Preview" checkbox from UI color picker.</li>
+</ul>
+
+
+<div class="pilwrap" id="ckeditor%204.0">
+  <h2>
+    <a href="#ckeditor%204.0" name="ckeditor%204.0" class="pilcrow">&#182;</a>
+    CKEditor 4.0
+  </h2>
+</div>
+
+
+<p>The first stable release of the new CKEditor 4 code line.</p>
+
+<p>The CKEditor JavaScript API has been kept compatible with CKEditor 4, whenever
+possible. The list of relevant changes can be found in the <a href="http://docs.ckeditor.com/#!/guide/dev_api_changes" title="API Changes">API Changes page of
+the CKEditor 4 documentation</a>.</p></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>rest_api.py</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "app/rest_api.py", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>rest_api.py</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">appbuilder</span><span class="p">,</span> <span class="n">csrf</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">Author</span><span class="p">,</span> <span class="n">Tag</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">SidebarModule</span>
+<span class="kn">import</span> <span class="nn">query</span>
+
+<span class="kn">from</span> <span class="nn">werkzeug</span> <span class="kn">import</span> <span class="n">secure_filename</span>
+<span class="kn">import</span> <span class="nn">flask.json</span> <span class="kn">as</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">make_response</span>
+
+<span class="kn">from</span> <span class="nn">flask.ext.appbuilder</span> <span class="kn">import</span> <span class="n">has_access</span><span class="p">,</span> <span class="n">expose</span><span class="p">,</span> <span class="n">BaseView</span>
+<span class="kn">from</span> <span class="nn">flask.ext.login</span> <span class="kn">import</span> <span class="n">login_user</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="n">PRIVATE</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;PAGE_VERSION_PRIVATE&#39;</span><span class="p">]</span>
+
+<span class="k">class</span> <span class="nc">ClientApi</span><span class="p">(</span><span class="n">BaseView</span><span class="p">):</span>
+    <span class="n">route_base</span> <span class="o">=</span> <span class="s">&#39;/client/api/v1&#39;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>The <code>@csrf.exempt</code> decorate bypasses <code>wtform</code>'s CRSF protection
+on POST requests.</p>
+
+<p>We have to disable it to be able to use the HTML methods as a REST API.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nd">@csrf.exempt</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/auth/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;POST&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">auth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">)</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p><code>appbuilder.sm</code> is a <code>SecurityManager</code>, responsible for adding
+and authenticationg Users.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">appbuilder</span><span class="o">.</span><span class="n">sm</span><span class="o">.</span><span class="n">auth_user_db</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Use the <code>LoginManager</code> to login the User.</p>
+
+<p>You login the user by adding a special cookie to
+the session, which will be remembered by the client.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">login_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>If you can't authenticate the user, return a 403 error code:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="mi">403</span><span class="p">)</span>
+
+    <span class="nd">@csrf.exempt</span>
+    <span class="nd">@has_access</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>For simplicity, we only allow a POST method to
+build the sidebar. You don't actually "edit" the sidebar.
+You just delete the old one and upload the new one with
+a POST request.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/sidebar/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;POST&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">sidebar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+            <span class="n">modules</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;modules&#39;</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Delete all sidebar modules</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">num_deleted</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">SidebarModule</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">modules</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">visible</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s">&#39;visible&#39;</span><span class="p">]</span>
+                <span class="k">except</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>If the <code>visible</code> field is not supplied,
+it is False by default</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="n">visible</span> <span class="o">=</span> <span class="bp">False</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>Build a new SidebarModule</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="n">module</span> <span class="o">=</span> <span class="n">SidebarModule</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;title&#39;</span><span class="p">],</span>
+                                       <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span>
+                                       <span class="n">text</span><span class="o">=</span><span class="n">m</span><span class="p">[</span><span class="s">&#39;text&#39;</span><span class="p">],</span>
+                                       <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>Commit the changes. If it fails, we send the error message
+to the client.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="s">&#39;True&#39;</span><span class="p">})</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+                                     <span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)})</span>
+
+
+
+    <span class="nd">@csrf.exempt</span>
+    <span class="nd">@has_access</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/entry/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;PUT&#39;</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="s">&#39;DELETE&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>We use HTML methods as usually for a CRUD interface:</p>
+
+<ul>
+<li><code>POST</code>: Create</li>
+<li><code>GET</code>: Read</li>
+<li><code>PUT</code>: Update</li>
+<li><code>Delete</code>: Delete</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="s">&#39;PUT&#39;</span><span class="p">]:</span>
+            <span class="n">slug</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;slug&#39;</span><span class="p">)</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">entry</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">slug</span><span class="p">,</span> <span class="n">PRIVATE</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>You can't add a new entry with the same slug</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">make_response</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({}),</span> <span class="mi">404</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>Get entry</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">obj_get_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>Delete entry</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;DELETE&#39;</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;deleted&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>Create Entry</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">()</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">)</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">parse_fields</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>Set the object attributes to the JSON dict values.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">obj_set_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;created&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;created&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                                     <span class="s">&#39;exception&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">exception</span><span class="p">)})</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Update Entry</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;PUT&#39;</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;fields&#39;</span><span class="p">)</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="n">parse_fields</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>Set the object attributes to the JSON dict values.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">obj_set_from</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;updated&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="nd">@csrf.exempt</span>
+    <span class="nd">@has_access</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/upload/&lt;entry_slug&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;POST&#39;</span><span class="p">])</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>Upload image files</p>
+
+<p>This is currently inefficient, as all files are
+deleted and replaced by the new version.</p>
+
+<p>This is not as wasteful as it seems, as
+the operations is not frequent, and the data transfer
+is similar to what the browser downloads each time
+a user requests a page.</p>
+
+<p>I'm not planning on optimizing this further soon.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_slug</span><span class="p">):</span>
+        <span class="n">UPLOAD</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;ENTRY_FILES_UPLOAD_FOLDER&#39;</span><span class="p">]</span>
+        <span class="n">entry_upload_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UPLOAD</span><span class="p">,</span> <span class="n">entry_slug</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>Create the folder if it doesn't exist already.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">entry_upload_folder</span><span class="p">):</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p><code>os.makedirs()</code> creates all intermediate directories</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">entry_upload_folder</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>Clean the old files (this is inefficient; it may be optimized)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">entry_upload_folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entry_upload_folder</span><span class="p">,</span> <span class="n">fname</span><span class="p">))</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;files&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>always use <code>werkzeug</code>'s <code>secure_filename()</code> function</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">secure_filename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>decode the base64 contents and write them to disk:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">entry_upload_folder</span><span class="p">,</span> <span class="n">fname</span><span class="p">),</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">jsonify</span><span class="p">({</span><span class="s">&#39;success&#39;</span><span class="p">:</span> <span class="s">&#39;true&#39;</span><span class="p">})</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>Use <code>setattr</code> to add values to an <code>object</code> from a <code>dict</code></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">obj_set_from</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">obj</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>Get the values of an objects attributes by passing a list of
+strings with their names. Uses <code>getattr</code></p>
+
+<p><code>setattr</code> and ``getattr```are teh python programmer's best friends</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">obj_get_from</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>Do not allow the creating of categories from he client.
+Categories must be created from the Admin interface.
+I might add support for adding categories from the client
+in the future</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">category_from_name</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">category</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">category</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;That category does not exist. Please create it&quot;</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>Allow adding a new author from the cient, if the supplied
+author name doesn't exist yet.
+It is not that useful, but it's easy to implement.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">author_from_name</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">author</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">author</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">author</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">author</span> <span class="o">=</span> <span class="n">Author</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">author</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">author</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>Allow adding new tags from names thad don't exist yet
+(like <code>author_from_name</code> above.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">tags_from_names</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">tagname_list</span><span class="p">):</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tagname</span> <span class="ow">in</span> <span class="n">tagname_list</span><span class="p">:</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">tagname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tagname</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">to_slug</span><span class="p">(</span><span class="n">tagname</span><span class="p">))</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tags</span>
+
+<span class="k">def</span> <span class="nf">to_slug</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert a name into a slug&quot;&quot;&quot;</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>has to be improved. It is not foolproof yet.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">return</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">parse_dates</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse dates in the format &#39;YYYY-mm-dd HH:MM&#39;</span>
+<span class="sd">    for all date fields&quot;&quot;&quot;</span>
+    <span class="n">date_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;created&#39;</span><span class="p">,</span> <span class="s">&#39;since&#39;</span><span class="p">,</span> <span class="s">&#39;until&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">date_fields</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">],</span>
+                                                   <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fields</span>
+
+<span class="k">def</span> <span class="nf">parse_bools</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse boolean values from all boolean fields&quot;&quot;&quot;</span>
+    <span class="n">bools</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;show_author&#39;</span><span class="p">,</span> <span class="s">&#39;show_date&#39;</span><span class="p">,</span> <span class="s">&#39;public&#39;</span><span class="p">,</span> <span class="s">&#39;commentable&#39;</span><span class="p">,</span>
+             <span class="s">&#39;unlocked&#39;</span><span class="p">,</span> <span class="s">&#39;archivable&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">bools</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">fields</span>
+
+<span class="k">def</span> <span class="nf">parse_fields</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse all fields from the JSON dict, creating new ``Author``s</span>
+<span class="sd">    and ``Tag``s as needed. Don&#39;t creaet new categories&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s">&#39;author&#39;</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">fields</span><span class="p">[</span><span class="s">&#39;author&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author_from_name</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="s">&#39;author&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s">&#39;tags&#39;</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">fields</span><span class="p">[</span><span class="s">&#39;tags&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tags_from_names</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="s">&#39;tags&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s">&#39;category&#39;</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">fields</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">category_from_name</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="s">&#39;category&#39;</span><span class="p">])</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">parse_dates</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">parse_bools</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fields</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>

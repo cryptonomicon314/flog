@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>routes.py</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "app/routes.py", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="background highlight"></div>
+<table cellpadding="0" cellspacing="0">
+  <tbody>
+      <tr>
+        <td class="docs">
+          <h1>routes.py</h1>
+        </td>
+        <td class="code highlight"></td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<p>Flask:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">abort</span><span class="p">,</span> <span class="n">url_for</span><span class="p">,</span>\
+  <span class="n">g</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">flash</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-2" id="section-2">&#182;</a>
+</div>
+<p>Flask extensions:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">flask.ext.appbuilder</span> <span class="kn">import</span> <span class="n">BaseView</span><span class="p">,</span> <span class="n">expose</span><span class="p">,</span> <span class="n">has_access</span><span class="p">,</span> <span class="n">permission_name</span>
+<span class="kn">from</span> <span class="nn">flask_appbuilder.security.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Role</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-3" id="section-3">&#182;</a>
+</div>
+<p>Standard Library:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-4" id="section-4">&#182;</a>
+</div>
+<p>Flog modules:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">app</span> <span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">appbuilder</span><span class="p">,</span> <span class="n">akis</span>
+<span class="kn">from</span> <span class="nn">models</span> <span class="kn">import</span> <span class="n">Entry</span><span class="p">,</span> <span class="n">Comment</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Tag</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">sanitize_plaintext</span><span class="p">,</span> <span class="n">sanitize_richtext</span>
+<span class="kn">from</span> <span class="nn">forms</span> <span class="kn">import</span> <span class="n">EditCommentForm</span><span class="p">,</span> <span class="n">NewCommentForm</span>
+<span class="kn">import</span> <span class="nn">query</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-5" id="section-5">&#182;</a>
+</div>
+<p>A function that builds a HTML anchor <link>
+to the comment with id <code>comment_id</code></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">comment_anchor_id</span><span class="p">(</span><span class="n">comment_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;comment-id-{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">comment_id</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-6" id="section-6">&#182;</a>
+</div>
+<p>Common variables that are useful in templates</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">class</span> <span class="nc">Common</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_entries</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="nd">@app.before_request</span>
+<span class="k">def</span> <span class="nf">before_request</span><span class="p">():</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-7" id="section-7">&#182;</a>
+</div>
+<p>Prepare session:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">[</span><span class="s">&#39;comments&#39;</span><span class="p">]</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">session</span><span class="p">[</span><span class="s">&#39;comments&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">g</span><span class="o">.</span><span class="n">blog_config</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">blog_config</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+    <span class="n">g</span><span class="o">.</span><span class="n">blog_config</span><span class="o">.</span><span class="n">edit_lag</span> <span class="o">=</span> \
+        <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">blog_config</span><span class="o">.</span><span class="n">edit_lag_in_minutes</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-8" id="section-8">&#182;</a>
+</div>
+<p>edit_lag is stored as an integer number of minutes
+because many database engines have problems storing timedeltas.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="n">g</span><span class="o">.</span><span class="n">common</span> <span class="o">=</span> <span class="n">Common</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">blog_config</span><span class="o">.</span><span class="n">entries_in_sidebar</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-9" id="section-9">&#182;</a>
+</div>
+<p>The class SiteView represents the set of routes in our blog.
+It defines not only the routes, but also their permissions.
+By subclassing the SiteView and assigning permissions to certain
+roles, we can create different versions of the site for different
+user roles (as of now, only <strong>Admin</strong> and <strong>Public</strong>)</p>
+
+<p>We will have 2 versions:</p>
+
+<ul>
+<li><p><em>public</em>: this is the website that is visible to users with the <strong>Public</strong>
+role, taht is, users that visit the website without an account</p></li>
+<li><p><em>private</em> or <em>preview</em>: this version of the website will not available to
+the public. Users will need to create an account with a role that has the
+appropriate permissions (in our case, the <strong>Admin</strong> role)</p></li>
+</ul>
+
+<p>We want the different versions of the website to have different base
+routes. This creates a challenge with hyperlinks between pages of the website.
+We want the <em>public</em> version to link to pages in the <em>public</em> version, and
+the <em>private</em> version to link to pages in the <em>private</em> version only.
+The problem is that the default function to generate hyperlinks, <code>url_for()</code>
+doesn't know if it has been called from the <em>public</em> or <em>private</em> version.</p>
+
+<p>for this reason, we will define a <code>.url_for()</code> method.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">class</span> <span class="nc">SiteView</span><span class="p">(</span><span class="n">BaseView</span><span class="p">):</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-10" id="section-10">&#182;</a>
+</div>
+<p>The <code>.url_for()</code> method behaves almost like the default <code>url_for()</code>
+function. The difference is that it knows from which class it has been called.</p>
+
+<p>When you invoke <code>self.url_for("methodname")</code> from class <code>SecretView</code>,
+the function will generate the url for <code>"SecretView.methodname"</code>.</p>
+
+<p>This makes sure that as long as the user navigates using hyperlinks, he will
+be directed from <em>private</em> pages to <em>private</em> pages and form <em>public</em> pages to
+<em>public</em> pages.</p>
+
+<p>Of course, the user might choose to navigate to the unaccessible pages by
+typing the URL in the URL bar, but will be asked to login before he can access
+restricted views.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">url_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">methodname</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;{}.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">methodname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">url_for</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-11" id="section-11">&#182;</a>
+</div>
+<p>Most methods of this class will have to deal with 2 cases:
+either (1) the page is <em>public</em> or (2) the page is <em>private</em>.</p>
+
+<p>As long as possible, this complecity has been relegated to
+the query module, where most of the DB query operations have
+been defined.</p>
+
+<p>Because the private and public versions of the pages are identical
+except for the <em>data</em>, usually only the code that queries the DB
+has to handle the 2 cases.
+This keeps code repetition to the minimum.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">recent_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">max_entries</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">blog_config</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">entries_in_sidebar</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">recent_entries</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">all_visible_entries</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">max_entries</span><span class="p">,</span> <span class="s">&#39;public&#39;</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">from_self</span><span class="p">()</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">archivable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">recent_entries</span>
+
+    <span class="k">def</span> <span class="nf">tag_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns pairs of the form (*tag*, *number of entries*).</span>
+<span class="sd">        The method is aware of the page version (*public* or *private*),</span>
+<span class="sd">        and will only show the number of entries that are available in</span>
+<span class="sd">        that version&quot;&quot;&quot;</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-12" id="section-12">&#182;</a>
+</div>
+<p>There should be a more "SQLy" way of doing this</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">tags</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-13" id="section-13">&#182;</a>
+</div>
+<p>For the <em>private</em> view, show all entries:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span> <span class="o">==</span> <span class="s">&#39;private&#39;</span><span class="p">:</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">entries</span><span class="p">))</span>
+                       <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-14" id="section-14">&#182;</a>
+</div>
+<p>For the <em>public</em> view, show only public entries:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">tag</span><span class="p">,</span> <span class="nb">len</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">entries</span> <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">public</span><span class="p">]))</span>
+                       <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">]</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-15" id="section-15">&#182;</a>
+</div>
+<p>Only show tags that have at least one entry:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">tag</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">if</span> <span class="n">count</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">sidebar_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">sidebar_modules</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">categories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="n">categories</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+
+    <span class="nd">@has_access</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-16" id="section-16">&#182;</a>
+</div>
+<p>All methods in the SiteView class have the <code>'view_blog'</code> permission.
+Flask-AppBuilder allows us to assign a pair (permission, class) to
+a role. This allows us to say thing like: "a <em>Public</em> user can access the
+methods marked <code>'view_blog'</code> from the <code>PublicView</code> class, but not the
+methods marked <code>'view_blog'</code> from the <code>PrivateView</code> class.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/archives/&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">archives</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">all_visible_entries</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">from_self</span><span class="p">()</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">archivable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-17" id="section-17">&#182;</a>
+</div>
+<p>Group the entries by year:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">grouping</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">created</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&quot;archives.html&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s">&quot;Archives&quot;</span><span class="p">,</span>
+                <span class="n">grouping</span><span class="o">=</span><span class="n">grouping</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-18" id="section-18">&#182;</a>
+</div>
+<p>We have to tell th template that we are rendering the
+"archives" page, so that the template knows what to
+mark as active in the bar.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="n">is_archives</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-19" id="section-19">&#182;</a>
+</div>
+<p>we supply the instance as an argument, so that we can call
+<code>cls.url_for()</code> inside the template, and be redirected to
+the correct endpoint.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="n">cls</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@has_access</span>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/tag/&lt;tag_slug&gt;&#39;</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-20" id="section-20">&#182;</a>
+</div>
+<p>List all entries with a certain tag</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_slug</span><span class="p">):</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="n">tag_slug</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Entry</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">tag</span><span class="p">))</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">created</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-21" id="section-21">&#182;</a>
+</div>
+<p>Filter the entries according to the <code>page_version</code>:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span> <span class="o">==</span> <span class="s">&#39;private&#39;</span><span class="p">:</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="n">entries</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">entries</span> <span class="o">=</span> <span class="n">entries</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">public</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;tag.html&#39;</span><span class="p">,</span>
+                <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span>
+                <span class="n">entries</span><span class="o">=</span><span class="n">entries</span><span class="p">,</span>
+                <span class="n">cls</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="nd">@has_access</span>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/entry/&lt;slug&gt;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">])</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/entry/&lt;slug&gt;/&lt;int:edit_id&gt;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">])</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-22" id="section-22">&#182;</a>
+</div>
+<p>This is the most complex method, as it handles a lot of functionality:</p>
+
+<ul>
+<li>a blog <code>Entry</code> and its <code>Comment</code>s</li>
+<li>submiting a new comment</li>
+<li>editing a comment</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slug</span><span class="p">,</span> <span class="n">edit_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-23" id="section-23">&#182;</a>
+</div>
+<p>The anchor is the element id that the browser uses
+to "focus" the webpage. If the Anchor is <code>None</code>
+the browser simply displays the page from the beginning.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">anchor</span> <span class="o">=</span> <span class="bp">None</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-24" id="section-24">&#182;</a>
+</div>
+<p>Get entry from database
+The complexity of deciding whether the page is acessible
+from the current view is delegated to the <code>query</code> module.</p>
+
+<p>Note that this has nothing to do with user permissions;
+What decides whether the entry can be shown or not is the
+SiteView subclass. User permissions only restrict the user
+based on routes!</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">_entry</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">entry</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">slug</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_entry</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-25" id="section-25">&#182;</a>
+</div>
+<p>404 is the "Not Found" error</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+
+        <span class="n">entry_id</span> <span class="o">=</span> <span class="n">_entry</span><span class="o">.</span><span class="n">id</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-26" id="section-26">&#182;</a>
+</div>
+<p>Get all visible comment. By default, all spam comments are invisible.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">comments</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">comments</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">,</span> <span class="n">visible_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-27" id="section-27">&#182;</a>
+</div>
+<p>we will use the current time (now) a lot</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-28" id="section-28">&#182;</a>
+</div>
+<p>We have to define 2 different forms:</p>
+
+<ul>
+<li>a form to <em>edit</em> a comment</li>
+<li>a form to submit a <em>new</em> comment</li>
+</ul>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">form_edit</span> <span class="o">=</span> <span class="n">EditCommentForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;edit&quot;</span><span class="p">)</span>
+        <span class="n">form_new</span> <span class="o">=</span> <span class="n">NewCommentForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;new&quot;</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-29" id="section-29">&#182;</a>
+</div>
+<p>If the user has just edited a comment:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="n">edit_id</span> <span class="ow">and</span> <span class="n">edit_id</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;comments&#39;</span><span class="p">):</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-30" id="section-30">&#182;</a>
+</div>
+<p>if the form has been submitted and validated, and has type <code>'edit-comment'</code>:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="n">form_edit</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">form_edit</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="s">&#39;edit-comment&#39;</span><span class="p">:</span>
+                <span class="n">update_comment</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">edit_id</span><span class="p">,</span> <span class="n">form_edit</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-31" id="section-31">&#182;</a>
+</div>
+<p>Redirect user to page with the comment updated
+Note that we must use the <code>self.url_for()</code> instead
+of the <code>url_for()</code> function.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">&#39;entry&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-32" id="section-32">&#182;</a>
+</div>
+<p>we want the browser to show the page focused on the
+recently edited comment</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                    <span class="n">_anchor</span><span class="o">=</span><span class="n">comment_anchor_id</span><span class="p">(</span><span class="n">edit_id</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-33" id="section-33">&#182;</a>
+</div>
+<p>If the user is going to edit a comment, populate the form
+with the data from the comment.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="n">populate_form</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">edit_id</span><span class="p">,</span> <span class="n">form_edit</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-34" id="section-34">&#182;</a>
+</div>
+<p>if the user has just submitted a new comment:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="k">if</span> <span class="n">form_new</span><span class="o">.</span><span class="n">validate_on_submit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">form_new</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="s">&#39;new-comment&#39;</span><span class="p">:</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-35" id="section-35">&#182;</a>
+</div>
+<p>Create a new comment, testing it for spam using Akismet's API.
+if the comment is tagged spam, comment is set to None.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="n">comment</span><span class="p">,</span> <span class="n">is_spam</span> <span class="o">=</span> <span class="n">create_comment</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">form_new</span><span class="p">,</span> <span class="n">_entry</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-36" id="section-36">&#182;</a>
+</div>
+<p>If the comment is spam:</p>
+
+<p>Redirect the user to the newly posted comment.
+As above, note the use of <code>self.url_for()</code></p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="k">if</span> <span class="n">is_spam</span><span class="p">:</span>
+                    <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Your comment was marked as spam.&quot;</span><span class="p">)</span>
+                    <span class="n">flash</span><span class="p">(</span><span class="s">&quot;It will be reviewed before being displayed.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">&#39;entry&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">,</span>
+                        <span class="n">_anchor</span><span class="o">=</span><span class="s">&#39;new-comment-form&#39;</span><span class="p">))</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-37" id="section-37">&#182;</a>
+</div>
+<p>If the comment is not spam:</p>
+
+<p>Store the comment ID in a secure token in the client
+session. This ensures only this User can edit this
+comment, and only using the same device. Forcing the
+user to use the same device is not optimal, but
+relieves us and the user from the hassle of managing
+and creating accounts for the blog.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">session</span><span class="p">[</span><span class="s">&#39;comments&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">&#39;entry&#39;</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">slug</span><span class="p">,</span>
+                        <span class="n">_anchor</span><span class="o">=</span><span class="n">comment_anchor_id</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">id</span><span class="p">)))</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-38" id="section-38">&#182;</a>
+</div>
+<p>The edit lag is the time the user has to edit the comment after the submission.
+By deafult, it is 15 minutes, but can be configuref by the Admin.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">edit_lag</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">blog_config</span><span class="o">.</span><span class="n">edit_lag</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-39" id="section-39">&#182;</a>
+</div>
+<p>get the editable comments from the DB, based on their publication date</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">editable_cmts</span> <span class="o">=</span> <span class="n">editable_comments</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">edit_lag</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;entry-detail.html&#39;</span><span class="p">,</span>
+            <span class="n">entry</span><span class="o">=</span><span class="n">_entry</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-40" id="section-40">&#182;</a>
+</div>
+<p>The template needs to know ehat the active category is:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">active_category</span><span class="o">=</span><span class="n">_entry</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">slug</span><span class="p">,</span>
+            <span class="n">comments</span><span class="o">=</span><span class="n">comments</span><span class="p">,</span>
+            <span class="n">form_new</span><span class="o">=</span><span class="n">form_new</span><span class="p">,</span> <span class="n">form_edit</span><span class="o">=</span><span class="n">form_edit</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-41" id="section-41">&#182;</a>
+</div>
+<p>we supply a function to generate anchors to the comments:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">comment_anchor_id</span><span class="o">=</span><span class="n">comment_anchor_id</span><span class="p">,</span>
+            <span class="n">editable_comments</span><span class="o">=</span><span class="n">editable_cmts</span><span class="p">,</span>
+            <span class="n">now</span><span class="o">=</span><span class="n">now</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-42" id="section-42">&#182;</a>
+</div>
+<p>we supply the ID of the comment the user is editing, or <code>None</code>
+if the User hasn't edited or won't edit.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">edit_id</span><span class="o">=</span><span class="n">edit_id</span><span class="p">,</span>
+            <span class="n">cls</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="nd">@has_access</span>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/home/&#39;</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-43" id="section-43">&#182;</a>
+</div>
+<p>This function redirects the user to first category of the blog,
+by default <code>Main</code>.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">home_category</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">home_category</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url_for</span><span class="p">(</span><span class="s">&#39;category&#39;</span><span class="p">,</span> <span class="n">catslug</span><span class="o">=</span><span class="n">home_category</span><span class="o">.</span><span class="n">slug</span><span class="p">))</span>
+
+    <span class="nd">@has_access</span>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/category/&lt;catslug&gt;&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/category/&lt;catslug&gt;/&lt;int:page&gt;&#39;</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-44" id="section-44">&#182;</a>
+</div>
+<p>List entries in a category. Entries are divided into pages according
+to the configuration defined by the Admin user. Each page has
+<code>entries_per_page</code> entries. Pages start countiing from 1, not 0.</p>
+
+<p>If <code>page == 1</code>, the page number is optional.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="k">def</span> <span class="nf">category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">catslug</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Category</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="n">catslug</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">category</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">abort</span><span class="p">(</span><span class="mi">404</span><span class="p">)</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-45" id="section-45">&#182;</a>
+</div>
+<p>Get the total number of entries (<em>private</em> or <em>public</em>)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span> <span class="o">==</span> <span class="s">&#39;private&#39;</span><span class="p">:</span>
+            <span class="n">nr_of_entries</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Entry</span><span class="p">)</span><span class="o">.</span>\
+                <span class="nb">filter</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                       <span class="n">Entry</span><span class="o">.</span><span class="n">public</span> <span class="o">==</span> <span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nr_of_entries</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Entry</span><span class="p">)</span><span class="o">.</span>\
+                <span class="nb">filter</span><span class="p">(</span><span class="n">Entry</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">category</span><span class="o">.</span><span class="n">id</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">entries_per_page</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">blog_config</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">entries_per_page</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-46" id="section-46">&#182;</a>
+</div>
+<p>Get the entries (remember, page numbers start at 1!)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">visible_entries</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">catslug</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">entries_per_page</span><span class="p">,</span> <span class="n">page</span> <span class="o">*</span> <span class="n">entries_per_page</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-47" id="section-47">&#182;</a>
+</div>
+<p>Get the <em>next</em> (= <code>newer</code>) and <em>previous</em> (= <code>older</code>) pages:
+if there are no <code>older</code> or <code>newer```pages, set the corresponding
+value to</code>None``. This will be used by the template.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">newer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newer</span> <span class="o">=</span> <span class="n">page</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">*</span> <span class="n">entries_per_page</span> <span class="o">&gt;=</span> <span class="n">nr_of_entries</span><span class="p">:</span>
+            <span class="n">older</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">older</span> <span class="o">=</span> <span class="n">page</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;category.html&#39;</span><span class="p">,</span>
+            <span class="n">entries</span><span class="o">=</span><span class="n">entries</span><span class="p">,</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+            <span class="n">active_category</span><span class="o">=</span><span class="n">catslug</span><span class="p">,</span>
+            <span class="n">current_page</span><span class="o">=</span><span class="n">page</span><span class="p">,</span>
+            <span class="n">older</span><span class="o">=</span><span class="n">older</span><span class="p">,</span>
+            <span class="n">newer</span><span class="o">=</span><span class="n">newer</span><span class="p">,</span>
+            <span class="n">route</span><span class="o">=</span><span class="s">&#39;category&#39;</span><span class="p">,</span>
+            <span class="n">cls</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@has_access</span>
+    <span class="nd">@permission_name</span><span class="p">(</span><span class="s">&#39;view_blog&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/all/&#39;</span><span class="p">)</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;/all/&lt;int:page&gt;&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">all_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-48" id="section-48">&#182;</a>
+</div>
+<p>Similar to above. Now, we won't filter by category.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">entries_per_page</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">blog_config</span><span class="p">(</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">entries_per_page</span>
+
+        <span class="n">entries</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">all_visible_entries</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">entries_per_page</span><span class="p">,</span> <span class="n">page</span> <span class="o">*</span> <span class="n">entries_per_page</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">page_version</span><span class="p">)</span><span class="o">.</span><span class="n">from_self</span><span class="p">()</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">archivable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">nr_of_entries</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Entry</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">newer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newer</span> <span class="o">=</span> <span class="n">page</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">page</span> <span class="o">*</span> <span class="n">entries_per_page</span> <span class="o">&gt;=</span> <span class="n">nr_of_entries</span><span class="p">:</span>
+            <span class="n">older</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">older</span> <span class="o">=</span> <span class="n">page</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s">&#39;all-entries.html&#39;</span><span class="p">,</span>
+            <span class="n">entries</span><span class="o">=</span><span class="n">entries</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-49" id="section-49">&#182;</a>
+</div>
+<p>we have to tell the template this is the 'All' page</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">is_all</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">current_page</span><span class="o">=</span><span class="n">page</span><span class="p">,</span>
+            <span class="n">older</span><span class="o">=</span><span class="n">older</span><span class="p">,</span>
+            <span class="n">newer</span><span class="o">=</span><span class="n">newer</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-50" id="section-50">&#182;</a>
+</div>
+<p>route='all_entries',</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+            <span class="n">cls</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-51" id="section-51">&#182;</a>
+</div>
+<p>Now we will subclass <code>SiteView</code> to get identical pages with
+different permissions. We just set the <code>page_version</code> and
+<code>route_base</code> attributes:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">class</span> <span class="nc">PublicView</span><span class="p">(</span><span class="n">SiteView</span><span class="p">):</span>
+    <span class="n">page_version</span> <span class="o">=</span> <span class="s">&#39;public&#39;</span>
+    <span class="n">route_base</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+<span class="k">class</span> <span class="nc">PrivateView</span><span class="p">(</span><span class="n">SiteView</span><span class="p">):</span>
+    <span class="n">page_version</span> <span class="o">=</span> <span class="s">&#39;private&#39;</span>
+    <span class="n">route_base</span> <span class="o">=</span> <span class="s">&#39;/preview&#39;</span>
+
+
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-52" id="section-52">&#182;</a>
+</div>
+<p>Some utility functions we used above:</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+<span class="k">def</span> <span class="nf">create_comment</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">entry</span><span class="p">):</span>
+    <span class="n">is_spam</span> <span class="o">=</span> <span class="bp">False</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-53" id="section-53">&#182;</a>
+</div>
+<p>round the date to the nearest second. Otherwise we get problems
+when using the admin interface beacuse the datetime picker can't
+handle microseconds.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="n">pub_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-54" id="section-54">&#182;</a>
+</div>
+<p>Create comment from form data, sanitizing when appropriate.
+Sanitization functions are defined in the <code>utils</code> module.</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">Comment</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">sanitize_plaintext</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+                      <span class="n">email</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                      <span class="n">website</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">website</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                      <span class="n">content</span><span class="o">=</span><span class="n">sanitize_richtext</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">data</span><span class="p">),</span>
+                      <span class="n">published</span><span class="o">=</span><span class="n">pub_datetime</span><span class="p">,</span>
+                      <span class="n">entry_id</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">akis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">is_spam</span> <span class="o">=</span> <span class="n">akis</span><span class="o">.</span><span class="n">is_spam</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">is_spam</span><span class="p">:</span>
+        <span class="n">comment</span><span class="o">.</span><span class="n">akismet_spam</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">comment</span><span class="o">.</span><span class="n">visible</span> <span class="o">=</span> <span class="bp">False</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-55" id="section-55">&#182;</a>
+</div>
+<p>Otherwise, apply the defaults, which assume the comment is not spam</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">comment</span><span class="p">,</span> <span class="n">is_spam</span>
+
+
+
+
+<span class="k">def</span> <span class="nf">update_comment</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">comment</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">)</span>
+    <span class="n">comment</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">sanitize_plaintext</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">comment</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">comment</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">sanitize_richtext</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">comment</span>
+
+<span class="k">def</span> <span class="nf">populate_form</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">comment_id</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">email</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">email</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">return</span> <span class="n">form</span>
+
+
+<span class="k">def</span> <span class="nf">editable_comments</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">edit_lag</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets editable comments based on the current time and</span>
+<span class="sd">    comment publication date&quot;&quot;&quot;</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">editable_comments</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">now</span><span class="p">,</span> <span class="n">edit_lag</span><span class="p">,</span> <span class="n">session</span><span class="p">[</span><span class="s">&#39;comments&#39;</span><span class="p">])</span>
+    <span class="n">editable_cmts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="p">[(</span><span class="n">cmt_id</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;date&#39;</span><span class="p">:</span> <span class="n">date</span> <span class="o">+</span> <span class="n">edit_lag</span><span class="p">,</span>
+
+</pre></div>
+        </td>
+      </tr>
+      <tr>
+        <td class="docs">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-56" id="section-56">&#182;</a>
+</div>
+<p>delta in milliseconds (for javascript)</p>
+        </td>
+        <td class="code highlight"><div class="highlight"><pre>
+                   <span class="s">&#39;delta&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">date</span> <span class="o">+</span> <span class="n">edit_lag</span> <span class="o">-</span> <span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">*</span><span class="mi">1000</span><span class="p">))})</span>
+            <span class="k">for</span> <span class="n">cmt_id</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">editable_cmts</span>
+</pre></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+  </div>
+</body>
+</html>
