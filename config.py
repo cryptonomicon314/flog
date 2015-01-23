@@ -71,7 +71,10 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://{user}:{password}@{host}:{port}/{db}'.fo
 
 # Your App secret key
 SECRET_KEY = secrets['secret_key']
-AKISMET_API_KEY = secrets['akismet_api_key']
+try:
+    AKISMET_API_KEY = secrets['akismet_api_key']
+except:
+    pass
 # SQLite support has been removed because SQLite doesn't handle
 # timedelta (SQL INTERVAL) arithmetic correctly. It can lead to
 # unexpected nasty bugs with date arithmetic.
