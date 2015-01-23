@@ -74,6 +74,7 @@ SECRET_KEY = secrets['secret_key']
 try:
     AKISMET_API_KEY = secrets['akismet_api_key']
 except:
+    print "Akismet api key not found."
     pass
 # SQLite support has been removed because SQLite doesn't handle
 # timedelta (SQL INTERVAL) arithmetic correctly. It can lead to
