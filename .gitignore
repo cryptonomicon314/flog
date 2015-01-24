@@ -3,6 +3,10 @@ syntax: glob
 app/static/public/*
 app/static/.webassets-cache/*
 
+secrets/local.yaml
+secrets/remote.yaml
+
+
 doc/*
 
 *.pyc
