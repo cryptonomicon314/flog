@@ -1,0 +1,12 @@
+{
+  "glob": ["README.md",
+           "*.py",
+           "secrets/**",
+           "app/**"],
+
+  "except": ["**.pyc", "**~", "**.png",
+             "app/static/private/ckeditor/**",
+             "app/static/public/**"],
+
+  "github": false
+}
