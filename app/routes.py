@@ -101,7 +101,7 @@ class SiteView(BaseView):
     def recent_entries(self):
         max_entries = query.blog_config(db).entries_in_sidebar
         now = datetime.datetime.utcnow()
-        recent_entries = query.all_visible_entries(db, now, 0, max_entries, 'public').\
+        recent_entries = query.all_visible_entries(db, now, 0, max_entries, self.page_version).\
                 from_self().filter_by(archivable=True)
         return recent_entries
 
@@ -114,7 +114,7 @@ class SiteView(BaseView):
         # There should be a more "SQLy" way of doing this
         tags = db.session.query(Tag)
         # For the *private* view, show all entries:
-        if self.page_version == 'private':
+        if self.is_preview:
             pairs = [(tag, len(tag.entries))
                        for tag in tags]
         # For the *public* view, show only public entries:
@@ -169,7 +169,7 @@ class SiteView(BaseView):
         entries = db.session.query(Entry).filter(Entry.tags.contains(tag)).order_by(Entry.created.desc())
 
         # Filter the entries according to the ``page_version``:
-        if self.page_version == 'private':
+        if self.is_preview:
             entries = entries.all()
         else:
             entries = entries.filter_by(public=True).all()
@@ -315,13 +315,13 @@ class SiteView(BaseView):
 
 
         # Get the total number of entries (*private* or *public*)
-        if self.page_version == 'private':
+        if self.is_preview:
+            nr_of_entries = db.session.query(Entry).\
+                filter(Entry.category.has(id=category.id)).count()
+        else:
             nr_of_entries = db.session.query(Entry).\
                 filter(Entry.category.has(id=category.id),
                        Entry.public == True).count()
-        else:
-            nr_of_entries = db.session.query(Entry).\
-                filter(Entry.category.has(id=category.id)).count()
 
         now = datetime.datetime.utcnow()
         entries_per_page = query.blog_config(db).entries_per_page
@@ -392,10 +392,12 @@ class SiteView(BaseView):
 # ``route_base`` attributes:
 class PublicView(SiteView):
     page_version = 'public'
+    is_preview = False
     route_base = ''
 
 class PrivateView(SiteView):
     page_version = 'private'
+    is_preview = True
     route_base = '/preview'
 
 

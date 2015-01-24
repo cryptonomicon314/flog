@@ -1,4 +1,4 @@
-from flask import Markup, request, make_response
+from flask import Markup, request, make_response, url_for, redirect
 import flask.json as json
 
 import flask_wtf.file as flask_wtf # not from wtforms!
@@ -167,9 +167,23 @@ class BlogConfigView(ModelView):
 class ChooseConfigView(ModelView):
     datamodel = SQLAModel(ChooseConfig)
 
-    list_columns = ['chosen_config']
-    add_columns = list_columns
-    edit_columns = list_columns
+    # Users can't delete or add rows to this table.
+    # There is a CheckConstraint that forbids adding rows,
+    # but there is nothing that forbids deleting rows.
+    #
+    # There will be at most a single row, and for that reason
+    # we will not allow the list method either.
+    base_permissions = ['can_edit']
+
+    # By default, point the user to a view where he can
+    # only edit the first (and only row)
+    default_view = 'edit_first'
+
+    edit_columns = ['chosen_config']
+
+    @expose('/edit_first')
+    def edit_first(self):
+        return redirect(url_for('ChooseConfigView.edit', pk=1))
 
 db.session.remove()
 db.create_all()
@@ -185,14 +199,21 @@ appbuilder.add_view_no_menu(PrivateView())
 appbuilder.add_view_no_menu(PublicView())
 
 # Add the modelviews with a menu:
-appbuilder.add_view(EntryView,         "Entries",        icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(CommentView,       "Comments",       icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(TagView,           "Tags",           icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(CategoryView,      "Categories",     icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(AuthorView,        "Authors",        icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(SidebarModuleView, "Sidebar",        icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(ChooseConfigView,  "Choose Config",  icon="fa-folder-open-o", category_icon="fa-envelope")
-appbuilder.add_view(BlogConfigView,    "Blog Config",    icon="fa-folder-open-o", category_icon="fa-envelope")
+
+# Category 'Blog'
+appbuilder.add_view(EntryView,         "Entries",        category="Blog", icon="fa-file-text", category_icon="fa-rss")
+appbuilder.add_view(CommentView,       "Comments",       category="Blog", icon="fa-comments") #, category_icon="fa-comments")
+appbuilder.add_view(TagView,           "Tags",           category="Blog", icon="fa-tags") #, category_icon="fa-tags")
+appbuilder.add_view(CategoryView,      "Categories",     category="Blog", icon="fa-folder")#, category_icon="fa-folder")
+appbuilder.add_view(AuthorView,        "Authors",        category="Blog", icon="fa-users")#, category_icon="fa-envelope")
+appbuilder.add_view(SidebarModuleView, "Sidebar",        category="Blog", icon="fa-bars")#, category_icon="fa-envelope")
+
+# Category 'Config'
+appbuilder.add_view(ChooseConfigView,  "Choose",   category="Config", icon="fa-location-arrow", category_icon="fa-tachometer")
+appbuilder.add_view(BlogConfigView,    "Configs",  category="Config", icon="fa-list-alt") #, category_icon="fa-envelope")
+
+appbuilder.add_link("Public", href='/home', category="Home", icon="fa-eye", category_icon="fa-home")
+appbuilder.add_link("Preview", href='/preview/home', category="Home", icon="fa-eye-slash")
 
 # Make the ``PrivateView`` private
 import permissions

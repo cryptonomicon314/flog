@@ -131,8 +131,9 @@ class Comment(Model):
 
 class ChooseConfig(AuditMixin, Model):
     id = Column(Integer, primary_key=True)
-    chosen_config_id = Column(Integer, ForeignKey('blog_config.id'))
+    chosen_config_id = Column(Integer, ForeignKey('blog_config.id'), nullable=False)
     chosen_config = relationship('BlogConfig')
+    # Force this table to have at most 1 row
     lock = Column(Integer, CheckConstraint('lock=0'),
                   default=0, unique=True, nullable=False)
 

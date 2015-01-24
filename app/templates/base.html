@@ -27,6 +27,33 @@
 {% endblock %}
 
 {% block content %}
+<style>
+.pos-fixed-top-right {
+    position: fixed;
+    top: 55px;
+    right: 15px;
+    z-index: 999;
+}
+
+.preview-box {
+    background: rgba(255,255,255, 0.7);
+    padding: 5px;
+    border-radius: 4px;
+    border-style: none;
+}
+
+</style>
+
+{% if cls.is_preview %}
+  <div class="pos-fixed-top-right">
+    <p class="preview-box">
+      <span>Preview Version</span> | 
+      <a href="/">Admin</a> |
+      <a href="{{ url_for('PublicView.home') }}">Public</a>
+    </p>
+  </div>
+{% endif %}
+
 <div class="container">
   <div class="blog-header">
     <h1 class="blog-title">
