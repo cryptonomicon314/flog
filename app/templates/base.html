@@ -61,7 +61,9 @@
     </h1>
     <p></p>
     <p style="padding-left: 20px" class="lead blog-description">
+      {% autoescape off %}
         {{ g.blog_config.blog_subtitle }}
+      {% endautoescape %}
     </p>
   </div>
   
