@@ -164,10 +164,12 @@ class BlogConfig(AuditMixin, Model):
     description = Column(String(256))
     blog_title = Column(String(64))
     blog_subtitle = Column(String(128))
-    edit_lag_in_minutes = Column(Integer)
+    edit_lag_in_minutes = Column(Integer, nullable=False)
     window_title = Column(String(64))
-    entries_in_sidebar = Column(Integer)
-    entries_per_page = Column(Integer)
+    entries_in_sidebar = Column(Integer, nullable=False)
+    entries_per_page = Column(Integer, nullable=False)
+    entries_in_feed = Column(Integer, nullable=False)
+    comments_in_feed = Column(Integer, nullable=False)
     show_all_tab = Column(Boolean)
 
     def __repr__(self):

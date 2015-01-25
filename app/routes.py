@@ -60,7 +60,8 @@ def atom_feed_entries():
                     url=request.host_url,
                     subtitle=subtitle)
 
-    for entry in query.all_visible_entries(db, now, None, None, False).limit(10).all():
+    for entry in query.all_visible_entries(db, now, None, None, False)\
+                   .limit(config.entries_in_feed).all():
         feed.add(entry.title, entry.lead + entry.content, content_type='html',
                  author=entry.author.name,
                  url=url_for('PublicView.entry', slug=entry.slug),
@@ -79,7 +80,8 @@ def atom_feed_comments():
                     url=request.host_url,
                     subtitle=subtitle)
 
-    for comment in db.session.query(Comment).limit(150).all():
+    for comment in db.session.query(Comment)\
+                       .limit(config.comments_in_feed).all():
         feed.add(comment.name, comment.content, content_type='html',
                  author=comment.name,
                  url=url_for('PublicView.entry',

@@ -22,9 +22,9 @@ def tryadd(obj, db):
         return 0
 
 def fake_entry(author, cat):
-    since = fake.date_time_between(start_date="-15y", end_date="+1y")
-    until = fake.date_time_between(start_date="now", end_date="+3y")
-    created = fake.date_time_between(start_date=since - datetime.timedelta(days=160))
+    since = fake.date_time_between(start_date="-15y", end_date="now")
+    until = fake.date_time_between(start_date="now", end_date="+10y")
+    created = since
     title = fake.sentence()
 
     return Entry(title=title,
@@ -138,8 +138,8 @@ def fake_data(db):
     # fake_categories(3, db)
     fake_tags(15, db)
     fake_authors(2, db)
-    fake_entries(5, db)
-    fake_comments(5, db)
+    fake_entries(10, db)
+    fake_comments(10, db)
     fake_sidebar_modules(4, 10, db)
     add_tags(5, db)
 

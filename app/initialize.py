@@ -19,6 +19,8 @@ def default_blog_config():
             edit_lag_in_minutes=15,
             entries_in_sidebar=10,
             entries_per_page=5,
+            entries_in_feed=5,
+            comments_in_feed=100,
             show_all_tab=True,
             created_by=admin,
             changed_by=admin)
