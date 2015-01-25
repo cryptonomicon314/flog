@@ -1,6 +1,7 @@
 from models import Entry, SidebarModule, Comment, ChooseConfig, Category, Author, Tag
 # db is always a parameter to a function, never app.db
 from app import app
+import datetime
 
 PUBLIC = app.config['PAGE_VERSION_PUBLIC']
 PRIVATE = app.config['PAGE_VERSION_PRIVATE']
@@ -57,31 +58,50 @@ def entry(db, slug, version):
     else:
         return db.session.query(Entry).filter_by(slug=slug, public=True).first()
 
-def all_visible_entries(db, now, imin, imax, version):
-    if version == PRIVATE:
-        q = db.session.query(Entry).order_by(Entry.created.desc())\
+def all_visible_entries(db, now, imin, imax, is_preview):
+    if is_preview:
+        q = db.session.query(Entry)\
+                .filter( (Entry.until == None) | (Entry.until >= now) )\
+                .order_by(Entry.created.desc())\
                 .offset(imin).limit(imax)
     else:
-        q = db.session.query(Entry).\
-            filter(Entry.public).\
-            order_by(Entry.created.desc()).\
-            offset(imin).limit(imax)
+        q = db.session.query(Entry)\
+            .filter( Entry.public,
+                     ((Entry.since == None) | (Entry.since <= now)),
+                     ((Entry.until == None) | (Entry.until >= now)))\
+            .order_by(Entry.created.desc())\
+            .offset(imin).limit(imax)
+        for e in db.session.query(Entry).all():
+            print e.until
+        print
     if (imin, imax) == (None, None):
         return q
     else:
         return q.offset(imin).limit(imax)
 
-def visible_entries(db, catslug, now, imin, imax, version):
-    if version == PRIVATE:
-        return db.session.query(Entry).\
-            filter(Entry.category.has(slug=catslug)).\
-            order_by(Entry.created.desc()).\
-            offset(imin).limit(imax)
+def visible_entries(db, catslug, now, imin, imax, is_preview):
+    if is_preview:
+        q = db.session.query(Entry)\
+                .filter( Entry.category.has(slug=catslug),
+                         (Entry.until == None) | (Entry.until >= now) )\
+                .order_by(Entry.created.desc())\
+                .offset(imin).limit(imax)
     else:
-        return db.session.query(Entry).\
-            filter(Entry.public, Entry.category.has(slug=catslug)).\
-            order_by(Entry.created.desc()).\
-            offset(imin).limit(imax)
+        q = db.session.query(Entry)\
+            .filter( Entry.category.has(slug=catslug),
+                     Entry.public,
+                     ((Entry.since == None) | (Entry.since <= now)),
+                     ((Entry.until == None) | (Entry.until >= now)))\
+            .order_by(Entry.created.desc())\
+            .offset(imin).limit(imax)
+        for e in db.session.query(Entry).all():
+            print e.until
+        print
+    if (imin, imax) == (None, None):
+        return q
+    else:
+        return q.offset(imin).limit(imax)
+
 
 def sidebar_modules(db):
     return db.session.query(SidebarModule).\

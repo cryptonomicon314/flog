@@ -3,6 +3,7 @@
 
 {% block styles %}
   {{ super() }}
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> 
   {% assets "style_css" %}
       <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></link>
   {% endassets %}
@@ -21,6 +22,38 @@
            href="{{ cls.url_for('all_entries') }}">All</a>
         <a class="blog-nav-item {% if is_archives %}active{% endif %}"
            href="{{ cls.url_for('archives') }}">Archives</a>
+       
+       {# Atom Feeds #}
+        <div class="btn-group" role="group">
+          <button type="button"
+                  style="border-style: none"
+                  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-rss"></i>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="{{ url_for('atom_feed_entries') }}"><i class="fa fa-file-text-o"></i> Entries</a>
+            </li>
+            <li>
+                <a href="{{ url_for('atom_feed_comments') }}"><i class="fa fa-comments"></i> Comments</a>
+            </li>
+          </ul>
+        </div>
+       
+        {# Separator #}
+        <span class="col-sm-offset-1
+                     col-md-offset-1"></span>
+
+       <form style="display: inline"
+               action="{{ cls.url_for('search') }}"
+               method="post"
+               name="search">
+           {{ g.search_form.hidden_tag() }}
+           {{ g.search_form.search(size=15, placeholder="Search") }}
+           {# <input class="btn btn-primary" type="submit" value="Search"> #}
+       </form>
+
     </nav>
   </div>
 </div>
@@ -79,7 +112,7 @@
                 col-md-offset-1
                 col-sm-offset-0"
          role="navigation">
-    
+        
       <!--
          Because [docker.js](http://jbt.github.io/docker/README.md.html)
          does not support [Jinja](http://jinja.pocoo.org/), we have to use

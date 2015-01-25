@@ -29,3 +29,6 @@ class EditCommentForm(CommentForm):
     type = HiddenField('edit-comment', default='edit-comment')
     content = TextAreaField("Content",
         validators=[])
+
+class SearchForm(Form):
+    search = StringField('search', validators=[Required()])

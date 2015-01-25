@@ -1,9 +1,14 @@
+from flask.ext.appbuilder.security.models import User
+
 from app import db
 from app.models import *
 from faker import Factory
 import random
 
+
 fake = Factory.create()
+
+admin = db.session.query(User).filter(User.role.has(name='Admin')).first()
 
 def tryadd(obj, db):
     try:
@@ -17,8 +22,8 @@ def tryadd(obj, db):
         return 0
 
 def fake_entry(author, cat):
-    since = fake.date_time_between(start_date="-15y", end_date="now")
-    until = fake.date_time_between(start_date=since)
+    since = fake.date_time_between(start_date="-15y", end_date="+1y")
+    until = fake.date_time_between(start_date="now", end_date="+3y")
     created = fake.date_time_between(start_date=since - datetime.timedelta(days=160))
     title = fake.sentence()
 
@@ -32,12 +37,15 @@ def fake_entry(author, cat):
                  category_id=cat.id,
                  public=fake.boolean(90),
                  archivable=fake.boolean(90),
-                 content=fake.text(3000),
+                 lead="<p>"+fake.text(100)+"</p>",
+                 content="<p>"+fake.text(3000)+"</p>",
                  unlocked=fake.boolean(80),
                  commentable=fake.boolean(90),
                  since=since,
                  until=until,
-                 created=created)
+                 created=created,
+                 created_by=admin,
+                 changed_by=admin)
 
 def fake_link_list(n, type='ul'):
     inner = "\n".join(["<li><a>{}</a></li>".format(fake.sentence().title())
@@ -49,7 +57,9 @@ def fake_sidebar_module(k, index):
             title=fake.sentence(),
             text=fake_link_list(k),
             visible=fake.boolean(70),
-            index=index)
+            index=index,
+            created_by=admin,
+            changed_by=admin)
 
 def fake_category(index):
     word = fake.word()
@@ -59,7 +69,12 @@ def fake_category(index):
                     index=index)
 
 def fake_tag():
-    return Tag(name=fake.word(), description=fake.sentence())
+    name = fake.word()
+    return Tag(name=name,
+               slug=name,
+               description=fake.sentence(),
+               created_by=admin,
+               changed_by=admin)
 
 def fake_sidebar_modules(N, k, db):
     n = 0
@@ -67,7 +82,10 @@ def fake_sidebar_modules(N, k, db):
         n = n + tryadd(fake_sidebar_module(k, n), db)
 
 def fake_author():
-    return Author(name=fake.name(), description=fake.sentence())
+    return Author(name=fake.name(),
+                  description=fake.sentence(),
+                  created_by=admin,
+                  changed_by=admin)
 
 def fake_categories(N, db):
     n = 0
@@ -87,7 +105,7 @@ fake_tags = add_independent(fake_tag)
 
 def fake_entries(N, db):
     for author in db.session.query(Author).all():
-        for cat in db.session.query(Category).all():
+        for cat in db.session.query(Category).filter_by(name='Main').all():
             n = 0
             while n < N:
                 entry = fake_entry(author, cat)
@@ -114,9 +132,10 @@ def add_tags(N, db):
     tags = db.session.query(Tag).all()
     for entry in db.session.query(Entry).all():
         entry.tags = random.sample(tags, N)
+    db.session.commit()
 
 def fake_data(db):
-    fake_categories(3, db)
+    # fake_categories(3, db)
     fake_tags(15, db)
     fake_authors(2, db)
     fake_entries(5, db)

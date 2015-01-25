@@ -5,7 +5,6 @@
   </header>
   <hr/>
   {% for comment in comments %}
-    {% set comment_index = loop.index %}
     {% include "comment.html" %}
   {% endfor %}
 </div>

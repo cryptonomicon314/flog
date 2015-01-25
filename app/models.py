@@ -69,6 +69,18 @@ class Entry(AuditMixin, Model):
     # Search:
     search_vector = Column(TSVectorType('title', 'lead', 'content'))
 
+    def is_visible(self, is_preview):
+        now = datetime.datetime.utcnow()
+        if is_preview:
+            return (not self.until) or self.until >= now
+        else:
+            return self.public and \
+                   ((not self.since) or self.since <= now) and \
+                   ((not self.until) or self.until >= now)
+
+    def highest_comment(self):
+        return max([0] + [cmt.number for cmt in self.comments])
+
     def pretty_commentable(self):
         return format_bool(self.commentable)
     def pretty_unlocked(self):
@@ -91,6 +103,10 @@ class Tag(AuditMixin, Model):
     description = Column(Text)
 
     entries = relationship('Entry', secondary=assoc_entry_tag)
+
+    def nr_of_visible_entries(self, is_preview):
+        return len([entry for entry in self.entries
+                     if entry.is_visible(is_preview)])
 
     def __repr__(self):
         return self.name
@@ -119,6 +135,8 @@ class Comment(Model):
     visible = Column(Boolean, default=True)
     akismet_spam = Column(Boolean, default=False)
     confirmed_spam = Column(Boolean, default=False)
+
+    number = Column(Integer, unique=True)
 
     entry_id = Column(Integer, ForeignKey('entry.id'))
     entry = relationship('Entry', backref='comments')

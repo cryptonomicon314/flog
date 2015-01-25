@@ -1,13 +1,19 @@
-<div class="comment">
+<div class="comment search-result">
   <a name="{{ comment_anchor_id(comment.id) }}"></a>
+  {#
   {% if edit_id == comment.id %}
     {% include "edit-comment-form.html" %}
-  {% else %}   
-  <div class="comment-name">{{ comment.name }}</div>
+  {% else %}
+  #}
+  <div>
+      <span class="comment-name">{{ comment.name }}</span>
+      in response to
+      <em><a href="{{ cls.url_for('entry', slug=comment.entry.slug) }}">{{ comment.entry.title }}</a></em>
+  </div>
   <div class="comment-number-and-date">
       <span class="comment-number">Comment #{{ comment.number }} </span>
       <a class="comment-date"
-            href="#{{ comment_anchor_id(comment.id) }}">
+            href="{{ cls.url_for('entry', slug=comment.entry.slug, _anchor=comment_anchor_id(comment.id)) }}">
         {{ moment(comment.published).format(moment_fmt.datetime) }}
       </a>
    </div>
@@ -19,7 +25,7 @@
     </div>
       {% if comment.id in editable_comments.keys() %}
       <div id="comment-edit-{{ comment.id }}">
-        <a href="{{ cls.url_for('entry', slug=entry.slug, edit_id=comment.id, _anchor=comment_anchor_id(comment.id)) }}">Edit</a>
+        <a href="{{ cls.url_for('entry', slug=comment.entry.slug, edit_id=comment.id, _anchor=comment_anchor_id(comment.id)) }}">Edit</a>
         <span style="font-size: small">
           (expires {{ moment(editable_comments[comment.id]['date']).fromNow(refresh=True) }})
         </span>
@@ -29,6 +35,8 @@
             {{ editable_comments[comment.id]['delta'] }});
       </script>
     {% endif %}
-  {% endif %}
+    {#
+    {% endif %}
+    #}
   <hr/>
 </div>

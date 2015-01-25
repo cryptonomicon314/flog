@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <p style="text-align: center">
+    Searched for <em>{{ search_query }}</em>:
+  </p>
+
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a>Entries</a></li>
+  <li role="presentation"><a href="{{ cls.url_for('search_results_comments', search_query=search_query) }}">Comments</a></li>
+</ul>
+
+<p></p>
+
+{% for entry in entries %}
+  <div class="entry">
+    <h2>{{ entry.title }}</h2>
+    <div class="blog-post-meta">
+    {{ moment(entry.created).format(moment_fmt.datetime_mins) }}
+    {% if entry.show_author %}
+      by {{ entry.author }}
+    {% endif %}
+    </div>
+    <div class="entry-content">
+      {% autoescape off %}
+        {{ entry.lead }}
+      {% endautoescape %}
+      <div style="text-align: center">
+        <a href="{{ cls.url_for('entry', slug=entry.slug) }}">Read more</a>
+      </div>
+    </div>
+  </div>
+  <hr>
+{% endfor %}
+
+{% endblock %}

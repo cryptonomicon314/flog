@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <p style="text-align: center">
+    Searched for <em>{{ search_query }}</em>:
+  </p>
+
+
+<ul class="nav nav-tabs">
+  <li role="presentation"><a href="{{ cls.url_for('search_results_entries', search_query=search_query) }}">Entries</a></li>
+  <li role="presentation" class="active"><a>Comments</a></li>
+</ul>
+
+<p></p>
+
+{% for comment in comments %}
+  {% include "search-result-comment.html" %}
+{% endfor %}
+
+{% endblock %}
