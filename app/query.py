@@ -71,9 +71,6 @@ def all_visible_entries(db, now, imin, imax, is_preview):
                      ((Entry.until == None) | (Entry.until >= now)))\
             .order_by(Entry.created.desc())\
             .offset(imin).limit(imax)
-        for e in db.session.query(Entry).all():
-            print e.until
-        print
     if (imin, imax) == (None, None):
         return q
     else:
@@ -94,9 +91,6 @@ def visible_entries(db, catslug, now, imin, imax, is_preview):
                      ((Entry.until == None) | (Entry.until >= now)))\
             .order_by(Entry.created.desc())\
             .offset(imin).limit(imax)
-        for e in db.session.query(Entry).all():
-            print e.until
-        print
     if (imin, imax) == (None, None):
         return q
     else:

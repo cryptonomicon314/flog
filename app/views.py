@@ -157,6 +157,8 @@ class BlogConfigView(ModelView):
                    'window_title',
                    'entries_in_sidebar',
                    'entries_per_page',
+                   'entries_in_feed',
+                   'comments_in_feed',
                    'show_all_tab']
 
     edit_columns = add_columns
