@@ -12,6 +12,7 @@ from flask.ext.login import login_user
 import base64
 import os
 from datetime import datetime
+import yaml
 
 PRIVATE = app.config['PAGE_VERSION_PRIVATE']
 
@@ -102,31 +103,37 @@ class ClientApi(BaseView):
         # Delete entry
         elif request.method == 'DELETE':
             db.session.delete(e)
-            return json.jsonify({'deleted': True})
+            return json.jsonify({'success': True})
 
-        # Create Entry
+        # Create Entry / Update Entry
         elif request.method == 'POST':
             e = Entry()
-            fields = request.json.get('fields')
-            fields = parse_fields(db, fields)
+            data = request.get_json()
+            fields = parse_fields(db, data)
             # Set the object attributes to the JSON dict values.
             obj_set_from(e, fields)
             try:
                 db.session.add(e)
                 db.session.commit()
-                return json.jsonify({'created': True})
+                return json.jsonify({'success': True})
             except Exception as exception:
-                return json.jsonify({'created': False,
-                                     'exception': str(exception)})
+                db.session.rollback()
+                slug = data['slug']
+                e = query.entry(db, slug, PRIVATE)
+                fields = parse_fields(db, data)
+                # Set the object attributes to the JSON dict values.
+                obj_set_from(e, fields)
+                db.session.commit()
+                return json.jsonify({'success': True})
 
         # Update Entry
         elif request.method == 'PUT':
-            fields = request.json.get('fields')
-            fields = parse_fields(db, fields)
+            # fields = parse_fields(db, meta, lead, content)
+            fields = parse_fields(db, request.get_json())
             # Set the object attributes to the JSON dict values.
             obj_set_from(e, fields)
             db.session.commit()
-            return json.jsonify({'updated': True})
+            return json.jsonify({'success': True})
 
         else:
             return {}
@@ -174,7 +181,7 @@ def obj_set_from(obj, d):
 # Get the values of an objects attributes by passing a list of
 # strings with their names. Uses ``getattr``
 #
-# ``setattr`` and ``getattr```are teh python programmer's best friends
+# ``setattr`` and ``getattr```are the python programmer's best friends
 def obj_get_from(obj, keys):
     d = {}
     for key in keys:
@@ -225,36 +232,19 @@ def to_slug(name):
     # has to be improved. It is not foolproof yet.
     return name.lower().replace(' ', '-')
 
-def parse_dates(fields):
-    """Parse dates in the format 'YYYY-mm-dd HH:MM'
-    for all date fields"""
-    date_fields = ['created', 'since', 'until']
-    for field in date_fields:
-        if field in fields:
-            if fields[field] is not None:
-                fields[field] = datetime.strptime(fields[field],
-                                                   '%Y-%m-%d %H:%M')
-    return fields
-
-def parse_bools(fields):
-    """Parse boolean values from all boolean fields"""
-    bools = ['show_author', 'show_date', 'public', 'commentable',
-             'unlocked', 'archivable']
-    for field in bools:
-        if field in fields:
-            fields[field] = bool(fields[field])
-    return fields
-
-def parse_fields(db, fields):
+def parse_fields(db, data):
     """Parse all fields from the JSON dict, creating new ``Author``s
     and ``Tag``s as needed. Don't creaet new categories"""
+    meta, lead, content = data['meta'], data['lead'], data['content']
+    fields = yaml.safe_load(meta)
+    fields['lead'], fields['content'] = lead, content
+
     if 'author' in fields:
         fields['author'] = author_from_name(db, fields['author'])
     if 'tags' in fields:
         fields['tags'] = tags_from_names(db, fields['tags'])
     if 'category' in fields:
         fields['category'] = category_from_name(db, fields['category'])
-    fields = parse_dates(fields)
-    fields = parse_bools(fields)
+
     return fields
 

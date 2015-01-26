@@ -14,17 +14,15 @@ def markjax(text):
     output = reconstructMath(mkd_text, tmp[1], inline_delims)
     return output
 
-
+import string
+import hashlib
 import base64
 import yaml
 import requests
 import json
 import os
 import argparse
-
-parser = argparse.ArgumentParser(description="Push data into Flog")
-parser.add_argument('action')
-parser.add_argument('--remote', action='store_const', const=True, default=False)
+from bs4 import BeautifulSoup
 
 
 def isroot(path):
@@ -77,118 +75,60 @@ def authenticate(client, domain, payload):
     else:
         raise Exception("Authentication Failed")
 
-def action_upload(client, meta, namemap, auth, domain):
+def action_upload(client, slug, fields, namemap, auth, domain):
     # TODO: Explain this
     files = dict([(os.path.split(remote)[1], base64.b64encode(open(local).read()))
         for local, remote in namemap.items()])
 
-    response = client.post(domain + api + '/upload/' + meta['slug'],
-                           data=json.dumps({'slug': meta['slug'],
+    response = client.post(domain + api + '/upload/' + slug,
+                           data=json.dumps({'slug': slug,
                                             'files': files}),
                            headers=headers)
     return response
 
 
-def create_entry(client, domain, fields):
-    payload = {'fields': fields}
-    return client.post(domain + api + '/entry/',
-            data=json.dumps(payload),
-            headers=headers)
-
-def read_entry(client, slug, domain, fields):
-    payload = {'slug': slug,
-               'fields': fields}
-    return client.get(domain + api + '/entry/',
-                      data=json.dumps(payload),
-                      headers=headers)
-
-def update_entry(client, slug, domain, fields):
-    payload = {'slug': slug,
-               'fields': fields}
-    return client.put(domain + api + '/entry/',
-                      data=json.dumps(payload),
-                      headers=headers)
-
-def delete_entry(client, domain, slug):
-    return client.delete(domain + api + '/entry/',
-                         data=json.dumps({'slug': slug}),
-                         headers=headers)
-
-def upload_sidebar(client, domain, modules):
-    return client.post(domain + api + '/sidebar/',
-                       data=json.dumps({'modules': modules}),
-                       headers=headers)
-
 def action_sidebar(remote):
     modules, auth, domain = sidebar_process_files(remote)
     client = requests.Session()
     authenticate(client, domain, auth)
-    response = upload_sidebar(client, domain, modules)
-    print response.text
+    response = client.post(domain + api + '/sidebar/',
+                           data=json.dumps({'modules': modules}),
+                           headers=headers)
+    return handle_response(response)
 
-def action_add(remote):
-    fields, namemap, auth, domain = entry_process_files(remote)
-    client = requests.Session()
-    authenticate(client, domain, auth)
-    if namemap:
-        response1 = action_upload(client, fields, namemap, auth, domain)
-        try:
-            print "Uploading Files..."
-            if response1.json()['success']:
-                print ">>> success"
-        except:
-            print response1.text
-
-    response2 = create_entry(client, domain, fields)
-    print "Creating Entry..."
+def handle_response(response):
     try:
-        if response2.json()['created']:
+        if response.json()['success']:
             print ">>> success"
+            return True
         else:
             print ">>> failure"
-            print response2.json()['exception']
+            print response.json()['exception']
+            return False
     except:
         print ">>> failed"
-        print response2.text
+        print response.text
+        return False
 
 def action_update(remote):
-    fields, namemap, auth, domain = entry_process_files(remote)
-    slug = fields['slug']
+    slug, fields, namemap, auth, domain = entry_process_files(remote)
     client = requests.Session()
     authenticate(client, domain, auth)
     if namemap:
-        response1 = action_upload(client, fields, namemap, auth, domain)
-        try:
-            print "Uploading Files..."
-            if response1.json()['success']:
-                print ">>> success"
-        except:
-            print response1.text
+        response_upload = action_upload(client, slug, fields, namemap, auth, domain)
+        handle_response(response_upload)
 
-    response2 = update_entry(client, slug, domain, fields)
     print "Updating Entry..."
-    try:
-        if response2.json()['updated']:
-            print ">>> success"
-        else:
-            print ">>> failure"
-            print response2.json()['exception']
-    except:
-        print ">>> failed"
-        print response2.text
 
+    payload = {'slug': slug,
+               'meta': fields['meta'],
+               'lead': fields['lead'],
+               'content': fields['content']}
+    response_update = client.post(domain + api + '/entry/',
+                                  data=json.dumps(payload),
+                                  headers=headers)
 
-VALID_FIELDS = ['author', 'show_author', 'show_date', 'title', 'slug', 'public', 'tags',
-'category', 'commentable', 'unlocked', 'created', 'since', 'until',
-'archivable', 'content', 'lead']
-
-def validate(d):
-    for key in d:
-        try:
-            assert key in VALID_FIELDS
-        except Exception as e:
-            print key
-            raise e
+    return handle_response(response_update)
 
 def get_credentials(remote):
     cred_path = None
@@ -234,34 +174,30 @@ def entry_process_files(remote):
     meta_path = os.path.join(cwd, 'meta.yaml')
     content_path = os.path.join(cwd, 'content.md')
 
-    meta = yaml.safe_load(open(meta_path).read())
-    _content = open(content_path).read()
+    entry_path = os.path.join(cwd, 'entry.md')
 
-    split = _content.split('\n<<< >>>\n', 2)
-    if len(split) == 1:
-        content, namemap = fix_refs(meta['slug'], markjax(_content))
-        meta['content'] = content
-        meta['lead'] = u''
-    elif len(split) == 2:
-        lead, lead_namemap = fix_refs(meta['slug'], markjax(split[0]))
-        content, content_namemap = fix_refs(meta['slug'], markjax(split[1]))
-        meta['lead'], meta['content'] = lead, content
-        # **!!!** dict1.update(dict2) returns None!
-        lead_namemap.update(content_namemap)
-        namemap = lead_namemap
-    else:
-        raise Exception('Invalid Division between text and lead')
+    _, rest = open(entry_path).read().split('---\n', 1)
+    raw_meta, text = rest.split('\n---\n', 1)
+    meta = yaml.safe_load(raw_meta)
+    slug = meta['slug']
 
+    try:
+        lead, content = string.split(text, '<!--more-->', maxsplit=2)
+    except:
+        lead, content = u'', text
+
+    raw_meta = yaml.dump(meta)
+
+    content, namemap = fix_refs(slug, markjax(content))
+    lead, lead_namemap = fix_refs(slug, markjax(lead))
+    namemap.update(lead_namemap)
+
+    fields = {'meta': raw_meta, 'lead': lead, 'content': content}
     auth, domain = get_credentials(remote)
+    return (slug, fields, namemap, auth, domain)
 
-    validate(meta)
-    return (meta, namemap, auth, domain)
-
-from bs4 import BeautifulSoup
 
 ENTRY_FILE_UPLOAD_URL_BASE = '/static/uploads/entry'
-
-import hashlib
 
 def fix_refs(entry_slug, doc, debug=False):
     soup = BeautifulSoup(doc)
@@ -288,11 +224,22 @@ def fix_refs(entry_slug, doc, debug=False):
         print soup.prettify()
     return unicode(soup), namemap
 
+parser = argparse.ArgumentParser(description="Push data into Flog")
+parser.add_argument('--entry', action='store_const', const=True, default=False)
+parser.add_argument('--sidebar', action='store_const', const=True, default=False)
+parser.add_argument('--remote', action='store_const', const=True, default=False)
+
 if __name__ == "__main__":
     args = parser.parse_args()
-    if args.action == 'add':
-        action_add(args.remote)
-    elif args.action == 'update':
-        action_update(args.remote)
-    elif args.action == 'sidebar':
+    if args.sidebar:
         action_sidebar(args.remote)
+    elif args.entry:
+        action_update(args.remote)
+    else:
+        try:
+            action_update(args.remote)
+        except:
+            try:
+                action_sidebar(args.remote)
+            except:
+                print "Exception: Neither entry nor sidebar found"
