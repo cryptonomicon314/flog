@@ -136,7 +136,7 @@ class Comment(Model):
     akismet_spam = Column(Boolean, default=False)
     confirmed_spam = Column(Boolean, default=False)
 
-    number = Column(Integer, unique=True)
+    number = Column(Integer, nullable=False)
 
     entry_id = Column(Integer, ForeignKey('entry.id'))
     entry = relationship('Entry', backref='comments')

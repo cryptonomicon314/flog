@@ -17,7 +17,6 @@ def tryadd(obj, db):
         print obj
         return 1
     except Exception as e:
-        #raise e
         db.session.rollback()
         return 0
 
@@ -114,18 +113,22 @@ def fake_entries(N, db):
 def fake_comments(N, db):
     for entry in db.session.query(Entry).all():
         n = 0
+        last_date = entry.created
         while n < N:
-            comm = fake_comment(entry)
+            comm = fake_comment(entry, last_date)
             n = n + tryadd(comm, db)
+            last_date = comm.published
 
 
-def fake_comment(entry):
+
+def fake_comment(entry, last_date):
     profile = fake.profile()
     return Comment(name=profile['name'],
                    email=profile['mail'],
                    website=fake.url(),
                    content=fake.text(300),
-                   published=fake.date_time_between(entry.since, 'now'),
+                   published=fake.date_time_between(last_date, 'now'),
+                   number=entry.highest_comment()+1,
                    entry_id=entry.id)
 
 def add_tags(N, db):
