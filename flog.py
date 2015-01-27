@@ -110,13 +110,19 @@ def handle_response(response):
         print response.text
         return False
 
-def action_update(remote):
+def action_update(remote, check_dead_links=True):
     slug, fields, namemap, auth, domain = entry_process_files(remote)
     client = requests.Session()
     authenticate(client, domain, auth)
     if namemap:
         response_upload = action_upload(client, slug, fields, namemap, auth, domain)
         handle_response(response_upload)
+
+    if check_dead_links:
+        meta = yaml.safe_load(fields['meta'])
+        is_public = meta['public']
+        meta['public'] = False
+        fields['meta'] = yaml.dump(meta)
 
     print "Updating Entry..."
 
@@ -128,7 +134,79 @@ def action_update(remote):
                                   data=json.dumps(payload),
                                   headers=headers)
 
+    if check_dead_links:
+        print "Checking links..."
+        log, correct = check_links(slug, auth, domain, fields['lead'], fields['content'])
+        if correct:
+            if is_public:
+                print "All Links correct. Will upload public version."
+                return action_update(remote, False)
+            else:
+                print "All links correct."
+        else:
+            print_errors(log)
+            return None
+
+
     return handle_response(response_update)
+
+import urlparse
+def is_absolute(url):
+    return bool(urlparse.urlparse(url).netloc)
+
+from colorama import Fore, Back, Style
+def print_errors(errors):
+    for error in errors:
+        print (Fore.RED + "Error:" + Style.RESET_ALL)
+        print (Style.RESET_ALL + "  URL: " + Fore.YELLOW + error['url'] + Style.RESET_ALL)
+        if 'status_code' in error:
+            print ("  Response " + Fore.YELLOW + "[" + str(error['status_code']) + "]" + Style.RESET_ALL)
+        elif 'exception' in error:
+            mess = str(error['exception'].message)
+            lines = mess.split(': ')
+            print ("  Exception: " + Fore.YELLOW)
+            for i, line in enumerate(lines):
+                print Fore.YELLOW + "    " + ("  " * i) + line + ":" + Style.RESET_ALL
+
+# TODO: check links to preview entries
+def check_links(slug, auth, domain, lead, content):
+    client = requests.Session()
+    authenticate(client, domain, auth)
+    errors = []
+    for doc in [lead, content]:
+        soup = BeautifulSoup(doc)
+        for tag in soup.find_all(True):
+            for attr in ['src', 'href', 'link', 'url']:
+                if attr in tag.attrs:
+                    new_url = handle_url(slug, domain, tag[attr])
+                    try:
+                        response = client.get(new_url)
+                        if response.status_code != 200:
+                            errors.append({'tag': str(tag),
+                                           'url': tag[attr],
+                                           'status_code': response.status_code})
+                    except Exception as e:
+                        errors.append({'tag': str(tag),
+                                       'url': tag[attr],
+                                       'exception': e})
+    if errors: correct = False
+    else:      correct = True
+
+    return errors, correct
+
+def handle_url(slug, domain, url):
+    relative_base_url = domain + '/preview/entry/'
+    entry_preview_url = relative_base_url + slug
+
+    if is_absolute(url):
+        return url
+    elif url.startswith('/'):
+        return urlparse.urljoin(domain, url)
+    elif url.startswith('#'):
+        return urlparse.urljoin(entry_preview_url, url)
+    else:
+        return urlparse.urljoin(relative_base_url, url)
+
 
 def get_credentials(remote):
     cred_path = None
@@ -228,16 +306,17 @@ parser = argparse.ArgumentParser(description="Push data into Flog")
 parser.add_argument('--entry', action='store_const', const=True, default=False)
 parser.add_argument('--sidebar', action='store_const', const=True, default=False)
 parser.add_argument('--remote', action='store_const', const=True, default=False)
+parser.add_argument('--nocheck', action='store_true', default=False)
 
 if __name__ == "__main__":
     args = parser.parse_args()
     if args.sidebar:
         action_sidebar(args.remote)
     elif args.entry:
-        action_update(args.remote)
+        action_update(args.remote, not args.nocheck)
     else:
         try:
-            action_update(args.remote)
+            action_update(args.remote, not args.nocheck)
         except:
             try:
                 action_sidebar(args.remote)
