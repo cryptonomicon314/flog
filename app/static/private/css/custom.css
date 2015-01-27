@@ -44,3 +44,10 @@ input {
     padding-left: 8px;
 }
 
+a.normal:link {
+    color: inherit !important;
+}
+
+a.normal:visited {
+    color: inherit !important;
+}

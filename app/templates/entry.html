@@ -1,5 +1,14 @@
 <div class="entry">
-  <h2>{{ entry.title }}</h2>
+  {% if with_permalink %}
+    <h2>
+      <a href="{{ cls.url_for('entry', slug=entry.slug) }}"
+         class="normal">
+        {{ entry.title }}
+      </a>
+    </h2>
+  {% else %}
+    <h2>{{ entry.title }}</h2>
+  {% endif %}
   <div class="blog-post-meta">
     {% if entry.show_date %}
       {{ moment(entry.created).format(moment_fmt.datetime_mins) }}

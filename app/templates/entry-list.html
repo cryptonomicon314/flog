@@ -3,6 +3,7 @@
 {% block main %}
   {% block intro %}{% endblock %}
 
+  {% set with_permalink = True %}
   {% for entry in entries %}
     {% include "entry.html" %}
   <hr>

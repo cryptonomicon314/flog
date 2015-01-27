@@ -60,7 +60,7 @@ def atom_feed_entries():
                     url=request.host_url,
                     subtitle=subtitle)
 
-    for entry in query.all_visible_entries(db, now, None, None, False)\
+    for entry in query.all_visible_entries(db, now, None, None, False, True)\
                    .limit(config.entries_in_feed).all():
         feed.add(entry.title, entry.lead + entry.content, content_type='html',
                  author=entry.author.name,
@@ -149,8 +149,7 @@ class SiteView(BaseView):
     def recent_entries(self):
         max_entries = query.blog_config(db).entries_in_sidebar
         now = datetime.datetime.utcnow()
-        recent_entries = query.all_visible_entries(db, now, 0, max_entries, self.is_preview).\
-                from_self().filter_by(archivable=True)
+        recent_entries = query.all_visible_entries(db, now, 0, max_entries, self.is_preview, True)
         return recent_entries
 
 
@@ -190,7 +189,7 @@ class SiteView(BaseView):
     @expose('/search-results/entries/<search_query>')
     def search_results_entries(self, search_query):
         now = datetime.datetime.utcnow()
-        sql_q = query.all_visible_entries(db, now, None, None, self.is_preview)
+        sql_q = query.all_visible_entries(db, now, None, None, self.is_preview, False)
         entries = search(sql_q, search_query.lower())
 
         # It won't need pagination for now
@@ -230,8 +229,7 @@ class SiteView(BaseView):
     @expose('/archives/')
     def archives(self):
         now = datetime.datetime.utcnow()
-        entries = query.all_visible_entries(db, now, None, None, self.is_preview).\
-                from_self().filter_by(archivable=True)
+        entries = query.all_visible_entries(db, now, None, None, self.is_preview, True)
 
         # Group the entries by year:
         grouping = itertools.groupby(entries, lambda entry: entry.created.year)
@@ -403,14 +401,17 @@ class SiteView(BaseView):
         if not category:
             return abort(404)
 
-        now = datetime.datetime.utcnow()
         entries_per_page = query.blog_config(db).entries_per_page
+        nr_of_entries = query.visible_entries(db, catslug, now, None, None, self.is_preview, False).count()
+
+        if (page-1)*entries_per_page >= nr_of_entries:
+            return abort(404)
+
         # Get the entries (remember, page numbers start at 1!)
         entries = query.visible_entries(db, catslug, now,
-                (page - 1) * entries_per_page, page * entries_per_page,
-                self.is_preview).all()
+                (page - 1) * entries_per_page, entries_per_page,
+                self.is_preview, False).all()
 
-        nr_of_entries = query.visible_entries(db, catslug, now, None, None, self.is_preview).count()
 
         # Get the *next* (= ``newer``) and *previous* (= ``older``) pages:
         # if there are no ``older`` or ``newer```pages, set the corresponding
@@ -443,13 +444,14 @@ class SiteView(BaseView):
         # Similar to above. Now, we won't filter by category.
         now = datetime.datetime.utcnow()
         entries_per_page = query.blog_config(db).entries_per_page
+        nr_of_entries = query.all_visible_entries(db, now, None, None, self.is_preview, True).count()
+
+        if (page-1)*entries_per_page >= nr_of_entries:
+            return abort(404)
 
         entries = query.all_visible_entries(db, now,
-                (page - 1) * entries_per_page, page * entries_per_page,
-                self.is_preview).from_self().filter_by(archivable=True)
-
-        nr_of_entries = query.all_visible_entries(db, now, None, None, self.is_preview)\
-                .from_self().filter_by(archivable=True).count()
+                (page - 1) * entries_per_page, entries_per_page,
+                self.is_preview, True)
 
         if page <= 1:
             newer = None
