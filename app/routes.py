@@ -27,11 +27,6 @@ import query
 def comment_anchor_id(comment_id):
     return "comment-id-{}".format(comment_id)
 
-# Common variables that are useful in templates
-class Common(object):
-    def __init__(self, max_entries):
-        self.categories = query.categories(db).all()
-
 @app.before_request
 def before_request():
     # Prepare session:
@@ -41,27 +36,21 @@ def before_request():
         session['comments'] = []
     session.permanent = True
 
-    g.blog_config = query.blog_config(db)
-    g.blog_config.edit_lag = \
-        datetime.timedelta(minutes=g.blog_config.edit_lag_in_minutes)
-        # edit_lag is stored as an integer number of minutes
-        # because many database engines have problems storing timedeltas.
-    g.common = Common(g.blog_config.entries_in_sidebar)
+    g.blog_config = query.blog_config()
     g.search_form = SearchForm()
 
 
 @app.route('/atom-feed-entries')
 def atom_feed_entries():
     now = datetime.datetime.utcnow()
-    config = query.blog_config(db)
-    title = config.blog_title + " Entries"
-    subtitle = config.blog_subtitle
+    title = g.config.blog_title + " Entries"
+    subtitle = g.config.blog_subtitle
     feed = AtomFeed(title, feed_url=request.url,
                     url=request.host_url,
                     subtitle=subtitle)
 
-    for entry in query.all_visible_entries(db, now, None, None, False, True)\
-                   .limit(config.entries_in_feed).all():
+
+    for entry in query.entries(False, page_size=g.config.entries_in_feed).all():
         feed.add(entry.title, entry.lead + entry.content, content_type='html',
                  author=entry.author.name,
                  url=url_for('PublicView.entry', slug=entry.slug),
@@ -73,7 +62,7 @@ def atom_feed_entries():
 @app.route('/atom-feed-comments')
 def atom_feed_comments():
     now = datetime.datetime.utcnow()
-    config = query.blog_config(db)
+    config = g.blog_config
     title = config.blog_title + " Comments"
     subtitle = "Responses from the readers"
     feed = AtomFeed(title, feed_url=request.url,
@@ -138,7 +127,7 @@ class SiteView(BaseView):
     # Most methods of this class will have to deal with 2 cases:
     # either (1) the page is *public* or (2) the page is *private*.
     #
-    # As long as possible, this complecity has been relegated to
+    # As long as possible, this complexity has been relegated to
     # the query module, where most of the DB query operations have
     # been defined.
     #
@@ -147,9 +136,9 @@ class SiteView(BaseView):
     # has to handle the 2 cases.
     # This keeps code repetition to the minimum.
     def recent_entries(self):
-        max_entries = query.blog_config(db).entries_in_sidebar
+        max_entries = g.blog_config.entries_in_sidebar
         now = datetime.datetime.utcnow()
-        recent_entries = query.all_visible_entries(db, now, 0, max_entries, self.is_preview, True)
+        recent_entries = query.entries(self.is_preview, page_size=max_entries)
         return recent_entries
 
 
@@ -171,10 +160,10 @@ class SiteView(BaseView):
         return [(tag, count) for (tag, count) in pairs if count != 0]
 
     def sidebar_modules(self):
-        return query.sidebar_modules(db).all()
+        return query.sidebar_modules().all()
 
     def categories(self):
-        return query.categories(db).all()
+        return query.categories().all()
 
     @permission_name('view_blog')
     @expose('/search', methods=['POST'])
@@ -189,7 +178,7 @@ class SiteView(BaseView):
     @expose('/search-results/entries/<search_query>')
     def search_results_entries(self, search_query):
         now = datetime.datetime.utcnow()
-        sql_q = query.all_visible_entries(db, now, None, None, self.is_preview, False)
+        sql_q = query.entries(self.is_preview, archivable=False)
         entries = search(sql_q, search_query.lower())
 
         # It won't need pagination for now
@@ -206,10 +195,10 @@ class SiteView(BaseView):
         comments = search(sql_q, search_query.lower())
 
         # The edit lag is the time the user has to edit the comment after the submission.
-        # By deafult, it is 15 minutes, but can be configuref by the Admin.
-        edit_lag = g.blog_config.edit_lag
+        # By deafult, it is 15 minutes, but can be configured by the Admin.
+        edit_lag = g.blog_config.edit_lag()
         # get the editable comments from the DB, based on their publication date
-        editable_cmts = editable_comments(db, edit_lag, session)
+        editable_cmts = editable_comments(edit_lag, session)
         # It won't need pagination for now
         return render_template('search-results-comments.html',
             search_query=search_query,
@@ -229,7 +218,7 @@ class SiteView(BaseView):
     @expose('/archives/')
     def archives(self):
         now = datetime.datetime.utcnow()
-        entries = query.all_visible_entries(db, now, None, None, self.is_preview, True)
+        entries = query.entries(self.is_preview)
 
         # Group the entries by year:
         grouping = itertools.groupby(entries, lambda entry: entry.created.year)
@@ -291,14 +280,14 @@ class SiteView(BaseView):
         # What decides whether the entry can be shown or not is the
         # SiteView subclass. User permissions only restrict the user
         # based on routes!
-        _entry = query.entry(db, slug, self.page_version)
+        _entry = query.entry(slug, self.is_preview)
         if not _entry:
             # 404 is the "Not Found" error
             return abort(404)
 
         entry_id = _entry.id
         # Get all visible comment. By default, all spam comments are invisible.
-        comments = query.comments(db, entry_id, visible_only=True).all()
+        comments = query.comments(entry_id, visible_only=True).all()
 
         # we will use the current time (now) a lot
         now = datetime.datetime.utcnow()
@@ -314,7 +303,7 @@ class SiteView(BaseView):
         if edit_id and edit_id in session.get('comments'):
             # if the form has been submitted and validated, and has type ``'edit-comment'``:
             if form_edit.validate_on_submit() and form_edit.type.data == 'edit-comment':
-                update_comment(db, edit_id, form_edit)
+                update_comment(edit_id, form_edit)
                 # Redirect user to page with the comment updated
                 # Note that we must use the ``self.url_for()`` instead
                 # of the ``url_for()`` function.
@@ -325,7 +314,7 @@ class SiteView(BaseView):
             else:
                 # If the user is going to edit a comment, populate the form
                 # with the data from the comment.
-                populate_form(db, edit_id, form_edit)
+                populate_form(edit_id, form_edit)
 
         else:
             # if the user has just submitted a new comment:
@@ -357,9 +346,9 @@ class SiteView(BaseView):
 
         # The edit lag is the time the user has to edit the comment after the submission.
         # By deafult, it is 15 minutes, but can be configuref by the Admin.
-        edit_lag = g.blog_config.edit_lag
+        edit_lag = g.blog_config.edit_lag()
         # get the editable comments from the DB, based on their publication date
-        editable_cmts = editable_comments(db, edit_lag, session)
+        editable_cmts = editable_comments(edit_lag, session)
 
         return render_template('entry-detail.html',
             entry=_entry,
@@ -383,7 +372,7 @@ class SiteView(BaseView):
     # This function redirects the user to first category of the blog,
     # by default ``Main``.
     def home(self):
-        home_category = query.home_category(db)
+        home_category = query.home_category()
         return redirect(self.url_for('category', catslug=home_category.slug))
 
     @has_access
@@ -401,16 +390,20 @@ class SiteView(BaseView):
         if not category:
             return abort(404)
 
-        entries_per_page = query.blog_config(db).entries_per_page
-        nr_of_entries = query.visible_entries(db, catslug, now, None, None, self.is_preview, False).count()
+        entries_per_page = g.blog_config.entries_per_page
+        nr_of_entries = query.entries(self.is_preview, catslug, archivable=False).count()
 
-        if (page-1)*entries_per_page >= nr_of_entries:
+        # if nr_of_entries is = 0, we don't want to show an error, as it simply
+        # means the category is empty. Especially when adding entries from the command line,
+        # it might be useful to have temporarily empty entries
+        if nr_of_entries > 0 and (page-1)*entries_per_page >= nr_of_entries:
             return abort(404)
 
         # Get the entries (remember, page numbers start at 1!)
-        entries = query.visible_entries(db, catslug, now,
-                (page - 1) * entries_per_page, entries_per_page,
-                self.is_preview, False).all()
+        entries = query.entries(self.is_preview, catslug,
+                start=(page - 1) * entries_per_page,
+                page_size=entries_per_page,
+                archivable=False).all()
 
 
         # Get the *next* (= ``newer``) and *previous* (= ``older``) pages:
@@ -443,15 +436,17 @@ class SiteView(BaseView):
     def all_entries(self, page=1):
         # Similar to above. Now, we won't filter by category.
         now = datetime.datetime.utcnow()
-        entries_per_page = query.blog_config(db).entries_per_page
-        nr_of_entries = query.all_visible_entries(db, now, None, None, self.is_preview, True).count()
+        entries_per_page = g.blog_config.entries_per_page
+        nr_of_entries = query.entries(self.is_preview, archivable=True).count()
 
-        if (page-1)*entries_per_page >= nr_of_entries:
+        # same as above (see ``self.category``)
+        if nr_of_entries > 0 and (page-1)*entries_per_page >= nr_of_entries:
             return abort(404)
 
-        entries = query.all_visible_entries(db, now,
-                (page - 1) * entries_per_page, entries_per_page,
-                self.is_preview, True)
+        entries = query.entries(self.is_preview,
+                start=(page - 1) * entries_per_page,
+                page_size=entries_per_page,
+                archivable=True)
 
         if page <= 1:
             newer = None
@@ -517,15 +512,15 @@ def create_comment(db, form, entry):
 
 
 
-def update_comment(db, comment_id, form):
-    comment = query.comment(db, comment_id)
+def update_comment(comment_id, form):
+    comment = query.comment(comment_id)
     comment.name = sanitize_plaintext(form.name.data)
     comment.email = form.email.data
     comment.content = sanitize_richtext(form.content.data)
     db.session.commit()
     return comment
 
-def populate_form(db, comment_id, form):
+def populate_form(comment_id, form):
     comment = db.session.query(Comment).get(comment_id)
     form.name.data = comment.name
     form.email.data = comment.email
@@ -533,11 +528,11 @@ def populate_form(db, comment_id, form):
     return form
 
 
-def editable_comments(db, edit_lag, session):
+def editable_comments(edit_lag, session):
     """Gets editable comments based on the current time and
     comment publication date"""
     now = datetime.datetime.utcnow()
-    pairs = query.editable_comments(db, now, edit_lag, session['comments'])
+    pairs = query.editable_comments(edit_lag, session['comments'])
     editable_cmts = dict(
         [(cmt_id, {'date': date + edit_lag,
                    # delta in milliseconds (for javascript)

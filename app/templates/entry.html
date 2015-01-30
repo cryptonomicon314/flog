@@ -1,4 +1,22 @@
 <div class="entry">
+  {% if not entry.is_visible(False) %}
+    <h3>
+        <span class="hidden-invisible">
+          <i class="fa fa-eye-slash"></i>
+        </span>
+      {% if entry.is_future() and entry.public %}
+        <span class="hidden-future">
+          <i class="fa fa-clock-o"></i>
+          (hidden until {{ moment(entry.since).format("YYYY-MM-DD") }})
+        </span>
+      {% elif entry.is_past() and entry.public %}
+        <span class="hidden-past">
+          <i class="fa fa-clock-o"></i>
+          (hidden since {{ moment(entry.until).format("YYYY-MM-DD") }})
+        </span>
+      {% endif %}
+    </h3>
+  {% endif %}
   {% if with_permalink %}
     <h2>
       <a href="{{ cls.url_for('entry', slug=entry.slug) }}"

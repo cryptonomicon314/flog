@@ -3,6 +3,17 @@
   <ul>
   {% for entry in cls.recent_entries() %}
     <li>
+      {% if not entry.is_visible(False) %}
+        <span class="{% if entry.is_past() %}
+                       hidden-past
+                     {% elif entry.is_future() %}
+                       hidden-future
+                     {% elif not entry.public %}
+                       hidden-invisible
+                     {% endif %}">
+            <i class="fa fa-eye-slash"></i>
+        </span>
+      {% endif %}
       <a href="{{ cls.url_for('entry', slug=entry.slug) }}">{{ entry.title }}</a>
     </li>
   {% endfor %}

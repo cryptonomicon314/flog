@@ -3,7 +3,10 @@
   {% if edit_id == comment.id %}
     {% include "edit-comment-form.html" %}
   {% else %}   
-  <div class="comment-name">{{ comment.name }}</div>
+
+  <div class="comment-name">
+    {{ comment.name }}
+  </div>
   <div class="comment-number-and-date">
       <span class="comment-number">Comment #{{ comment.number }} </span>
       <a class="comment-date"

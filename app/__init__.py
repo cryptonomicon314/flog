@@ -7,6 +7,7 @@ from flask_wtf.csrf import CsrfProtect
 from flask.ext.script import Manager, Command, Option
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.moment import Moment
+from flask.ext.gravatar import Gravatar
 
 from flask.ext.appbuilder import SQLA, AppBuilder
 from flask.ext.appbuilder.baseviews import BaseView, expose

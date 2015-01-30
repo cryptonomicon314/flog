@@ -90,7 +90,7 @@ class ClientApi(BaseView):
         # - ``Delete``: Delete
         if request.method in ['GET', 'DELETE', 'PUT']:
             slug = request.json.get('slug')
-            e = query.entry(db, slug, PRIVATE)
+            e = query.entry(slug, True)
             # You can't add a new entry with the same slug
             if e is None:
                 return make_response(json.jsonify({}), 404)
@@ -119,7 +119,7 @@ class ClientApi(BaseView):
             except Exception as exception:
                 db.session.rollback()
                 slug = data['slug']
-                e = query.entry(db, slug, PRIVATE)
+                e = query.entry(slug, True)
                 fields = parse_fields(db, data)
                 # Set the object attributes to the JSON dict values.
                 obj_set_from(e, fields)
@@ -193,7 +193,7 @@ def obj_get_from(obj, keys):
 # I might add support for adding categories from the client
 # in the future
 def category_from_name(db, name):
-    category = query.category(db, name)
+    category = query.category(name)
     if category:
         return category
     else:
@@ -203,7 +203,7 @@ def category_from_name(db, name):
 # author name doesn't exist yet.
 # It is not that useful, but it's easy to implement.
 def author_from_name(db, name):
-    author = query.author(db, name)
+    author = query.author(name)
     if author:
         return author
     else:
@@ -217,7 +217,7 @@ def author_from_name(db, name):
 def tags_from_names(db, tagname_list):
     tags = []
     for tagname in tagname_list:
-        tag = query.tag(db, tagname)
+        tag = query.tag(tagname)
         if tag:
             tags.append(tag)
         else:

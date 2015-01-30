@@ -64,6 +64,7 @@ def walkback(path, from_parent=False):
 
 api = '/client/api/v1'
 headers = {'content-type': 'application/json'}
+crawler_headers = {'User-Agent': 'Mozzilla/5.0'}
 
 def authenticate(client, domain, payload):
     response = client.post(domain + api + '/auth/',
@@ -178,17 +179,20 @@ def check_links(slug, auth, domain, lead, content):
         for tag in soup.find_all(True):
             for attr in ['src', 'href', 'link', 'url']:
                 if attr in tag.attrs:
-                    new_url = handle_url(slug, domain, tag[attr])
-                    try:
-                        response = client.get(new_url)
-                        if response.status_code != 200:
+                    if tag[attr].startswith('mailto:'):
+                        pass
+                    else:
+                        new_url = handle_url(slug, domain, tag[attr])
+                        try:
+                            response = client.get(new_url, headers=crawler_headers)
+                            if response.status_code != 200:
+                                errors.append({'tag': str(tag),
+                                               'url': tag[attr],
+                                               'status_code': response.status_code})
+                        except Exception as e:
                             errors.append({'tag': str(tag),
                                            'url': tag[attr],
-                                           'status_code': response.status_code})
-                    except Exception as e:
-                        errors.append({'tag': str(tag),
-                                       'url': tag[attr],
-                                       'exception': e})
+                                           'exception': e})
     if errors: correct = False
     else:      correct = True
 
@@ -312,13 +316,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.sidebar:
         action_sidebar(args.remote)
-    elif args.entry:
-        action_update(args.remote, not args.nocheck)
     else:
-        try:
-            action_update(args.remote, not args.nocheck)
-        except:
-            try:
-                action_sidebar(args.remote)
-            except:
-                print "Exception: Neither entry nor sidebar found"
+        action_update(args.remote, not args.nocheck)

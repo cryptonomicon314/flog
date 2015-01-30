@@ -10,8 +10,6 @@ from app import db, app
 
 from utils import format_bool, bool_as_lock, bool_as_special
 
-from jinja2 import Template
-
 import datetime
 
 make_searchable()
@@ -69,14 +67,19 @@ class Entry(AuditMixin, Model):
     # Search:
     search_vector = Column(TSVectorType('title', 'lead', 'content'))
 
+    def is_future(self):
+        now = datetime.datetime.utcnow()
+        return self.since and self.since > now
+
+    def is_past(self):
+        now = datetime.datetime.utcnow()
+        return self.until and self.until < now
+
     def is_visible(self, is_preview):
         now = datetime.datetime.utcnow()
-        if is_preview:
-            return (not self.until) or self.until >= now
-        else:
-            return self.public and \
-                   ((not self.since) or self.since <= now) and \
-                   ((not self.until) or self.until >= now)
+        return (self.public or is_preview) and \
+               ((not self.since) or self.since <= now) and \
+               ((not self.until) or self.until >= now)
 
     def highest_comment(self):
         return max([0] + [cmt.number for cmt in self.comments])
@@ -171,6 +174,9 @@ class BlogConfig(AuditMixin, Model):
     entries_in_feed = Column(Integer, nullable=False)
     comments_in_feed = Column(Integer, nullable=False)
     show_all_tab = Column(Boolean)
+
+    def edit_lag(self):
+        return datetime.timedelta(minutes=self.edit_lag_in_minutes)
 
     def __repr__(self):
         return self.name

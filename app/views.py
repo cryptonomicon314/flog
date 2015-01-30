@@ -15,10 +15,39 @@ from flask.ext.appbuilder.baseviews import expose
 
 from flask.ext.login import login_user
 
+class CommentView(ModelView):
+    datamodel = SQLAModel(Comment)
+
+    list_columns = ['name',
+                    'published',
+                    'content',
+                    'akismet_spam',
+                    'confirmed_spam']
+
+    add_columns = ['name',
+                   'email',
+                   'website',
+                   'content',
+                   'published',
+                   'visible',
+                   'akismet_spam',
+                   'confirmed_spam',
+                   'entry']
+    edit_columns = add_columns
+
+    search_columns = add_columns
+
+    extra_args = {'rich_textareas': ['content']}
+
+    add_template = 'admin/richtext/add.html'
+    edit_template = 'admin/richtext/edit.html'
+
+
 class EntryView(ModelView):
     # The goal is to use this view the least we can, and use the
     # command line client and REST API to add entries.
     datamodel = SQLAModel(Entry)
+    related_views = [CommentView]
     add_columns = ['author',
                    'show_author',
                    'title',
@@ -86,32 +115,13 @@ class EntryView(ModelView):
                    'expanded': False})]
 
 
-class CommentView(ModelView):
-    datamodel = SQLAModel(Comment)
-
-    list_columns = ['name',
-                    'published',
-                    'content',
-                    'akismet_spam',
-                    'confirmed_spam']
-
-    add_columns = ['name',
-                   'email',
-                   'website',
-                   'content',
-                   'published',
-                   'visible',
-                   'akismet_spam',
-                   'confirmed_spam',
-                   'entry']
+class AuthorView(ModelView):
+    list_columns = ['name', 'entries']
+    add_columns = ['name', 'entries']
     edit_columns = add_columns
 
-    search_columns = add_columns
-
-    extra_args = {'rich_textareas': ['content']}
-
-    add_template = 'admin/richtext/add.html'
-    edit_template = 'admin/richtext/edit.html'
+    datamodel =  SQLAModel(Author)
+    related_views = [EntryView]
 
 
 class TagView(ModelView):
@@ -123,16 +133,11 @@ class TagView(ModelView):
 
 class CategoryView(ModelView):
     list_columns = ['name', 'description', 'index']
+    related_views = [EntryView]
     base_order = ('index', 'asc')
 
     datamodel = SQLAModel(Category)
 
-class AuthorView(ModelView):
-    list_columns = ['name', 'entries']
-    add_columns = ['name', 'entries']
-    edit_columns = add_columns
-
-    datamodel =  SQLAModel(Author)
 
 class SidebarModuleView(ModelView):
     datamodel = SQLAModel(SidebarModule)

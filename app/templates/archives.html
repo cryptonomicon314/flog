@@ -7,8 +7,11 @@
     <ul>
         {% for entry in subset %}
         <li>
+           {% if not entry.is_visible(False) %}
+             <i class="fa fa-eye-slash" style="color: DarkOrange"></i>
+           {% endif %}
            {{ moment(entry.created).format("MMM DD") }}
-           <a href="{{ cls.url_for('entry', slug=entry.slug) }}">{{ entry.title }}</a></td>
+           <a href="{{ cls.url_for('entry', slug=entry.slug) }}">{{ entry.title }}</a>
         </li>
         {% endfor %}
     </ul>

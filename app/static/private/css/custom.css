@@ -24,6 +24,12 @@ pre {padding: 0px !important}
 .sidebar-module {margin-bottom: -30px}
 
 .read-comments {text-align: center}
+
+/* Hidden Entries in Preview */
+.hidden-invisible {color: red}
+.hidden-past {color: #959595}
+.hidden-future {color: DarkOrange}
+
 /* Comments Submission Form */
 form input {}
 
