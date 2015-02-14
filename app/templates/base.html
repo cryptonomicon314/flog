@@ -41,17 +41,12 @@
           </ul>
         </div>
        
-        {# Separator #}
-        <span class="col-sm-offset-1
-                     col-md-offset-1"></span>
-
        <form style="display: inline"
                action="{{ cls.url_for('search') }}"
                method="post"
                name="search">
            {{ g.search_form.hidden_tag() }}
            {{ g.search_form.search(size=15, placeholder="Search") }}
-           {# <input class="btn btn-primary" type="submit" value="Search"> #}
        </form>
 
     </nav>

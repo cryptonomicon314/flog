@@ -43,14 +43,15 @@ def before_request():
 @app.route('/atom-feed-entries')
 def atom_feed_entries():
     now = datetime.datetime.utcnow()
-    title = g.config.blog_title + " Entries"
-    subtitle = g.config.blog_subtitle
+    config = g.blog_config
+    title = config.blog_title + " Entries"
+    subtitle = config.blog_subtitle
     feed = AtomFeed(title, feed_url=request.url,
                     url=request.host_url,
                     subtitle=subtitle)
 
 
-    for entry in query.entries(False, page_size=g.config.entries_in_feed).all():
+    for entry in query.entries(False, page_size=config.entries_in_feed).all():
         feed.add(entry.title, entry.lead + entry.content, content_type='html',
                  author=entry.author.name,
                  url=url_for('PublicView.entry', slug=entry.slug),
