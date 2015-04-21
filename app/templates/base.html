@@ -10,67 +10,67 @@
 {% endblock %}
 
 {% block navbar %}
-<div class="blog-masthead">
+<nav class="navbar navbar-default navbar-static-top">
   <div class="container">
-    <nav class="blog-nav">
-        
-        {% for category in cls.categories() %}
-          <a class="blog-nav-item {% if active_category == category.slug %}active{% endif %}"
-             href="{{ cls.url_for('category', catslug=category.slug) }}">{{ category.name }}</a>
-        {% endfor %}
-        <a class="blog-nav-item {% if is_all %}active{% endif %}"
-           href="{{ cls.url_for('all_entries') }}">All</a>
-        <a class="blog-nav-item {% if is_archives %}active{% endif %}"
-           href="{{ cls.url_for('archives') }}">Archives</a>
-       
-       {# Atom Feeds #}
-        <div class="btn-group" role="group">
-          <button type="button"
-                  style="border-style: none"
-                  class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <i class="fa fa-rss"></i> Feeds
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li>
-                <a href="{{ url_for('atom_feed_entries') }}"><i class="fa fa-file-text-o"></i> Entries</a>
-            </li>
-            <li>
-                <a href="{{ url_for('atom_feed_comments') }}"><i class="fa fa-comments"></i> Comments</a>
-            </li>
-          </ul>
-        </div>
-       
-       <form style="display: inline"
-               action="{{ cls.url_for('search') }}"
-               method="post"
-               name="search">
-           {{ g.search_form.hidden_tag() }}
-           {{ g.search_form.search(size=15, placeholder="Search") }}
-       </form>
 
-    </nav>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        {% for category in cls.categories() %}
+          <li {% if active_category == category.slug %}class="active"{% endif %}>
+            <a href="{{ cls.url_for('category', catslug=category.slug) }}">{{ category.name }}</a>
+          </li>
+      {% endfor %}
+          <li {% if is_all %}class="active"{% endif %}>
+            <a href="{{ cls.url_for('all_entries') }}">All</a>
+          <li>
+          
+          <li {% if is_archives %}class="active"{% endif %}>
+            <a href="{{ cls.url_for('archives') }}">Archives</a>
+          </li>
+     
+     {# Atom Feeds #}
+          <li class="dropdown">
+            {# Button: #}
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <i class="fa fa-rss"></i> Feeds<span class="caret"></span>
+            </a>
+            {# List of available feeds: #}
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="{{ url_for('atom_feed_entries') }}"><i class="fa fa-file-text-o"></i> Entries</a>
+              </li>
+              <li>
+                <a href="{{ url_for('atom_feed_comments') }}"><i class="fa fa-comments"></i> Comments</a>
+              </li>
+            </ul>
+          </li>
+
+          {# Search form: #}
+            <form class="navbar-form navbar-left"
+                  action="{{ cls.url_for('search') }}"
+                  method="post"
+                  role="search"
+                  name="search">
+              {{ g.search_form.hidden_tag() }}
+                {{ g.search_form.search(size=15, placeholder="Search") }}
+           </form>
+       
+      </ul>
+    </div>
   </div>
-</div>
+</nav>
 {% endblock %}
 
 {% block content %}
-<style>
-.pos-fixed-top-right {
-    position: fixed;
-    top: 55px;
-    right: 15px;
-    z-index: 999;
-}
-
-.preview-box {
-    background: rgba(255,255,255, 0.7);
-    padding: 5px;
-    border-radius: 4px;
-    border-style: none;
-}
-
-</style>
 
 {% if cls.is_preview %}
   <div class="pos-fixed-top-right">
@@ -82,7 +82,7 @@
   </div>
 {% endif %}
 
-<div class="container">
+<div class="container" style="padding-top: 0px">
   <div class="blog-header">
     <h1 class="blog-title">
         {{ g.blog_config.blog_title }}

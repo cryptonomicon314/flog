@@ -138,7 +138,7 @@ def configure_assets(app):
     # ----------------------------------------- #
     # Bundle the assets, using "normal" cache busting
     all_css = Bundle('private/css/highlightjs-style.css',
-                     'private/css/blog.css',
+                     'private/css/bootswatch/journal/bootstrap.css',
                      'private/css/custom.css',
             output='public/css/style.%(version)s.css')
     assets.register('style_css', all_css)

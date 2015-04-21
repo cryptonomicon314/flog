@@ -1,29 +1,72 @@
 body {font-size: 14px !important}
+
 .blog-main {font-size: 16.5px !important}
 /* Styling of user comments */
-.comment-list header {text-align: center}
-.comment-content pre {padding: 0}
-.comment-content, .entry-content {text-align: justify}
+.comment-list header {
+    text-align: center
+}
+
+.comment-content pre {
+    padding: 0
+}
+
+.comment-content, .entry-content {
+    text-align: justify
+}
+
 .comment-content {margin-top: 10px !important}
+
 .comment-number-and-date {font-size: small}
+
 .comment-name {font-size: large; font-weight: bold}
-/* if we have math in a paragraph with anything else, we center it */
+
+/* 
+ * If we have math in a paragraph with anything else, we center it.
+ * This is a workaround that tries to detect math in display mode without
+ * using complex javascript to read the text 
+ */
 p span.math-tex:only-child {text-align: center}
-/* blockquote ckeditor plugin */
-blockquote {font-size: 14px !important}
-/* footnotes ckeditor plugin */
-.footnotes header {font-weight: bold; font-size: small}
-.footnotes ol {margin-top: -8px}
-/* spoiler ckeditor plugin */
-p + .spoiler {margin-top: -12px}
-/* highlight.js */
-:not(pre) > code.hljs {display: inline !important; padding: 2px; font-size: small}
-pre {padding: 0px !important}
 
-.sidebar-module ul {margin-left: -26px}
-.sidebar-module {margin-bottom: -30px}
+/* CKEditor plugins */
+  
+  /* blockquote ckeditor plugin */
+blockquote {
+    font-size: 14px !important
+}
 
-.read-comments {text-align: center}
+  /* footnotes ckeditor plugin */
+.footnotes header {
+    font-weight: bold;
+    font-size: small
+}
+
+.footnotes ol {
+    margin-top: -8px
+}
+
+  /* spoiler ckeditor plugin */
+p + .spoiler {
+    margin-top: -12px
+}
+  
+  /* highlight.js */
+:not(pre) > code.hljs {
+    display: inline !important;
+    padding: 2px;
+    font-size: small
+}
+
+pre {
+    padding: 0px !important
+}
+
+.sidebar-module ul {
+    margin-left: -26px
+}
+
+.read-comments {
+    text-align: center
+}
 
 /* Hidden Entries in Preview */
 .hidden-invisible {color: red}
@@ -56,4 +99,20 @@ a.normal:link {
 
 a.normal:visited {
     color: inherit !important;
+}
+
+
+/* CSS to control position of boxes in preview view */
+.pos-fixed-top-right {
+    position: fixed;
+    top: 95px;
+    right: 15px;
+    z-index: 999;
+}
+
+.preview-box {
+    background: rgba(255,255,255, 0.7);
+    padding: 5px;
+    border-radius: 4px;
+    border-style: none;
 }

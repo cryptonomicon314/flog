@@ -5,7 +5,11 @@
   {% else %}   
 
   <div class="comment-name">
-    {{ comment.name }}
+    {% if comment.website %}
+      <a href="{{ comment.website }}">{{ comment.name }}</a>
+    {% else %}
+      {{ comment.name }}
+    {% endif %}
   </div>
   <div class="comment-number-and-date">
       <span class="comment-number">Comment #{{ comment.number }} </span>
