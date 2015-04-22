@@ -518,6 +518,8 @@ def update_comment(comment_id, form):
     comment.name = sanitize_plaintext(form.name.data)
     comment.email = form.email.data
     comment.content = sanitize_richtext(form.content.data)
+    if comment.content.strip() == "":
+        comment.visible = False
     db.session.commit()
     return comment
 
