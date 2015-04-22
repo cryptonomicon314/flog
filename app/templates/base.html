@@ -11,7 +11,7 @@
 
 {% block navbar %}
 <nav class="navbar navbar-default navbar-static-top">
-  <div class="container col-md-offset-1 col-sm-offset-0">
+    <div class="container col-md-offset-1">
 
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
@@ -82,7 +82,7 @@
   </div>
 {% endif %}
 
-<div class="container row" style="padding-top: 0px">
+<div class="container" style="padding-top: 0px">
   <div class="col-md-offset-1 blog-masthead">
     <h1>
         {{ g.blog_config.blog_title }}
@@ -96,7 +96,10 @@
   </div>
   
   <div class="row">
-    <div class="col-md-offset-1 col-sm-9 col-md-8 blog-main" 
+    <div class="col-md-offset-1
+                col-md-8
+                col-sm-9
+                blog-main" 
          style="max-width: 560px !important"
          id="main">
       {% block main %}
@@ -104,8 +107,7 @@
     </div>
     
     <div class="blog-sidebar col-sm-3 col-md-3
-                col-md-offset-1
-                col-sm-offset-0"
+                col-md-offset-1"
          role="navigation">
         
       <!--
