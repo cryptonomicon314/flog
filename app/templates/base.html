@@ -28,10 +28,13 @@
           <li {% if active_category == category.slug %}class="active"{% endif %}>
             <a href="{{ cls.url_for('category', catslug=category.slug) }}">{{ category.name }}</a>
           </li>
-      {% endfor %}
+        {% endfor %}
+
+        {% if g.blog_config.show_all_tab %}
           <li {% if is_all %}class="active"{% endif %}>
             <a href="{{ cls.url_for('all_entries') }}">All</a>
           <li>
+        {% endif %}
           
           <li {% if is_archives %}class="active"{% endif %}>
             <a href="{{ cls.url_for('archives') }}">Archives</a>
