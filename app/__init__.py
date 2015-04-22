@@ -137,11 +137,17 @@ def configure_assets(app):
     assets.url_expire = True
     # ----------------------------------------- #
     # Bundle the assets, using "normal" cache busting
-    all_css = Bundle('private/css/highlightjs-style.css',
-                     'private/css/bootswatch/journal/bootstrap.css',
-                     'private/css/custom.css',
-            output='public/css/style.%(version)s.css')
-    assets.register('style_css', all_css)
+    non_hljs_css = Bundle('private/css/bootswatch/journal/bootstrap.css',
+                          'private/css/custom.css',
+            output='public/css/non-hljs.%(version)s.css')
+    hljs_css = Bundle('private/css/highlightjs-style.css',
+            output='public/css/hljs.%(version)s.css')
+    #font_ttf  = Bundle('private/fonts/glyphicons-halflings-regular.ttf',
+    #        output='public/fonts/glyphicons-halflings-regular.ttf')
+
+    assets.register('non_hljs_css', non_hljs_css)
+    assets.register('hljs_css', hljs_css)
+    #assets.register('font_ttf', font_ttf)
     return assets
 
 class AkismetChecker(Akismet):

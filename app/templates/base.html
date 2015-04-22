@@ -4,7 +4,7 @@
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> 
-  {% assets "style_css" %}
+  {% assets "non_hljs_css", "hljs_css" %}
       <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></link>
   {% endassets %}
 {% endblock %}
@@ -82,7 +82,7 @@
   </div>
 {% endif %}
 
-<div class="container" style="padding-top: 0px">
+<div class="container row" style="padding-top: 0px">
   <div class="col-md-offset-1 blog-masthead">
     <h1>
         {{ g.blog_config.blog_title }}
