@@ -107,7 +107,6 @@ def atom_feed_comments():
 #
 # for this reason, we will define a ``.url_for()`` method.
 class SiteView(BaseView):
-
     # The ``.url_for()`` method behaves almost like the default ``url_for()``
     # function. The difference is that it knows from which class it has been called.
     #

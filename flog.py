@@ -285,7 +285,7 @@ def fix_refs(entry_slug, doc, debug=False):
     soup = BeautifulSoup(doc)
     namemap = {}
     # Fix <img src="files/filename.ext"/>
-    for img in soup.find_all('img'):
+    for img in soup.find_all(['img', 'source', 'audio']):
         # Files specific for this entry:
         if img['src'].startswith('files/'):
             local = img['src']
